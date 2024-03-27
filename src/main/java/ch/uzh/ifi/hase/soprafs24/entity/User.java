@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
 import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
-import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -44,6 +43,12 @@ public class User implements Serializable {
 
   @Column
   private LocalDate birthday;
+
+  @Column
+  private Long score;
+
+  @Column(name = "tool_list")
+  private String toolList;
 
   public Long getId() {
     return id;
@@ -96,4 +101,20 @@ public class User implements Serializable {
   public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
+
+  public Long getScore() {
+      return score;
+  }
+
+  public void setScore(Long score) {
+      this.score = score;
+  }
+
+  public String getToolList() {
+      return toolList;
+  }
+
+  public void setToolList(String toolList) {
+      this.toolList = toolList;
+  }
 }
