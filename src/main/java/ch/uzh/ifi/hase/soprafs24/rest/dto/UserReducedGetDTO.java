@@ -4,12 +4,11 @@ import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 
 import java.time.LocalDate;
 
-public class UserGetDTO {
+public class UserReducedGetDTO {
 
   private Long id;
-//  private String name;
+  private String token;
   private String username;
-//  private String token;
   private UserStatus status;
   private LocalDate creationDate;
   private LocalDate birthday;
@@ -22,13 +21,13 @@ public class UserGetDTO {
     this.id = id;
   }
 
-//  public String getName() {
-//    return name;
-//  }
-//
-//  public void setName(String name) {
-//    this.name = name;
-//  }
+  public void setToken(String token) {
+        this.token = token;
+    }
+
+  public String getToken() {
+        return token;
+    }
 
   public String getUsername() {
     return username;
@@ -38,21 +37,11 @@ public class UserGetDTO {
     this.username = username;
   }
 
-//  public void setToken(String token) {
-//        this.token = token;
-//    }
-//
-//  public String getToken() {
-//        return token;
-//    }
-
   public UserStatus getStatus() {
     return status;
   }
 
-  public void setStatus(UserStatus status) {
-    this.status = status;
-  }
+  public void setStatus(UserStatus status) {this.status = status;}
 
   public void setCreationDate(LocalDate creationDate){this.creationDate = creationDate;}
 
@@ -61,4 +50,5 @@ public class UserGetDTO {
   public void setBirthday(LocalDate birthday){this.birthday = birthday;}
 
   public LocalDate getBirthday(){return birthday;}
-}
+
+ }
