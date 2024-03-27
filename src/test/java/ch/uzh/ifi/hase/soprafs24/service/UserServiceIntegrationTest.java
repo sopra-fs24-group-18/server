@@ -11,6 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -40,18 +42,17 @@ public class UserServiceIntegrationTest {
     assertNull(userRepository.findByUsername("testUsername"));
 
     User testUser = new User();
-    testUser.setName("testName");
+    testUser.setPassword("123");
     testUser.setUsername("testUsername");
 
     // when
     User createdUser = userService.createUser(testUser);
 
     // then
-    assertEquals(testUser.getId(), createdUser.getId());
-    assertEquals(testUser.getName(), createdUser.getName());
+    assertEquals(testUser.getPassword(), createdUser.getPassword());
     assertEquals(testUser.getUsername(), createdUser.getUsername());
     assertNotNull(createdUser.getToken());
-    assertEquals(UserStatus.OFFLINE, createdUser.getStatus());
+    assertEquals(UserStatus.ONLINE, createdUser.getStatus());
   }
 
   @Test
@@ -59,7 +60,7 @@ public class UserServiceIntegrationTest {
     assertNull(userRepository.findByUsername("testUsername"));
 
     User testUser = new User();
-    testUser.setName("testName");
+    testUser.setPassword("123");
     testUser.setUsername("testUsername");
     User createdUser = userService.createUser(testUser);
 
@@ -67,10 +68,28 @@ public class UserServiceIntegrationTest {
     User testUser2 = new User();
 
     // change the name but forget about the username
-    testUser2.setName("testName2");
+    testUser2.setPassword("456");
     testUser2.setUsername("testUsername");
 
     // check that an error is thrown
     assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser2));
   }
+
+//    @Test
+//    public void getUserById_validId__success() {
+//      assertFalse(userRepository.findById(1L).isPresent());
+//
+//      User testUser = new User();
+//      testUser.setPassword("123");
+//      testUser.setUsername("testUsername");
+//
+//      userService.createUser(testUser);
+//
+//      // when
+//      Optional<User> getUser = userService.getUserById(1L);
+//
+//      // then
+//      assertEquals(testUser.getUsername(), getUser.get().getUsername());
+//      assertEquals(testUser.getPassword(), getUser.get().getPassword());
+//    }
 }

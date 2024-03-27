@@ -12,7 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -41,7 +43,9 @@ public class UserService {
 
   public User createUser(User newUser) {
     newUser.setToken(UUID.randomUUID().toString());
-    newUser.setStatus(UserStatus.OFFLINE);
+    newUser.setStatus(UserStatus.ONLINE);
+    LocalDate date = LocalDate.now();
+    newUser.setCreationDate(date);
     checkIfUserExists(newUser);
     // saves the given entity but data is only persisted in the database once
     // flush() is called
@@ -59,21 +63,61 @@ public class UserService {
    * and throw an error otherwise.
    *
    * @param userToBeCreated
-   * @throws org.springframework.web.server.ResponseStatusException
+   * @throws ResponseStatusException
    * @see User
    */
   private void checkIfUserExists(User userToBeCreated) {
     User userByUsername = userRepository.findByUsername(userToBeCreated.getUsername());
-    User userByName = userRepository.findByName(userToBeCreated.getName());
 
-    String baseErrorMessage = "The %s provided %s not unique. Therefore, the user could not be created!";
-    if (userByUsername != null && userByName != null) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-          String.format(baseErrorMessage, "username and the name", "are"));
-    } else if (userByUsername != null) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(baseErrorMessage, "username", "is"));
-    } else if (userByName != null) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(baseErrorMessage, "name", "is"));
+    if (userByUsername != null) {
+      throw new ResponseStatusException(HttpStatus.CONFLICT,
+              "The username provided is not unique. Therefore, the user could not be created!");
     }
   }
+
+    public Optional<User> getUserById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if(!user.isPresent()){
+            String baseErrorMessage = "User with userId % was not found!";
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(baseErrorMessage, id));
+        }
+        return user;
+
+    }
+
+    public User login(User user) {
+        User userByUsername = userRepository.findByUsername(user.getUsername());
+
+        if (userByUsername == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Authentication failed! Invalid username!");
+        } else if (!userByUsername.getPassword().equals(user.getPassword())){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Authentication failed! Your password is wrong!");
+        }
+        userByUsername.setStatus(UserStatus.ONLINE);
+        return userByUsername;
+    }
+
+    public void updateUser(Long userId, User userInput) {
+        Optional<User> user = getUserById(userId);
+        //userInput.getToken() is the token from the person who want to edit the profile
+        //user.get().getToken() is the token from the person who being edited
+        //this trick can reduce communication cost, and improve security
+//        if(!user.get().getToken().equals(userInput.getToken())){
+//            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to edit other people's profile!");
+//        }
+        if(userInput.getUsername() != null){
+            if(!user.get().getUsername().equals(userInput.getUsername())){
+                checkIfUserExists(userInput);
+                user.ifPresent(x -> x.setUsername(userInput.getUsername()));
+            }
+        }
+        if(userInput.getBirthday() != null){
+            user.ifPresent(x -> x.setBirthday(userInput.getBirthday()));
+        }
+    }
+
+    public void logout(User userInput){
+        User user = userRepository.findByToken(userInput.getToken());
+        user.setStatus(UserStatus.OFFLINE);
+    }
 }
