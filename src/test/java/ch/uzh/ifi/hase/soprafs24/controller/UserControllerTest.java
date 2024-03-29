@@ -125,6 +125,55 @@ public class UserControllerTest {
     }
 
 
+    @Test
+    public void login_validInput_loginSuccess() throws Exception {
+        // given
+        User user = new User();
+        user.setId(1L);
+        user.setPassword("123");
+        user.setUsername("testUsername");
+        user.setToken("1");
+        user.setStatus(UserStatus.ONLINE);
+
+        UserPostDTO userPostDTO = new UserPostDTO();
+        userPostDTO.setPassword("123");
+        userPostDTO.setUsername("testUsername");
+
+        given(userService.login(Mockito.any())).willReturn(user);
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder postRequest = post("/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(userPostDTO));
+
+        // then
+        mockMvc.perform(postRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(user.getId().intValue())))
+                .andExpect(jsonPath("$.username", is(user.getUsername())))
+                .andExpect(jsonPath("$.status", is(user.getStatus().toString())));
+    }
+
+    @Test
+    public void login_wrongPassword_throwsException() throws Exception {
+        UserPostDTO userPostDTO = new UserPostDTO();
+        userPostDTO.setPassword("123");
+        userPostDTO.setUsername("testUsername");
+
+        given(userService.login(Mockito.any())).willThrow(
+                new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Authentication failed! Your password is wrong!"));
+
+        // when/then -> do the request + validate the result
+        MockHttpServletRequestBuilder postRequest = post("/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(userPostDTO));
+
+        // then
+        mockMvc.perform(postRequest)
+                .andExpect(status().isUnauthorized())
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResponseStatusException));
+    }
+
   @Test
   public void getUser_validInput_getUserById() throws Exception {
       // given
