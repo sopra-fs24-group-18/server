@@ -8,7 +8,9 @@ import ch.uzh.ifi.hase.soprafs24.rest.dto.UserReducedGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +71,7 @@ public class UserController {
         // convert internal representation of user back to API
         return DTOMapper.INSTANCE.convertEntityToUserReducedGetDTO(user);
     }
-
+/*
   @GetMapping("/users/{userId}")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
@@ -77,8 +79,29 @@ public class UserController {
       Optional<User> user = userService.getUserById(userId);
       if(user.isPresent()){
           return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user.get());
+      }else {
+          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
       }
-      return null;
+  }
+
+ */
+  @GetMapping("/users/{userId}")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public ResponseEntity<?> getUserById(@PathVariable Long userId) {
+      try {
+          Optional<User> user = userService.getUserById(userId);
+          if (user.isPresent()) {
+              UserGetDTO userDTO = DTOMapper.INSTANCE.convertEntityToUserGetDTO(user.get());
+              return ResponseEntity.ok(userDTO);
+          } else {
+              String errorMessage = String.format("User with userId %d was not found!", userId);
+              return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+          }
+      } catch (ResponseStatusException e) {
+        // If userService throws a ResponseStatusException, catch it and return the appropriate response
+          return ResponseEntity.status(e.getStatus()).body(e.getReason());
+      }
   }
 
     @PutMapping("/users/{userId}")

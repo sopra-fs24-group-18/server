@@ -31,6 +31,8 @@ public interface DTOMapper {
   @Mapping(target = "status", ignore = true)
   @Mapping(target = "creationDate", ignore = true)
   @Mapping(target = "birthday", ignore = true)
+  @Mapping(target = "score", ignore = true)
+  @Mapping(target = "toolList", ignore = true)
   User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
   @Mapping(source = "id", target = "id")
@@ -40,6 +42,8 @@ public interface DTOMapper {
   @Mapping(source = "status", target = "status")
   @Mapping(source = "creationDate", target = "creationDate")
   @Mapping(source = "birthday", target = "birthday")
+  @Mapping(source = "avatar", target = "avatar")
+
   UserGetDTO convertEntityToUserGetDTO(User user);
 
   @Mapping(source = "id", target = "id")
@@ -48,15 +52,19 @@ public interface DTOMapper {
   @Mapping(source = "status", target = "status")
   @Mapping(source = "creationDate", target = "creationDate")
   @Mapping(source = "birthday", target = "birthday")
+  @Mapping(source = "avatar", target = "avatar")
   UserReducedGetDTO convertEntityToUserReducedGetDTO(User user);
 
   @Mapping(source = "id", target = "id")
   @Mapping(source = "token", target = "token")
   @Mapping(source = "username", target = "username")
   @Mapping(source = "birthday", target = "birthday")
-  @Mapping(target = "password", ignore = true)
+  @Mapping(source = "avatar", target = "avatar")
+  @Mapping(source = "password", target = "password")
   @Mapping(target = "status", ignore = true)
   @Mapping(target = "creationDate", ignore = true)
+  @Mapping(target = "score", ignore = true)
+  @Mapping(target = "toolList", ignore = true)
   User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
 
 }

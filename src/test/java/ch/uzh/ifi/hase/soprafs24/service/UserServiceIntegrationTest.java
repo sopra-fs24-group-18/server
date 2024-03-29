@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -74,6 +75,66 @@ public class UserServiceIntegrationTest {
     // check that an error is thrown
     assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser2));
   }
+
+
+    @Test
+    public void updateUser_validInputs_success() {
+        // given
+        User testUser = new User();
+        testUser.setPassword("testPassword");
+        testUser.setUsername("testUsername");
+        testUser.setAvatar("testAvatar");
+        testUser.setPassword("testPassword");
+        User createdUser = userService.createUser(testUser);
+
+
+        User updatedUser = new User();
+        updatedUser.setUsername("updatedUsername");
+        updatedUser.setBirthday(LocalDate.now());
+        updatedUser.setAvatar("updatedAvatar");
+        updatedUser.setPassword("updatedPassword");
+        updatedUser.setToken(testUser.getToken());
+
+        // when
+        User resultUser = userService.updateUser(createdUser.getId(), updatedUser);
+
+        // then
+        assertEquals(updatedUser.getUsername(), resultUser.getUsername());
+        assertEquals(updatedUser.getBirthday(), resultUser.getBirthday());
+        assertEquals(updatedUser.getAvatar(), resultUser.getAvatar());
+        assertEquals(updatedUser.getPassword(), resultUser.getPassword());
+    }
+    @Test
+    public void updateUser_notFound_throwsException() {
+        assertTrue(userRepository.findById(999L).isEmpty());
+        // given
+        User nonExistentUser = new User();
+        nonExistentUser.setId(999L); // Assume a non-existent user ID
+        // when, then
+        assertThrows(ResponseStatusException.class, () -> userService.updateUser(nonExistentUser.getId(), new User()));
+    }
+    @Test
+    public void updateUser_tokenMismatch_throwsException() {
+        // given
+        User testUser = new User();
+        testUser.setUsername("testUsername");
+        testUser.setPassword("testPassword");
+        User createdUser = userService.createUser(testUser);
+        assertNotEquals(testUser.getToken(),"differentToken");
+        assertNotEquals(testUser.getId(),2l);
+
+        // Create another user with different token
+        User userWithDifferentToken = new User();
+        userWithDifferentToken.setToken("differentToken");
+        userWithDifferentToken.setId(2l); // Use same ID
+        userWithDifferentToken.setUsername("anotheruser");
+        userWithDifferentToken.setPassword("testPassword");
+        userWithDifferentToken.setStatus(UserStatus.ONLINE);
+        userRepository.save(userWithDifferentToken);
+
+        // when, then
+        assertThrows(ResponseStatusException.class, () -> userService.updateUser(createdUser.getId(), new User()));
+    }
 
 //    @Test
 //    public void getUserById_validId__success() {

@@ -50,6 +50,9 @@ public class User implements Serializable {
   @Column(name = "tool_list")
   private String toolList;
 
+  @Column(name = "avatar")
+  private String avatar;
+
   public Long getId() {
     return id;
   }
@@ -117,4 +120,14 @@ public class User implements Serializable {
   public void setToolList(String toolList) {
       this.toolList = toolList;
   }
+
+  public String getAvatar() {
+        return avatar;
+    }
+
+  public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+
 }

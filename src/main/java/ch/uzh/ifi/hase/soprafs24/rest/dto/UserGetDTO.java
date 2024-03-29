@@ -14,6 +14,8 @@ public class UserGetDTO {
   private LocalDate creationDate;
   private LocalDate birthday;
 
+  private String avatar;
+
   public Long getId() {
     return id;
   }
@@ -61,4 +63,12 @@ public class UserGetDTO {
   public void setBirthday(LocalDate birthday){this.birthday = birthday;}
 
   public LocalDate getBirthday(){return birthday;}
+
+  public String getAvatar() {
+        return avatar;
+    }
+
+  public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 }

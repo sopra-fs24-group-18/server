@@ -10,7 +10,9 @@ public class UserPutDTO {
   private Long id;
   private String token;
   private String username;
+  private String password;
   private LocalDate birthday;
+  private String avatar;
 
   public Long getId() {
     return id;
@@ -40,4 +42,19 @@ public class UserPutDTO {
 
   public LocalDate getBirthday(){return birthday;}
 
- }
+  public String getAvatar() {
+        return avatar;
+    }
+
+  public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+  public String getPassword() {
+        return password;
+    }
+
+  public void setPassword(String password) {
+        this.password = password;
+    }
+}

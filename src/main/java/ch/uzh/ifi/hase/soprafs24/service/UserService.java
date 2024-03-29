@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -78,7 +79,7 @@ public class UserService {
     public Optional<User> getUserById(Long id) {
         Optional<User> user = userRepository.findById(id);
         if(!user.isPresent()){
-            String baseErrorMessage = "User with userId % was not found!";
+            String baseErrorMessage = "User with userId %d was not found!";
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(baseErrorMessage, id));
         }
         return user;
@@ -97,7 +98,7 @@ public class UserService {
         return userByUsername;
     }
 
-    public void updateUser(Long userId, User userInput) {
+ /*   public void updateUser(Long userId, User userInput) {
         Optional<User> user = getUserById(userId);
         //userInput.getToken() is the token from the person who want to edit the profile
         //user.get().getToken() is the token from the person who being edited
@@ -114,7 +115,42 @@ public class UserService {
         if(userInput.getBirthday() != null){
             user.ifPresent(x -> x.setBirthday(userInput.getBirthday()));
         }
-    }
+    }*/
+ public User updateUser(Long userId, User new_info){
+     User existingUser = userRepository.findById(userId)
+             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+     String new_username = new_info.getUsername();
+     LocalDate new_birthdate = new_info.getBirthday();
+     String Usertoken = new_info.getToken();
+     String new_avatar = new_info.getAvatar();
+     String new_password = new_info.getPassword();
+
+     if (!Objects.equals(Usertoken, existingUser.getToken())) {
+         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                 "The user has no right to edit this page");
+     }
+     //if new username is not null and not equal to the orginal name, check the duplication
+     if (new_username!= null && !new_username.equals(existingUser.getUsername())){
+         User existingUserWithNewUsername = userRepository.findByUsername(new_username);
+         if (existingUserWithNewUsername != null){
+             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                     String.format("The username '%s' is already in use. Please choose another name.",new_username));
+
+         }
+         existingUser.setUsername(new_username);
+     }
+     if (new_birthdate != null){
+         existingUser.setBirthday(new_birthdate);
+     }
+     if (new_avatar != null){
+         existingUser.setAvatar(new_avatar);
+     }
+     if (new_password != null){
+         existingUser.setPassword(new_password);
+     }
+     return userRepository.save(existingUser);
+
+ }
 
     public void logout(User userInput){
         User user = userRepository.findByToken(userInput.getToken());

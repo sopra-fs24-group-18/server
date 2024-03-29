@@ -40,6 +40,9 @@ public class DTOMapperTest {
     user.setUsername("firstname@lastname");
     user.setStatus(UserStatus.OFFLINE);
     user.setToken("1");
+    user.setAvatar("111");
+    user.setBirthday(LocalDate.now());
+    user.setCreationDate(LocalDate.now());
 
     // MAP -> Create UserGetDTO
     UserGetDTO userGetDTO = DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
@@ -48,7 +51,25 @@ public class DTOMapperTest {
     assertEquals(user.getId(), userGetDTO.getId());
     assertEquals(user.getUsername(), userGetDTO.getUsername());
     assertEquals(user.getStatus(), userGetDTO.getStatus());
+    assertEquals(user.getAvatar(), userGetDTO.getAvatar());
+    assertEquals(user.getBirthday(),userGetDTO.getBirthday());
+    assertEquals(user.getCreationDate(),userGetDTO.getCreationDate());
   }
+  @Test
+  public void testUpdateUser_fromUserPutDTO_toUser_success() {
+        // Create UserPutDTO
+        UserPutDTO userPutDTO = new UserPutDTO();
+        userPutDTO.setUsername("new_username");
+        userPutDTO.setToken("new_token");
+        userPutDTO.setPassword("new_password");
+
+        // MAP -> Update user
+        User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
+        // Check content
+        assertEquals(userPutDTO.getUsername(), user.getUsername());
+        assertEquals(userPutDTO.getToken(), user.getToken());
+        assertEquals(userPutDTO.getPassword(), user.getPassword());
+    }
 
 //  @Test
 //  public void testGetUserById_fromUser_toUserReducedGetDTO_success(){
