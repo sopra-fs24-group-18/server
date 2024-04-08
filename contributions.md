@@ -44,3 +44,19 @@ Implemented routes for register and login pages.
 **Plan for this week**
 
 Mutiple player room creation page
+
+### Zien Zeng
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/47
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/89
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/90
+
+**Description**
+
+Implement register and login functionalities and tests accordingly.
+
+Set up the connection with local Mysql Database.
+
+**Plan for this week**
+
+Room creation, enter and exit room, external API.
