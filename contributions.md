@@ -18,9 +18,9 @@ Item class and external API.
 
 ### Lu Li
 **Issues worked on**
-*    https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/24
-*    https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-clinet/issues/25
-*    https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-clinet/issues/26
+*    [#24](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/24)
+*    [#25](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/25)
+*    [#26](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/26)
 
 **Description**
 
