@@ -60,3 +60,18 @@ Set up the connection with local Mysql Database.
 **Plan for this week**
 
 Room creation, enter and exit room, external API.
+
+### Bingjie Xue
+**Issues worked on**
+*    [#21](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/21)
+*    [#22](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/22)
+*    [#23](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/23)
+
+**Description**
+
+Import ui components into project.
+Designed the user interface for register page.
+
+**Plan for this week**
+
+Game Room design.
