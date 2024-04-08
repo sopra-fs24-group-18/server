@@ -24,7 +24,9 @@ Item class and external API.
 
 **Description**
 
-Designed the user interface for login page, implemented client-side validation for username and password inputs and login success/failed scenarios
+Designed the user interface for login page
+Implemented client-side validation for username and password inputs and login success/failed scenarios
 
 **Plan for this week**
-profile management interface
+
+Profile management page
