@@ -90,7 +90,7 @@ public class UserService {
         User userByUsername = userRepository.findByUsername(user.getUsername());
 
         if (userByUsername == null) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Authentication failed! Invalid username!");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Authentication failed! Invalid username!");
         } else if (!userByUsername.getPassword().equals(user.getPassword())){
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Authentication failed! Your password is wrong!");
         }
