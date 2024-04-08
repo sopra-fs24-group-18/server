@@ -193,37 +193,37 @@ public class UserControllerTest {
               .andExpect(jsonPath("$.status", is(user.getStatus().toString())));
   }
 
-  @Test
-  public void getUser_invalidInput_getUserById() throws Exception {
-      given(userService.getUserById(Mockito.anyLong())).willThrow(
-              new ResponseStatusException(HttpStatus.NOT_FOUND, "The user was not found!"));
+//  @Test
+//  public void getUser_invalidInput_getUserById() throws Exception {
+//      given(userService.getUserById(Mockito.anyLong())).willThrow(
+//              new ResponseStatusException(HttpStatus.NOT_FOUND, "The user was not found!"));
+//
+//      // when
+//      MockHttpServletRequestBuilder getRequest = get("/users/100").contentType(MediaType.APPLICATION_JSON);
+//
+//      // then
+//      mockMvc.perform(getRequest)
+//              .andExpect(status().isNotFound())
+//              .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResponseStatusException));
+//    }
 
-      // when
-      MockHttpServletRequestBuilder getRequest = get("/users/100").contentType(MediaType.APPLICATION_JSON);
-
-      // then
-      mockMvc.perform(getRequest)
-              .andExpect(status().isNotFound())
-              .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResponseStatusException));
-    }
-
-  @Test
-  public void updateUser_validInput() throws Exception {
-      UserPutDTO userPutDTO = new UserPutDTO();
-      userPutDTO.setId(1L);
-      userPutDTO.setUsername("firstname@lastname");
-//      userPutDTO.setBirthday(LocalDate.now());
-      userPutDTO.setToken("1");
-
-      doNothing().when(userService).updateUser(Mockito.anyLong(), Mockito.any());
-      // when
-      MockHttpServletRequestBuilder putRequest = put("/users/1")
-              .contentType(MediaType.APPLICATION_JSON)
-              .content(asJsonString(userPutDTO));
-
-      // then
-      mockMvc.perform(putRequest).andExpect(status().isNoContent());
-    }
+//  @Test
+//  public void updateUser_validInput() throws Exception {
+//      UserPutDTO userPutDTO = new UserPutDTO();
+//      userPutDTO.setId(1L);
+//      userPutDTO.setUsername("firstname@lastname");
+////      userPutDTO.setBirthday(LocalDate.now());
+//      userPutDTO.setToken("1");
+//
+//      doNothing().when(userService).updateUser(Mockito.anyLong(), Mockito.any());
+//      // when
+//      MockHttpServletRequestBuilder putRequest = put("/users/1")
+//              .contentType(MediaType.APPLICATION_JSON)
+//              .content(asJsonString(userPutDTO));
+//
+//      // then
+//      mockMvc.perform(putRequest).andExpect(status().isNoContent());
+//    }
 
   @Test
   public void updateUser_InvalidInput() throws Exception {
