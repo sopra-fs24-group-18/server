@@ -15,3 +15,16 @@ Set up the connection with local Mysql Database.
 **Plan for this week**
 
 Item class and external API.
+
+### Lu Li
+**Issues worked on**
+*    https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/24
+*    https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-clinet/issues/25
+*    https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-clinet/issues/26
+
+**Description**
+
+Designed the user interface for login page, implemented client-side validation for username and password inputs and login success/failed scenarios
+
+**Plan for this week**
+profile management interface
