@@ -31,7 +31,7 @@ Implemented client-side validation for username and password inputs and login su
 
 Profile management page
 
-###Yunfan Zhou
+### Yunfan Zhou
 **Issues worked on**
 *    [#56](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/56)
 *    [#54](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/54)
