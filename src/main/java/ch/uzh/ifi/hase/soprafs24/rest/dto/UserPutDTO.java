@@ -1,19 +1,17 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
 import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
+import org.apache.tomcat.jni.Local;
 
 import java.time.LocalDate;
 
-public class UserGetDTO {
+public class UserPutDTO {
 
   private Long id;
-//  private String name;
+  private String token;
   private String username;
-//  private String token;
-  private UserStatus status;
-  private LocalDate creationDate;
+  private String password;
   private LocalDate birthday;
-
   private String avatar;
 
   public Long getId() {
@@ -24,13 +22,13 @@ public class UserGetDTO {
     this.id = id;
   }
 
-//  public String getName() {
-//    return name;
-//  }
-//
-//  public void setName(String name) {
-//    this.name = name;
-//  }
+  public String getToken() {
+        return token;
+    }
+
+  public void setToken(String token) {
+        this.token = token;
+    }
 
   public String getUsername() {
     return username;
@@ -39,26 +37,6 @@ public class UserGetDTO {
   public void setUsername(String username) {
     this.username = username;
   }
-
-//  public void setToken(String token) {
-//        this.token = token;
-//    }
-//
-//  public String getToken() {
-//        return token;
-//    }
-
-  public UserStatus getStatus() {
-    return status;
-  }
-
-  public void setStatus(UserStatus status) {
-    this.status = status;
-  }
-
-  public void setCreationDate(LocalDate creationDate){this.creationDate = creationDate;}
-
-  public LocalDate getCreationDate(){return creationDate;}
 
   public void setBirthday(LocalDate birthday){this.birthday = birthday;}
 
@@ -70,5 +48,13 @@ public class UserGetDTO {
 
   public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+  public String getPassword() {
+        return password;
+    }
+
+  public void setPassword(String password) {
+        this.password = password;
     }
 }
