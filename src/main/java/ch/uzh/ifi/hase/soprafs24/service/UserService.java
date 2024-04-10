@@ -13,10 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * User Service
@@ -155,5 +152,22 @@ public class UserService {
     public void logout(User userInput){
         User user = userRepository.findByToken(userInput.getToken());
         user.setStatus(UserStatus.OFFLINE);
+    }
+
+    public String userId2Username(Long userId){
+        Optional<User> user = getUserById(userId);
+        return user.get().getUsername();
+    }
+
+    public String userIdList2UsernameList(String userIdList) {
+        String[] userIds = userIdList.split(",");
+        List<String> usernames = new ArrayList<>();
+
+        for (String userId : userIds) {
+            Long id = Long.parseLong(userId.trim());
+            String username = userId2Username(id);
+            usernames.add(username);
+        }
+        return String.join(",", usernames);
     }
 }

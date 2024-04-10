@@ -1,17 +1,18 @@
-package ch.uzh.ifi.hase.soprafs24.rest.dto;
+package ch.uzh.ifi.hase.soprafs24.rest.dto.user;
 
 import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
-import org.apache.tomcat.jni.Local;
 
 import java.time.LocalDate;
 
-public class UserPutDTO {
+public class UserReducedGetDTO {
 
   private Long id;
   private String token;
   private String username;
-  private String password;
+  private UserStatus status;
+  private LocalDate creationDate;
   private LocalDate birthday;
+
   private String avatar;
 
   public Long getId() {
@@ -22,12 +23,12 @@ public class UserPutDTO {
     this.id = id;
   }
 
-  public String getToken() {
-        return token;
-    }
-
   public void setToken(String token) {
         this.token = token;
+    }
+
+  public String getToken() {
+        return token;
     }
 
   public String getUsername() {
@@ -37,6 +38,16 @@ public class UserPutDTO {
   public void setUsername(String username) {
     this.username = username;
   }
+
+  public UserStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(UserStatus status) {this.status = status;}
+
+  public void setCreationDate(LocalDate creationDate){this.creationDate = creationDate;}
+
+  public LocalDate getCreationDate(){return creationDate;}
 
   public void setBirthday(LocalDate birthday){this.birthday = birthday;}
 
@@ -50,11 +61,4 @@ public class UserPutDTO {
         this.avatar = avatar;
     }
 
-  public String getPassword() {
-        return password;
-    }
-
-  public void setPassword(String password) {
-        this.password = password;
-    }
-}
+ }
