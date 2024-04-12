@@ -7,6 +7,7 @@ import ch.uzh.ifi.hase.soprafs24.rest.mapper.RoomDTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.RoomService;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -42,4 +43,26 @@ public class RoomController {
     roomGetDTO.setPlayerNames(userService.userIdList2UsernameList(createdRoom.getPlayerIds()));
     return roomGetDTO;
   }
+
+  @PostMapping("/rooms/{roomCode}/{userId}/enter")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public RoomGetDTO enterRoom(@PathVariable String roomCode, @PathVariable Long userId) {
+      Room room = roomService.enterRoom(roomCode, userId);
+
+      // convert internal representation of user back to API
+      RoomGetDTO roomGetDTO = RoomDTOMapper.INSTANCE.convertEntityToRoomGetDTO(room);
+
+      roomGetDTO.setOwnerName(userService.userId2Username(room.getOwnerId()));
+      roomGetDTO.setPlayerNames(userService.userIdList2UsernameList(room.getPlayerIds()));
+      return roomGetDTO;
+  }
+
+    @PostMapping("/rooms/{roomId}/{userId}/exit")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public ResponseEntity<?> exitRoom(@PathVariable Long roomId, @PathVariable Long userId) {
+        roomService.exitRoom(roomId, userId);
+        return ResponseEntity.noContent().build();
+    }
 }

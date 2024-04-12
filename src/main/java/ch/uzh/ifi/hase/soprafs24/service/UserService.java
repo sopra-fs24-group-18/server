@@ -92,6 +92,7 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Authentication failed! Your password is wrong!");
         }
         userByUsername.setStatus(UserStatus.ONLINE);
+        userRepository.save(userByUsername);
         return userByUsername;
     }
 
