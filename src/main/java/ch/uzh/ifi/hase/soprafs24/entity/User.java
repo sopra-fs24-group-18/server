@@ -47,6 +47,9 @@ public class User implements Serializable {
   @Column
   private Long score;
 
+  @Column
+  private String toolStatus;
+
   @Column(name = "tool_list")
   private String toolList;
 
@@ -111,6 +114,14 @@ public class User implements Serializable {
 
   public void setScore(Long score) {
       this.score = score;
+  }
+
+  public String getToolStatus() {
+      return toolStatus;
+  }
+
+  public void setToolStatus(String toolStatus) {
+      this.toolStatus = toolStatus;
   }
 
   public String getToolList() {

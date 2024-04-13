@@ -34,17 +34,15 @@ public interface UserDTOMapper {
   @Mapping(target = "score", ignore = true)
   @Mapping(target = "toolList", ignore = true)
   @Mapping(target = "avatar", ignore = true)
+  @Mapping(target = "toolStatus", ignore = true)
   User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
   @Mapping(source = "id", target = "id")
-//  @Mapping(source = "name", target = "name")
-//  @Mapping(source = "token", target = "token")
   @Mapping(source = "username", target = "username")
   @Mapping(source = "status", target = "status")
   @Mapping(source = "creationDate", target = "creationDate")
   @Mapping(source = "birthday", target = "birthday")
   @Mapping(source = "avatar", target = "avatar")
-
   UserGetDTO convertEntityToUserGetDTO(User user);
 
   @Mapping(source = "id", target = "id")
@@ -66,6 +64,7 @@ public interface UserDTOMapper {
   @Mapping(target = "creationDate", ignore = true)
   @Mapping(target = "score", ignore = true)
   @Mapping(target = "toolList", ignore = true)
+  @Mapping(target = "toolStatus", ignore = true)
   User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
 
 }
