@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 /**
  * Internal User Representation
@@ -26,7 +27,7 @@ public class User implements Serializable {
   private Long id;
 
   @Column(nullable = false)
-  private String name;
+  private String password;
 
   @Column(nullable = false, unique = true)
   private String username;
@@ -37,6 +38,21 @@ public class User implements Serializable {
   @Column(nullable = false)
   private UserStatus status;
 
+  @Column(name = "creation_date")
+  private LocalDate creationDate;
+
+  @Column
+  private LocalDate birthday;
+
+  @Column
+  private Long score;
+
+  @Column(name = "tool_list")
+  private String toolList;
+
+  @Column(name = "avatar")
+  private String avatar;
+
   public Long getId() {
     return id;
   }
@@ -45,12 +61,12 @@ public class User implements Serializable {
     this.id = id;
   }
 
-  public String getName() {
-    return name;
+  public String getPassword() {
+    return password;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setPassword(String password) {
+    this.password = password;
   }
 
   public String getUsername() {
@@ -76,4 +92,42 @@ public class User implements Serializable {
   public void setStatus(UserStatus status) {
     this.status = status;
   }
+
+  public LocalDate getCreationDate() { return creationDate; }
+
+  public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
+    }
+
+  public LocalDate getBirthday() { return birthday; }
+
+  public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
+
+  public Long getScore() {
+      return score;
+  }
+
+  public void setScore(Long score) {
+      this.score = score;
+  }
+
+  public String getToolList() {
+      return toolList;
+  }
+
+  public void setToolList(String toolList) {
+      this.toolList = toolList;
+  }
+
+  public String getAvatar() {
+        return avatar;
+    }
+
+  public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+
 }
