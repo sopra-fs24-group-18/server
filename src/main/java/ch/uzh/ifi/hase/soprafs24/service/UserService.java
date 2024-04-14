@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * User Service
@@ -41,9 +41,7 @@ public class UserService {
 
   public User createUser(User newUser) {
     newUser.setToken(UUID.randomUUID().toString());
-    newUser.setStatus(UserStatus.ONLINE);
-    LocalDate date = LocalDate.now();
-    newUser.setCreationDate(date);
+    newUser.setStatus(UserStatus.OFFLINE);
     checkIfUserExists(newUser);
     // saves the given entity but data is only persisted in the database once
     // flush() is called
@@ -61,114 +59,21 @@ public class UserService {
    * and throw an error otherwise.
    *
    * @param userToBeCreated
-   * @throws ResponseStatusException
+   * @throws org.springframework.web.server.ResponseStatusException
    * @see User
    */
   private void checkIfUserExists(User userToBeCreated) {
     User userByUsername = userRepository.findByUsername(userToBeCreated.getUsername());
+    User userByName = userRepository.findByName(userToBeCreated.getName());
 
-    if (userByUsername != null) {
-      throw new ResponseStatusException(HttpStatus.CONFLICT,
-              "The username provided is not unique. Therefore, the user could not be created!");
+    String baseErrorMessage = "The %s provided %s not unique. Therefore, the user could not be created!";
+    if (userByUsername != null && userByName != null) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+          String.format(baseErrorMessage, "username and the name", "are"));
+    } else if (userByUsername != null) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(baseErrorMessage, "username", "is"));
+    } else if (userByName != null) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, String.format(baseErrorMessage, "name", "is"));
     }
   }
-
-    public Optional<User> getUserById(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        if(!user.isPresent()){
-            String baseErrorMessage = "User with userId %d was not found!";
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(baseErrorMessage, id));
-        }
-        return user;
-
-    }
-
-    public User login(User user) {
-        User userByUsername = userRepository.findByUsername(user.getUsername());
-
-        if (userByUsername == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Authentication failed! Invalid username!");
-        } else if (!userByUsername.getPassword().equals(user.getPassword())){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Authentication failed! Your password is wrong!");
-        }
-        userByUsername.setStatus(UserStatus.ONLINE);
-        userRepository.save(userByUsername);
-        return userByUsername;
-    }
-
- /*   public void updateUser(Long userId, User userInput) {
-        Optional<User> user = getUserById(userId);
-        //userInput.getToken() is the token from the person who want to edit the profile
-        //user.get().getToken() is the token from the person who being edited
-        //this trick can reduce communication cost, and improve security
-//        if(!user.get().getToken().equals(userInput.getToken())){
-//            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not allowed to edit other people's profile!");
-//        }
-        if(userInput.getUsername() != null){
-            if(!user.get().getUsername().equals(userInput.getUsername())){
-                checkIfUserExists(userInput);
-                user.ifPresent(x -> x.setUsername(userInput.getUsername()));
-            }
-        }
-        if(userInput.getBirthday() != null){
-            user.ifPresent(x -> x.setBirthday(userInput.getBirthday()));
-        }
-    }*/
- public User updateUser(Long userId, User new_info){
-     User existingUser = userRepository.findById(userId)
-             .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
-     String new_username = new_info.getUsername();
-     LocalDate new_birthdate = new_info.getBirthday();
-     String Usertoken = new_info.getToken();
-     String new_avatar = new_info.getAvatar();
-     String new_password = new_info.getPassword();
-
-     if (!Objects.equals(Usertoken, existingUser.getToken())) {
-         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-                 "The user has no right to edit this page");
-     }
-     //if new username is not null and not equal to the orginal name, check the duplication
-     if (new_username!= null && !new_username.equals(existingUser.getUsername())){
-         User existingUserWithNewUsername = userRepository.findByUsername(new_username);
-         if (existingUserWithNewUsername != null){
-             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                     String.format("The username '%s' is already in use. Please choose another name.",new_username));
-
-         }
-         existingUser.setUsername(new_username);
-     }
-     if (new_birthdate != null){
-         existingUser.setBirthday(new_birthdate);
-     }
-     if (new_avatar != null){
-         existingUser.setAvatar(new_avatar);
-     }
-     if (new_password != null){
-         existingUser.setPassword(new_password);
-     }
-     return userRepository.save(existingUser);
-
- }
-
-    public void logout(User userInput){
-        User user = userRepository.findByToken(userInput.getToken());
-        user.setStatus(UserStatus.OFFLINE);
-    }
-
-    public String userId2Username(Long userId){
-        Optional<User> user = getUserById(userId);
-        return user.get().getUsername();
-    }
-
-    public String userIdList2UsernameList(String userIdList) {
-        String[] userIds = userIdList.split(",");
-        List<String> usernames = new ArrayList<>();
-
-        for (String userId : userIds) {
-            Long id = Long.parseLong(userId.trim());
-            String username = userId2Username(id);
-            usernames.add(username);
-        }
-        return String.join(",", usernames);
-    }
 }
