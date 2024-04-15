@@ -106,7 +106,7 @@ Implement display user information, edit user username and password, save the ch
 
 Implement the logic to enter a room by roomID.
 
-Implement API routes for register page.
+Implement routes for register page.
 
 **Plan for this week**
 
