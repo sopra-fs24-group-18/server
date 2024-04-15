@@ -100,9 +100,12 @@ Implement APIs related to quetsion and answer.
 
 **Description**
 
-Designed the UI for register page
+Designed the UI for register page.
+
 Implement display user information, edit user username and password, save the changed user info.
-Implement the logic to enter a room by roomID
+
+Implement the logic to enter a room by roomID.
+
 Implement API routes for register page.
 
 **Plan for this week**
