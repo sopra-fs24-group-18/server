@@ -129,3 +129,21 @@ Implement tool purchase logic.
 **Plan for this week**
 
 Settlement page
+
+
+### Yunfan Zhou
+**Issues worked on**
+*    [#31](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/31)
+*    [#32](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/32)
+*    [#33](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/33)
+
+**Description**
+
+
+Designed ui for creation room page.
+Designed ui for for selecting the game mode and number of players.
+Implement Room Name Input Field, and room creation locig.
+
+**Plan for this week**
+
+Handle game start logic and design game room ui.
