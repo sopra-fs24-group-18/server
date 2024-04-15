@@ -141,7 +141,9 @@ Settlement page
 
 
 Designed ui for creation room page.
+
 Designed ui for for selecting the game mode and number of players.
+
 Implement Room Name Input Field, and room creation locig.
 
 **Plan for this week**
