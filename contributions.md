@@ -149,3 +149,26 @@ Implement Room Name Input Field, and room creation locig.
 **Plan for this week**
 
 Handle game start logic and design game room ui.
+
+
+### Zien Zeng
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/80
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/73
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/74
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/75
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/67
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/109
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/115
+
+**Description**
+
+Implement room and tool entity.
+
+Implement creat room, enter room and exit room endpoints.
+
+Implement get tool list, buy and use tools endpoints.
+
+**Plan for this week**
+
+Implement endpoints related to tool and answer.
