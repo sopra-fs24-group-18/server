@@ -91,3 +91,20 @@ Implement external API service to retrieve item image and price.
 **Plan for this week**
 
 Implement APIs related to quetsion and answer.
+
+### Lu Li
+**Issues worked on**
+*    [#27](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/27)
+*    [#29](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/29)
+*    [#30](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/30)
+
+**Description**
+
+Designed the UI for register page
+Implement display user information, edit user username and password, save the changed user info.
+Implement the logic to enter a room by roomID
+Implement API routes for register page.
+
+**Plan for this week**
+
+Game room page
