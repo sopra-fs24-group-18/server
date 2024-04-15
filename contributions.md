@@ -75,3 +75,19 @@ Designed the user interface for register page.
 **Plan for this week**
 
 Game Room design.
+
+## Week 2 (4.1-4.7)
+### Yanyang Gong
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/54
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/58
+
+
+**Description**
+
+Implement item and question entity.
+Implement external API service to retrieve item image and price.
+
+**Plan for this week**
+
+Implement APIs related to quetsion and answer.
