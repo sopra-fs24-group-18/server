@@ -100,7 +100,7 @@ Implement APIs related to quetsion and answer.
 
 **Description**
 
-Designed the UI for register page.
+Designed the UI for profile page.
 
 Implement display user information, edit user username and password, save the changed user info.
 
@@ -111,3 +111,21 @@ Implement routes for register page.
 **Plan for this week**
 
 Game room page
+
+### Bingjie Xue
+**Issues worked on**
+*    [#22](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/22)
+*    [#46](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/46)
+*    [#47](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/47)
+
+**Description**
+
+Add Repeat password and hide password function for register page.
+
+Designed the UI for tool shop page.
+
+Implement tool purchase logic.
+
+**Plan for this week**
+
+Settlement page
