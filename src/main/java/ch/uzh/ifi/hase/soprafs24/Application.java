@@ -9,46 +9,28 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.ebay.api.client.auth.oauth2.CredentialUtil;
-import java.io.FileInputStream;
-import java.io.IOException;
-
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
 @RestController
 @SpringBootApplication
 public class Application {
 
-    public static void main(String[] args) {
-       /* //seggested to do it here while it cannot be tested saparately
-        try {
-            CredentialUtil.load(new FileInputStream("src/main/resources/ebay-config.yaml"));
-        }
-        catch (IOException e) {
-            // Handle exception if the file cannot be loaded
-            e.printStackTrace();
-        }
-*/
-        SpringApplication.run(Application.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(Application.class, args);
+  }
 
-    @GetMapping(value = "/", produces = MediaType.TEXT_PLAIN_VALUE)
-    @ResponseStatus(HttpStatus.OK)
-    @ResponseBody
-    public String helloWorld() {
-        return "The application is running.";
-    }
+  @GetMapping(value = "/", produces = MediaType.TEXT_PLAIN_VALUE)
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public String helloWorld() {
+    return "The application is running.";
+  }
 
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**").allowedOrigins("*").allowedMethods("*");
-            }
-        };
-    }
-
+  @Bean
+  public WebMvcConfigurer corsConfigurer() {
+    return new WebMvcConfigurer() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedOrigins("*").allowedMethods("*");
+      }
+    };
+  }
 }
