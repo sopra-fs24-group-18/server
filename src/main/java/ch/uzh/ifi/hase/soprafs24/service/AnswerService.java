@@ -30,18 +30,18 @@ public class AnswerService {
   private final AnswerRepository answerRepository;
   private final QuestionRepository questionRepository;
   private final RoomRepository roomRepository;
-  private final UserService userService;
+  private final UserRepository userRepository;
 
   @Autowired
   public AnswerService(@Qualifier("answerRepository") AnswerRepository answerRepository, QuestionRepository questionRepository,
-                       RoomRepository roomRepository, UserService userService) {
+                       RoomRepository roomRepository, UserRepository userRepository) {
     this.answerRepository = answerRepository;
     this.questionRepository = questionRepository;
     this.roomRepository = roomRepository;
-    this.userService = userService;
+    this.userRepository = userRepository;
   }
 
-    public Long calculatePoint(Answer answer) {
+    public Long calculatePointGuessingMode(Answer answer) {
         answerRepository.save(answer);
         Optional<Question> question = questionRepository.findById(answer.getQuestionId());
         if(!question.isPresent()){
@@ -65,33 +65,36 @@ public class AnswerService {
             }
         }
         // all users have submitted the answers, calculate the rank and reward the points
-        Long point = calculateRankAndPoint(answer, playerIds, question.get());
+        Long point = calculateRankAndPoint(answer, playerIds, question.get().getAnswer());
         return point;
     }
 
-    private Long calculateRankAndPoint(Answer answer, String[] playerIds, Question question) {
+    private Long calculateRankAndPoint(Answer answer, String[] playerIds, Float realPrice) {
         List<Answer> answers = answerRepository.findByQuestionId(answer.getQuestionId());
-        Collections.sort(answers, (a1, a2) -> Double.compare(Math.abs(a1.getGuessedPrice() - question.getAnswer()),
-                Math.abs(a2.getGuessedPrice() - question.getAnswer())));
+        Collections.sort(answers, (a1, a2) -> Float.compare(Math.abs(a1.getGuessedPrice() - realPrice),
+                Math.abs(a2.getGuessedPrice() - realPrice)));
 
         Long userId = answer.getUserId();
-        Optional<User> optionalUser = userService.getUserById(userId);
-        if(!optionalUser.isPresent()){
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (!optionalUser.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user was not found!");
         }
         User user = optionalUser.get();
 
+        Long point = 0L;
         for (int i = 0; i < Math.min(3, playerIds.length); i++) {
             if (userId.equals(answers.get(i).getUserId())) {
                 if (i == 0) {
-                    return 100L;
+                    point = 100L;
                 } else if (i == 1) {
-                    return 70L;
+                    point = 70L;
                 } else if (i == 2) {
-                    return 40L;
+                    point = 40L;
                 }
             }
         }
-        return 20L;
+        user.setScore(user.getScore() + point);
+        userRepository.save(user);
+        return point;
     }
 }

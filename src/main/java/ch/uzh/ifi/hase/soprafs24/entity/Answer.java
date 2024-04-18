@@ -25,9 +25,6 @@ public class Answer implements Serializable {
     @Column
     private String chosenItemList;  // budget mode
 
-    @Column
-    private Long point;
-
     public Long getId() {
         return id;
     }

@@ -22,12 +22,12 @@ public class AnswerController {
     this.userRepository = userRepository;
   }
 
-  @GetMapping("/answers/guessMode")
+  @PostMapping("/answers/guessMode")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public Long calculatePoint(@RequestBody AnswerPostDTO answerPostDTO) {
+  public Long calculatePointGuessingMode(@RequestBody AnswerPostDTO answerPostDTO) {
       Answer answer = AnswerDTOMapper.INSTANCE.convertAnswerPostDTOtoEntity(answerPostDTO);
 
-      return answerService.calculatePoint(answer);
+      return answerService.calculatePointGuessingMode(answer);
   }
 }
