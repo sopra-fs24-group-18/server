@@ -1,10 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs24.entity.User;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.user.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.user.UserPostDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.user.UserPutDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.user.UserReducedGetDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.user.*;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -44,6 +41,12 @@ public interface UserDTOMapper {
   @Mapping(source = "birthday", target = "birthday")
   @Mapping(source = "avatar", target = "avatar")
   UserGetDTO convertEntityToUserGetDTO(User user);
+
+
+  @Mapping(source = "username", target = "username")
+  @Mapping(source = "score", target = "score")
+  @Mapping(target = "addScore", ignore = true)
+  UserPointsGetDTO convertEntityToUserPointsGetDTO(User user);
 
   @Mapping(source = "id", target = "id")
   @Mapping(source = "token", target = "token")
