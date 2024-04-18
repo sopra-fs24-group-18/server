@@ -35,6 +35,9 @@ public class Question implements Serializable {
     @Column(nullable = true)
     private String itemList;//BUDGET multiple items
 
+    @Column
+    private Long answer;
+
 
     public Long getId() {
         return id;
@@ -72,5 +75,11 @@ public class Question implements Serializable {
         this.itemList =itemList;
     }
 
+    public Long getAnswer() {
+        return answer;
+    }
 
+    public void setAnswer(Long answer) {
+        this.answer = answer;
+    }
 }
