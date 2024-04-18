@@ -1,46 +1,22 @@
-package ch.uzh.ifi.hase.soprafs24.entity;
+package ch.uzh.ifi.hase.soprafs24.rest.dto.question;
+
 import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-
-@Entity
-@Table(name = "QUESTION")
-public class Question implements Serializable {
-
-    @Id
-    @GeneratedValue
+public class QuestionGetDTO {
     private Long id;
-
-    @Column(nullable = false)
     private long roomId;
-
-    @Column(nullable = false)
     private GameMode gameMode;
-
-    @Column(nullable = true) //GUESSING single item
     private long itemId;
-
-    @Column(nullable = true)
     private String itemImage;
-
-    @Lob
-    @Column(nullable = true)
     private String itemList;//BUDGET multiple items
-
-    @Lob
-    @Column(nullable = true)
     private String itemImageList;//BUDGET multiple items
-
-    @Column(nullable = false)
     private int roundNumber;
-    @Column(nullable = true)
     private float budget; //for budget mode
-
-    @Column(nullable = true)
     private float answer; //item price for guessing mode
-
 
     public Long getId() {
         return id;
@@ -112,5 +88,4 @@ public class Question implements Serializable {
     public void setAnswer(float answer) {
         this.answer = answer;
     }
-
 }
