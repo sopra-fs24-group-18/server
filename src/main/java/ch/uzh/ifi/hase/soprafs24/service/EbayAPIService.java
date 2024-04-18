@@ -26,7 +26,7 @@ public class EbayAPIService {
     //load authentication infomation firstly
     public EbayAPIService() {
         try {
-            CredentialUtil.load(new FileInputStream("src/main/resources/ebay-config.yaml"));
+            CredentialUtil.load(new FileInputStream("src/main/resources/ebayconfig.yaml"));
         } catch (IOException e) {
             // Handle exception if the file cannot be loaded
             e.printStackTrace();
@@ -45,7 +45,7 @@ public class EbayAPIService {
             AccessToken accessToken = accessTokenOptional.get();
             String tokenContent = accessToken.getToken();
             tokenContent = tokenContent.substring(tokenContent.indexOf("token=")+1);//the former part is not needed in http header
-           // System.out.println("Content after token=: " + tokenContent);//for test
+            // System.out.println("Content after token=: " + tokenContent);//for test
             return tokenContent;
         };
         return null;
