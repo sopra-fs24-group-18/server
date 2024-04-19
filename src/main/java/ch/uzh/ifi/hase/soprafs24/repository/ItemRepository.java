@@ -11,5 +11,5 @@ import java.util.List;
 public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findAll();
 
-
+    List<Item> findAllByIdIn(List<Long> itemIds);
 }

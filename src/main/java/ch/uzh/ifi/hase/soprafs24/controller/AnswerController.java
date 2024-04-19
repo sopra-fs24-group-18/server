@@ -28,6 +28,15 @@ public class AnswerController {
   public Long calculatePointGuessingMode(@RequestBody AnswerPostDTO answerPostDTO) {
       Answer answer = AnswerDTOMapper.INSTANCE.convertAnswerPostDTOtoEntity(answerPostDTO);
 
-      return answerService.calculatePointGuessingMode(answer);
+      return answerService.calculatePointGuessMode(answer);
+  }
+
+  @PostMapping("/answers/budgetMode")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public Long calculatePointBudgetMode(@RequestBody AnswerPostDTO answerPostDTO) {
+      Answer answer = AnswerDTOMapper.INSTANCE.convertAnswerPostDTOtoEntity(answerPostDTO);
+
+      return answerService.calculatePointBudgetMode(answer);
   }
 }

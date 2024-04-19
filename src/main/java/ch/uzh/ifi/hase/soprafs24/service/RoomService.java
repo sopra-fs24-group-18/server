@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * User Service
@@ -30,11 +31,13 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public RoomService(@Qualifier("roomRepository") RoomRepository roomRepository, UserService userService) {
+    public RoomService(@Qualifier("roomRepository") RoomRepository roomRepository, UserService userService, UserRepository userRepository) {
         this.roomRepository = roomRepository;
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     public Room createRoom(Room newRoom) {
@@ -92,11 +95,7 @@ public class RoomService {
 
     public void exitRoom(Long roomId, Long userId) {
         userService.getUserById(userId);
-        Optional<Room> optinalRoom = roomRepository.findById(roomId);
-        if (!optinalRoom.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The room is not exist!");
-        }
-        Room room = optinalRoom.get();
+        Room room = findById(roomId);
 
         String playerIds = room.getPlayerIds();
         String[] ids = playerIds.split(",");
@@ -121,5 +120,24 @@ public class RoomService {
         }
         room.setPlayerIds(String.join(",", newPlayerList));
         roomRepository.save(room);
+    }
+
+    public List<User> calculateRank(Long roomId) {
+        Room room = findById(roomId);
+        String[] playerIds = room.getPlayerIds().split(",");
+        List<Long> playerIdList = Arrays.stream(playerIds)
+                .map(Long::valueOf)
+                .collect(Collectors.toList());
+
+        List<User> users = userRepository.findAllByIdInOrderByScoreDesc(Arrays.asList(playerIds));
+        return users;
+    }
+
+    private Room findById(Long roomId){
+        Optional<Room> optinalRoom = roomRepository.findById(roomId);
+        if (!optinalRoom.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The room is not exist!");
+        }
+        return optinalRoom.get();
     }
 }

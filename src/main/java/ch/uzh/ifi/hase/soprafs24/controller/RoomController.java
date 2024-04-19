@@ -1,14 +1,18 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Room;
+import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.room.RoomGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.room.RoomPostDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.user.UserPointsGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.RoomDTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.RoomService;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * User Controller
@@ -64,5 +68,13 @@ public class RoomController {
     public ResponseEntity<?> exitRoom(@PathVariable Long roomId, @PathVariable Long userId) {
         roomService.exitRoom(roomId, userId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/rooms/{roomId}/rank")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseBody
+    public List<UserPointsGetDTO> exitRoom(@PathVariable Long roomId) {
+        List<User> userList = roomService.calculateRank(roomId);
+        return null;
     }
 }
