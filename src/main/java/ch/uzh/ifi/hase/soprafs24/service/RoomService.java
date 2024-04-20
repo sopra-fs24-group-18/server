@@ -129,7 +129,7 @@ public class RoomService {
                 .map(Long::valueOf)
                 .collect(Collectors.toList());
 
-        List<User> users = userRepository.findAllByIdInOrderByScoreDesc(Arrays.asList(playerIds));
+        List<User> users = userRepository.findAllByIdInOrderByScoreDesc(playerIdList);
         return users;
     }
 

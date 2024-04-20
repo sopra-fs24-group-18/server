@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
+import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
 import ch.uzh.ifi.hase.soprafs24.entity.*;
 import ch.uzh.ifi.hase.soprafs24.repository.*;
 import org.slf4j.Logger;
@@ -8,9 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.annotation.Resource;
+import javax.persistence.PersistenceContext;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,6 +31,9 @@ public class AnswerService {
   private final UserRepository userRepository;
   private final ItemRepository itemRepository;
 
+    @Resource
+    private PlatformTransactionManager platformTransactionManager;
+
   @Autowired
   public AnswerService(@Qualifier("answerRepository") AnswerRepository answerRepository, QuestionRepository questionRepository,
                        RoomRepository roomRepository, UserRepository userRepository, ItemRepository itemRepository) {
@@ -36,33 +44,45 @@ public class AnswerService {
     this.itemRepository = itemRepository;
   }
 
-    public Long calculatePointGuessMode(Answer answer) {
-        answerRepository.save(answer);
-        Optional<Question> question = questionRepository.findById(answer.getQuestionId());
-        if(!question.isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The question was not found!");
-        }
+  public void saveAnswer(Answer answer){
+      answerRepository.save(answer);
+      answerRepository.flush();
+  }
 
-        Optional<Room> room = roomRepository.findById(question.get().getRoomId());
-        if (!room.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The room was not found!");
-        }
+  public Long calculatePoints(Answer answer) {
+      Optional<Question> optionalQuestion = questionRepository.findById(answer.getQuestionId());
+      if(!optionalQuestion.isPresent()){
+          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The question was not found!");
+      }
+      Question question = optionalQuestion.get();
 
-        Long playerAmount = room.get().getPlayerAmount();
-        String[] playerIds = room.get().getPlayerIds().split(",");
+      Optional<Room> room = roomRepository.findById(question.getRoomId());
+      if (!room.isPresent()) {
+          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The room was not found!");
+      }
 
-        // check if all users have submitted the answers
-        while (playerAmount != answerRepository.countByQuestionId(answer.getQuestionId())) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        // all users have submitted the answers, calculate the rank and reward the points
-        Long point = rankGuessMode(answer, playerIds, question.get().getAnswer());
-        return point;
-    }
+      String[] playerIds = room.get().getPlayerIds().split(",");
+      Long playerAmount = Long.valueOf(playerIds.length);
+
+      // check if all users have submitted the answers
+      while (!playerAmount.equals(answerRepository.countByQuestionId(answer.getQuestionId()))) {
+          try {
+              Thread.sleep(1000);
+          } catch (InterruptedException e) {
+              e.printStackTrace();
+          }
+      }
+      Long point = 0L;
+      // all users have submitted the answers, calculate the rank and reward the points
+      if(question.getGameMode().equals(GameMode.GUESSING)){
+          point = rankGuessMode(answer, playerIds, question.getAnswer());
+      }
+      else if(question.getGameMode().equals(GameMode.BUDGET)){
+          point = rankBudgetMode(answer, playerIds, question.getBudget());
+      }
+
+      return point;
+  }
 
     private Long rankGuessMode(Answer answer, String[] playerIds, Float realPrice) {
         List<Answer> answers = answerRepository.findByQuestionId(answer.getQuestionId());
@@ -72,7 +92,7 @@ public class AnswerService {
         Long userId = answer.getUserId();
         // Find the user's rank in the sorted list
         int rank = -1;
-        for (int i = 1; i <= Math.min(3, playerIds.length); i++) {
+        for (int i = 0; i < Math.min(3, playerIds.length); i++) {
             if (userId.equals(answers.get(i).getUserId())) {
                 rank = i;
                 break;
@@ -80,40 +100,12 @@ public class AnswerService {
         }
 
         // Calculate the points based on the user's rank
-        Long points = calculatePoints(rank);
+        Long points = reward(rank);
 
         // Update the user's score
         updateUserScore(userId, points);
 
         return points;
-    }
-
-    public Long calculatePointBudgetMode(Answer answer) {
-        answerRepository.save(answer);
-        Optional<Question> question = questionRepository.findById(answer.getQuestionId());
-        if(!question.isPresent()){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The question was not found!");
-        }
-
-        Optional<Room> room = roomRepository.findById(question.get().getRoomId());
-        if (!room.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The room was not found!");
-        }
-
-        Long playerAmount = room.get().getPlayerAmount();
-        String[] playerIds = room.get().getPlayerIds().split(",");
-
-        // check if all users have submitted the answers
-        while (playerAmount != answerRepository.countByQuestionId(answer.getQuestionId())) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        // all users have submitted the answers, calculate the rank and reward the points
-        Long point = rankBudgetMode(answer, playerIds, question.get().getBudget());
-        return point;
     }
 
     private Long rankBudgetMode(Answer answer, String[] playerIds, Float budget) {
@@ -138,13 +130,13 @@ public class AnswerService {
 
         // Sort the map by sum of prices in ascending order
         List<Map.Entry<Long, Float>> sortedEntries = sumPriceMap.entrySet().stream()
-                .sorted(Map.Entry.comparingByValue())
+                .sorted(Map.Entry.<Long, Float>comparingByValue().reversed())
                 .collect(Collectors.toList());
 
         Long userId = answer.getUserId();
         // Find the user's rank in the sorted list
         int rank = -1;
-        for (int i = 1; i <= sortedEntries.size(); i++) {
+        for (int i = 0; i < sortedEntries.size(); i++) {
             if (sortedEntries.get(i).getKey().equals(userId)) {
                 rank = i;
                 break;
@@ -152,7 +144,7 @@ public class AnswerService {
         }
 
         // Calculate the points based on the user's rank
-        Long points = calculatePoints(rank);
+        Long points = reward(rank);
 
         // Update the user's score
         updateUserScore(userId, points);
@@ -160,12 +152,12 @@ public class AnswerService {
         return points;
     }
 
-    private Long calculatePoints(int rank) {
-        if (rank == 1) {
+    private Long reward(int rank) {
+        if (rank == 0) {
             return 100L;
-        } else if (rank == 2) {
+        } else if (rank == 1) {
             return 70L;
-        } else if (rank == 3) {
+        } else if (rank == 2) {
             return 40L;
         } else {
             return 0L;

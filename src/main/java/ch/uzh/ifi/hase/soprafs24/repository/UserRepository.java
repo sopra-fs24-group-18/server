@@ -15,5 +15,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   User findByToken(String token);
 
-  List<User> findAllByIdInOrderByScoreDesc(List<String> list);
+  List<User> findAllByIdInOrderByScoreDesc(List<Long> list);
 }

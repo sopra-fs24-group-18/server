@@ -45,7 +45,6 @@ public interface UserDTOMapper {
 
   @Mapping(source = "username", target = "username")
   @Mapping(source = "score", target = "score")
-  @Mapping(target = "addScore", ignore = true)
   UserPointsGetDTO convertEntityToUserPointsGetDTO(User user);
 
   @Mapping(source = "id", target = "id")

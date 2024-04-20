@@ -27,8 +27,8 @@ public class AnswerController {
   @ResponseBody
   public Long calculatePointGuessingMode(@RequestBody AnswerPostDTO answerPostDTO) {
       Answer answer = AnswerDTOMapper.INSTANCE.convertAnswerPostDTOtoEntity(answerPostDTO);
-
-      return answerService.calculatePointGuessMode(answer);
+      answerService.saveAnswer(answer);
+      return answerService.calculatePoints(answer);
   }
 
   @PostMapping("/answers/budgetMode")
@@ -36,7 +36,7 @@ public class AnswerController {
   @ResponseBody
   public Long calculatePointBudgetMode(@RequestBody AnswerPostDTO answerPostDTO) {
       Answer answer = AnswerDTOMapper.INSTANCE.convertAnswerPostDTOtoEntity(answerPostDTO);
-
-      return answerService.calculatePointBudgetMode(answer);
+      answerService.saveAnswer(answer);
+      return answerService.calculatePoints(answer);
   }
 }
