@@ -38,7 +38,7 @@ public class User implements Serializable {
   @Column(nullable = false)
   private UserStatus status;
 
-  @Column(name = "creation_date")
+  @Column
   private LocalDate creationDate;
 
   @Column
@@ -50,10 +50,10 @@ public class User implements Serializable {
   @Column
   private String toolStatus;
 
-  @Column(name = "tool_list")
+  @Column
   private String toolList;
 
-  @Column(name = "avatar")
+  @Column
   private String avatar;
 
   public Long getId() {

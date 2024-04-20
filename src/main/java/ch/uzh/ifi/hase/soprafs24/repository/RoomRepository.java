@@ -12,4 +12,6 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
     Room findByRoomCode(String roomCode);
 
     void deleteById(Long id);
+
+    Optional<Room> findByPlayerIdsContaining(String userId);
 }

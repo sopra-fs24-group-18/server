@@ -173,6 +173,8 @@ public class AnswerService {
 
         Long oldScore = user.getScore();
         user.setScore(oldScore + points);
+        user.setToolList(null);
+        user.setToolStatus(null);
         userRepository.save(user);
     }
 }

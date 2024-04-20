@@ -76,7 +76,7 @@ public class RoomController {
     @GetMapping("/rooms/{roomId}/rank")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<UserPointsGetDTO> exitRoom(@PathVariable Long roomId) {
+    public List<UserPointsGetDTO> retreiveRank(@PathVariable Long roomId) {
         List<User> users = roomService.calculateRank(roomId);
         List<UserPointsGetDTO> userPointsGetDTOS = new ArrayList<>();
 

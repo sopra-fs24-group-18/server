@@ -41,4 +41,11 @@ public class ToolController {
       toolService.useTool(toolId, userId);
       return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Buy and use the tool successfully!");
   }
+
+    @GetMapping("/tools/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<String> getUserTools(@PathVariable Long userId) {
+        return toolService.getUserTools(userId);
+    }
 }
