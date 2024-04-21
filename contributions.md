@@ -172,3 +172,20 @@ Implement get tool list, buy and use tools endpoints.
 **Plan for this week**
 
 Implement endpoints related to tool and answer.
+
+## Week 3 (4.15-4.21)
+### Yanyang Gong
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/54
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/58
+
+
+**Description**
+
+Implement endpoints to create questions for Guessing Mode, create questions for Budget Mode, and pass question before each round.
+Implement related tests.
+
+**Plan for this week**
+
+Complete tests and write report.
+
