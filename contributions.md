@@ -231,3 +231,18 @@ Implement logic for start game, and request question per round to back-end.
 
 Try to connect the front and back end, test and fix logic.
 
+### Bingjie Xue
+**Issues worked on**
+*    [#45](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/45)
+*    [#48](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/48)
+
+
+**Description**
+
+user point fetch from server-side
+
+
+**Plan for this week**
+
+Try to connect the front and back end, test and fix logic.
+
