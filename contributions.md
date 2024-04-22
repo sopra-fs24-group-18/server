@@ -221,8 +221,11 @@ Implement the multi-player game mode.
 **Description**
 
 Designed ui for guessing mode, to display a item picture.
+
 Designed ui for user to select their guessing price.
+
 Implement logic for start game, and request question per round to back-end.
+
 
 **Plan for this week**
 
