@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs24.rest.dto.user;
 
 import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 
+import javax.persistence.Column;
 import java.time.LocalDate;
 
 public class UserGetDTO {
@@ -16,7 +17,17 @@ public class UserGetDTO {
 
   private String avatar;
 
-  public Long getId() {
+
+  private Long score;
+
+
+  private String toolStatus;
+
+
+  private String toolList;
+
+
+    public Long getId() {
     return id;
   }
 
@@ -70,5 +81,28 @@ public class UserGetDTO {
 
   public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+    public Long getScore() {
+        return score;
+    }
+
+    public void setScore(Long score) {
+        this.score = score;
+    }
+
+    public String getToolStatus() {
+        return toolStatus;
+    }
+
+    public void setToolStatus(String toolStatus) {
+        this.toolStatus = toolStatus;
+    }
+
+    public String getToolList() {
+        return toolList;
+    }
+
+    public void setToolList(String toolList) {
+        this.toolList = toolList;
     }
 }
