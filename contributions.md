@@ -208,4 +208,5 @@ Implement routes for tools.
 **Plan for this week**
 
 Intergrate tools part into the game page.
+
 Implement the multi-player game mode.
