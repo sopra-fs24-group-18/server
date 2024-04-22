@@ -210,3 +210,21 @@ Implement routes for tools.
 Intergrate tools part into the game page.
 
 Implement the multi-player game mode.
+
+### Yunfan Zhou
+**Issues worked on**
+*    [#53](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/53)
+*    [#11](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/11)
+*    [#35](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/35)
+
+
+**Description**
+
+Designed ui for guessing mode, to display a item picture.
+Designed ui for user to select their guessing price.
+Implement logic for start game, and request question per round to back-end.
+
+**Plan for this week**
+
+Try to connect the front and back end, test and fix logic.
+
