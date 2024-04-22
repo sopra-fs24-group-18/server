@@ -97,6 +97,7 @@ Implement APIs related to quetsion and answer.
 *    [#27](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/27)
 *    [#29](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/29)
 *    [#30](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/30)
+*    [#36](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/36)
 
 **Description**
 
@@ -189,3 +190,22 @@ Implement related tests.
 
 Complete tests and write report.
 
+### Lu Li
+**Issues worked on**
+*    [#66](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/66)
+*    [#67](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/67)
+
+**Description**
+
+Designed the UI for single game mode tools part.
+
+Implement the logic to display tools the current player bring and use in this round.
+
+Implement the logic of tools using effect.
+
+Implement routes for tools.
+
+**Plan for this week**
+
+Intergrate tools part into the game page.
+Implement the multi-player game mode.
