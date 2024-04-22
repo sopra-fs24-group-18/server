@@ -79,8 +79,8 @@ Game Room design.
 ## Week 2 (4.1-4.7)
 ### Yanyang Gong
 **Issues worked on**
-*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/54
-*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/58
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/132
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/133
 
 
 **Description**
