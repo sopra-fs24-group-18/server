@@ -24,11 +24,26 @@ import java.util.Optional;
 public class EbayAPIService {
 
     //load authentication infomation firstly
+    /*
     public EbayAPIService() {
         try {
             CredentialUtil.load(new FileInputStream("src/main/resources/ebayconfig.yaml"));
         } catch (IOException e) {
             // Handle exception if the file cannot be loaded
+            e.printStackTrace();
+        }
+    }
+
+     */
+    public EbayAPIService() {
+        loadCredentials(); // Load credentials when EbayAPIService is instantiated
+    }
+
+    // Method responsible for loading credentials
+    protected void loadCredentials() {
+        try {
+            CredentialUtil.load(new FileInputStream("src/main/resources/ebayconfig.yaml"));
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

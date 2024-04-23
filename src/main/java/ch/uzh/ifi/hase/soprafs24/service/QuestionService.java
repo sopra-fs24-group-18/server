@@ -222,8 +222,6 @@ public class QuestionService {
 
         // Check if the required amount is already met
         if (actualAmount.equals(requireAmount)) {
-            System.out.println("Room Game Mode: " + room.getGameMode());
-            System.out.println("Expected Game Mode: " + GameMode.GUESSING);
             //only execute the following part once for each room
             if (room.getGameMode() == GameMode.GUESSING && Objects.equals(userId, ownerId)) {
                 createGuessingQuestions(roomId); //create questions

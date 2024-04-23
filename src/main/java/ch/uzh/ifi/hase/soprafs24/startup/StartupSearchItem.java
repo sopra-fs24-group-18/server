@@ -14,6 +14,6 @@ public class StartupSearchItem implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        ebayController.searchItems("(laptop, shoes, gift, bicycle, cookware)", null); // Call searchItems without parameters
+        ebayController.searchItems("(watch, shoes, art, bicycle, bag, jewelry)", null); // Call searchItems without parameters
     }
 }

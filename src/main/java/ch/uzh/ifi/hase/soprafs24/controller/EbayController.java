@@ -12,9 +12,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -51,7 +49,7 @@ public class EbayController {
         }
 
         apiUrl.append("limit=200").append("&"); // Limit the number of results to 500 for each call
-        apiUrl.append("filter=price:[1..1000],priceCurrency:CHF");//Limit the upper bound
+        apiUrl.append("filter=price:[100..1000],priceCurrency:CHF");//Limit the price range for the client appearance
         try {
             // Prepare headers
             HttpHeaders headers = new HttpHeaders();

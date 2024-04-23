@@ -5,10 +5,11 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "ITEM")
+@SequenceGenerator(name = "item_seq", sequenceName = "item_sequence", allocationSize = 1)
 public class Item implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "item_seq")
     private Long id;
 
     @Column(nullable = false)

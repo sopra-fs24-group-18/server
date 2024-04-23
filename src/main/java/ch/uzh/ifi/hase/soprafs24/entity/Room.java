@@ -17,10 +17,11 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "ROOM")
+@SequenceGenerator(name = "room_seq", sequenceName = "room_sequence", allocationSize = 1)
 public class Room implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "room_seq")
     private Long id;
 
     @Column(nullable = false, unique = true)

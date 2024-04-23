@@ -1,25 +1,31 @@
-/*package ch.uzh.ifi.hase.soprafs24.controller;
+package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
 import ch.uzh.ifi.hase.soprafs24.entity.Question;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.question.QuestionGetDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.mapper.QuestionDTOMapper;
+import ch.uzh.ifi.hase.soprafs24.entity.Room;
+import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.service.QuestionService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.web.server.ResponseStatusException;
 
+
+
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(QuestionController.class)
 public class QuestionControllerTest {
@@ -30,124 +36,95 @@ public class QuestionControllerTest {
     @MockBean
     private QuestionService questionService;
 
+
     @Test
-    public void getQuestion_ValidInput_ReturnQuestion() throws Exception {
-        // given
+    public void getReadyForGameSuccess() throws Exception {
+        // Mocking room and user data
+        Room room = new Room();
+        room.setId(1L);
+        room.setOwnerId(1L);
+        room.setPlayerAmount(4L);
+        room.setGameMode(GameMode.GUESSING);
+        room.setPlayerIds("1,2,3,4");
+
+        User user = new User();
+        user.setId(1L);
+        // Mocking service behavior
+        given(questionService.getReady(Mockito.any(),Mockito.any())).willReturn( "The game is ready!");
+
+        // Performing the request
+        mockMvc.perform(post("/games/1/1/getReady")
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isNoContent());
+
+        // Verifying that the service methods were called
+        verify(questionService).getReady(1L, 1L);
+    }
+
+    @Test
+    public void getReadyForGameInvalidRoomId() throws Exception {
+
+        // Mocking service behavior
+        // Mocking service behavior to simulate room not found
+        given(questionService.getReady(any(Long.class), any(Long.class)))
+                .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "The room is not exist!"));
+
+        // Performing the request
+        mockMvc.perform(post("/games/1/1/getReady")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        // Verifying that the service methods were called
+        verify(questionService).getReady(1L, 1L);
+    }
+
+    @Test
+    public void getQuestionByUserIdSuccess() throws Exception {
+        // Mocking room and user data
+        Room room = new Room();
         Question question = new Question();
         question.setId(1L);
-        question.setRoomId(123L);
+        question.setRoomId(1L);
         question.setGameMode(GameMode.GUESSING);
+        question.setItemId(1L);
+        question.setItemImage("imageurl");
         question.setRoundNumber(1);
-        question.setItemId(456L);
-        question.setItemImage("image1.jpg");
-        question.setAnswer(100f);
+        question.setLeftRange(0);
+        question.setRightRange(1);
 
-        given(questionService.getQuestionsByRoomRound(anyLong(), anyInt())).willReturn(question);
+        // Mocking service behavior
+        given(questionService.getQuestionsByRoomRoundandUserId(any(Long.class), anyInt(), any(Long.class))).willReturn(question);
 
-        // when
-        MockHttpServletRequestBuilder getRequest = get("/games/123/1")
-                .contentType(MediaType.APPLICATION_JSON);
+        // Performing the request
+        mockMvc.perform(get("/games/1/1/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                        .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id",is(question.getId().intValue())))
+                .andExpect(jsonPath("$.roomId", is(question.getRoomId().intValue())))
+                .andExpect(jsonPath("$.gameMode", is(question.getGameMode().toString())))
+                .andExpect(jsonPath("$.itemId", is(question.getItemId().intValue())))
+                .andExpect(jsonPath("$.itemImage", is(question.getItemImage())))
+                .andExpect(jsonPath("$.roundNumber", is(question.getRoundNumber())))
+                .andExpect(jsonPath("$.leftRange", is(question.getLeftRange())))
+                .andExpect(jsonPath("$.rightRange", is(question.getRightRange())));
 
-        // then
-        mockMvc.perform(getRequest)
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id").value(question.getId().intValue()))
-                .andExpect(jsonPath("$.roomId").value(question.getRoomId().intValue()))
-                .andExpect(jsonPath("$.gameMode").value(question.getGameMode().toString()))
-                .andExpect(jsonPath("$.roundNumber").value(question.getRoundNumber()))
-                .andExpect(jsonPath("$.itemId").value(question.getItemId().intValue()))
-                .andExpect(jsonPath("$.itemImage").value(question.getItemImage()))
-                .andExpect(jsonPath("$.answer").value(question.getAnswer()));
+        // Verifying that the service methods were called
+        verify(questionService).getQuestionsByRoomRoundandUserId(1L, 1,1L);
     }
 
     @Test
-    public void getQuestion_QuestionNotFound_ReturnNotFound() throws Exception {
-        // given
-        given(questionService.getQuestionsByRoomRound(anyLong(), anyInt())).willReturn(null);
+    public void getQuestionByUserIdInvalidQuestion() throws Exception {
+        // Mocking service behavior to simulate question not found
+        given(questionService.getQuestionsByRoomRoundandUserId(any(Long.class), anyInt(), any(Long.class)))
+                .willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+        // Performing the request
+        mockMvc.perform(get("/games/1/1/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                         .andExpect(status().isNotFound());
 
-        // when
-        MockHttpServletRequestBuilder getRequest = get("/games/123/1")
-                .contentType(MediaType.APPLICATION_JSON);
 
-        // then
-        mockMvc.perform(getRequest)
-                .andExpect(status().isNotFound());
+        // Verifying that the service methods were called
+        verify(questionService).getQuestionsByRoomRoundandUserId(1L, 1,1L);
     }
 
-    @Test
-    public void getQuestion_InternalServerError_ReturnInternalServerError() throws Exception {
-        // given
-        given(questionService.getQuestionsByRoomRound(anyLong(), anyInt())).willThrow(RuntimeException.class);
-
-        // when
-        MockHttpServletRequestBuilder getRequest = get("/games/123/1")
-                .contentType(MediaType.APPLICATION_JSON);
-
-        // then
-        mockMvc.perform(getRequest)
-                .andExpect(status().isInternalServerError());
-    }
-    @Test
-    public void startGuessingGame_Success() throws Exception {
-        // given
-        Long roomId = 123L;
-        //here doesn't return anything, so cannot use given
-        Mockito.doNothing().when(questionService).createGuessingQuestions(roomId);
-
-        // when
-        MockHttpServletRequestBuilder postRequest = post("/games/" + roomId + "/guessMode/start")
-                .contentType(MediaType.APPLICATION_JSON);
-
-        // then
-        mockMvc.perform(postRequest)
-                .andExpect(status().isNoContent());
-    }
-
-    @Test
-    public void startGuessingGame_Failure() throws Exception {
-        // given
-        Long roomId = 123L;
-        Mockito.doThrow(new RuntimeException("Some error")).when(questionService).createGuessingQuestions(roomId);
-
-        // when
-        MockHttpServletRequestBuilder postRequest = post("/games/" + roomId + "/guessMode/start")
-                .contentType(MediaType.APPLICATION_JSON);
-
-        // then
-        mockMvc.perform(postRequest)
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("Game could not start or questions could not be generated: Some error"));
-    }
-
-    @Test
-    public void startBudgetGame_Success() throws Exception {
-        // given
-        Long roomId = 123L;
-        Mockito.doNothing().when(questionService).createBudgetQuestions(roomId);
-
-        // when
-        MockHttpServletRequestBuilder postRequest = post("/games/" + roomId + "/budgetMode/start")
-                .contentType(MediaType.APPLICATION_JSON);
-
-        // then
-        mockMvc.perform(postRequest)
-                .andExpect(status().isNoContent());
-    }
-
-    @Test
-    public void startBudgetGame_Failure() throws Exception {
-        // given
-        Long roomId = 123L;
-        Mockito.doThrow(new RuntimeException("Some error")).when(questionService).createBudgetQuestions(roomId);
-
-        // when
-        MockHttpServletRequestBuilder postRequest = post("/games/" + roomId + "/budgetMode/start")
-                .contentType(MediaType.APPLICATION_JSON);
-
-        // then
-        mockMvc.perform(postRequest)
-                .andExpect(status().isBadRequest())
-                .andExpect(content().string("Game could not start or questions could not be generated: Some error"));
-    }
-}*/
+}

@@ -14,12 +14,11 @@ import java.util.List;
 @RequestMapping("/games")
 public class QuestionController {
     private final QuestionService questionService;
-    private final RoomService roomService;
 
 
-    public QuestionController(QuestionService questionService, RoomService roomService) {
+
+    public QuestionController(QuestionService questionService) {
         this.questionService = questionService;
-        this.roomService = roomService;
     }
 
     @PostMapping("/{roomId}/{userId}/getReady")
@@ -44,7 +43,7 @@ public class QuestionController {
             return ResponseEntity.badRequest().body("Game could not start or questions could not be generated: " + e.getMessage());
         }
     }
-*/
+
     @GetMapping("/{roomId}/{roundNumber}")
     public ResponseEntity<?> getQuestionById(@PathVariable Long roomId, @PathVariable int roundNumber) {
         try {
@@ -62,7 +61,7 @@ public class QuestionController {
         }
 
     }
-
+*/
     @GetMapping("/{roomId}/{roundNumber}/{userId}")
     public ResponseEntity<?> getQuestionByUserId(@PathVariable Long roomId, @PathVariable int roundNumber,@PathVariable Long userId) {
         try {
@@ -76,7 +75,7 @@ public class QuestionController {
             }
         }
         catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: " + e.getMessage());
         }
 
     }

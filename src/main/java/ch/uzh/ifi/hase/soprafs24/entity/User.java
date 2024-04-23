@@ -18,12 +18,13 @@ import java.time.LocalDate;
  */
 @Entity
 @Table(name = "USER")
+@SequenceGenerator(name = "user_seq", sequenceName = "user_sequence", allocationSize = 1)
 public class User implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
   private Long id;
 
   @Column(nullable = false)

@@ -24,6 +24,7 @@ public class QuestionDTOMapperTest {
         question.setItemImageList("image1.jpg,image2.jpg");
         question.setLeftRange(0);
         question.setRightRange(100);
+        //using default value of blur
 
         // Convert entity to DTO using the mapper
         QuestionGetDTO questionGetDTO = QuestionDTOMapper.INSTANCE.convertEntitytoQuestionGetDTO(question);
