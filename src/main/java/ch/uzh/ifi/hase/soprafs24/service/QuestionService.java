@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import java.util.concurrent.TimeUnit;
 
 import java.util.*;
 
@@ -37,7 +38,7 @@ public class QuestionService {
     private final RoomService roomService;
 
     @Autowired
-    public QuestionService(QuestionRepository questionRepository, ItemRepository itemRepository,ToolService toolService,RoomService roomService) {
+    public QuestionService(QuestionRepository questionRepository, ItemRepository itemRepository, ToolService toolService, RoomService roomService) {
         this.questionRepository = questionRepository;
         this.itemRepository = itemRepository;
         this.toolService = toolService;
@@ -49,7 +50,10 @@ public class QuestionService {
     }
 
 
-    public void createGuessingQuestions(Long roomId){
+    public void createGuessingQuestions(Long roomId) {
+        // make sure the room exist
+        Room room = roomService.findById(roomId);
+
         // Retrieve all items from the database
         List<Item> allItems = getAllItems();
         // Shuffle the list of items to randomize the order
@@ -72,8 +76,8 @@ public class QuestionService {
             double maxScale = 0.2 + Math.random() * 0.2;
             double minScale = 0.2 + Math.random() * 0.2;
             float selectedItemPrice = selectedItem.getPrice();
-            int leftRange = (int) Math.floor((1-minScale)*selectedItemPrice);
-            int rightRange = (int) Math.ceil((1+maxScale)*selectedItemPrice);
+            int leftRange = (int) Math.floor((1 - minScale) * selectedItemPrice);
+            int rightRange = (int) Math.ceil((1 + maxScale) * selectedItemPrice);
 
             // Create a Question object for the current round
             Question newQuestion = new Question();
@@ -92,6 +96,8 @@ public class QuestionService {
     }
 
     public void createBudgetQuestions(Long roomId) {
+        // make sure the room exist
+        Room room = roomService.findById(roomId);
         // Retrieve all items from the database (can be optimized later)
         List<Item> allItems = getAllItems();
         // Shuffle the list of items to randomize the order
@@ -110,7 +116,7 @@ public class QuestionService {
             List<Item> selectedItems = new ArrayList<>();
 
             // Select a random subset of items from the remaining ones
-            for (int i = round * numItems -9; i < round * numItems; i++) {
+            for (int i = round * numItems - 9; i < round * numItems; i++) {
                 Item selectedItem = allItems.get(i);
                 selectedItems.add(selectedItem);
             }
@@ -125,7 +131,7 @@ public class QuestionService {
                 float price = selectedItems.get(i).getPrice();
                 budget += price;
             }
-            budget = (float)Math.ceil(budget);
+            budget = (float) Math.ceil(budget);
 
             // Create a comma-separated string containing item IDs for the question
             StringBuilder itemList = new StringBuilder();
@@ -150,12 +156,13 @@ public class QuestionService {
             questionRepository.save(newQuestion);
         }
     }
-    public Question getQuestionsByRoomRound(Long roomId,int roundNumber) {
+
+    public Question getQuestionsByRoomRound(Long roomId, int roundNumber) {
         return questionRepository.findAllByRoomIdAndRoundNumber(roomId, roundNumber);
     }
 
 
-    public Question getQuestionsByRoomRoundandUserId(Long roomId,int roundNumber,Long userId) {
+    public Question getQuestionsByRoomRoundandUserId(Long roomId, int roundNumber, Long userId) {
         Question originQuestion = questionRepository.findAllByRoomIdAndRoundNumber(roomId, roundNumber);
 
         // Create a new instance of Question
@@ -193,8 +200,8 @@ public class QuestionService {
         float originalPrice = originQuestion.getAnswer();
         if (hasHintTool) {
             // Adjust price range
-            int newLeftRange = (int) Math.floor(originalPrice * (1-minScale));
-            int newRightRange = (int) Math.ceil(originalPrice * (1+maxScale));
+            int newLeftRange = (int) Math.floor(originalPrice * (1 - minScale));
+            int newRightRange = (int) Math.ceil(originalPrice * (1 + maxScale));
             modifiedQuestion.setLeftRange(newLeftRange);
             modifiedQuestion.setRightRange(newRightRange);
         }
@@ -204,5 +211,42 @@ public class QuestionService {
         }
 
         return modifiedQuestion;
+    }
+
+    public String getReady(Long roomId, Long userId) {
+        Room room = roomService.findById(roomId);
+        Long requireAmount = room.getPlayerAmount();
+        String[] playerIds = room.getPlayerIds().split(",");
+        Long actualAmount = Long.valueOf(playerIds.length);
+        Long ownerId = room.getOwnerId();
+
+        // Check if the required amount is already met
+        if (actualAmount.equals(requireAmount)) {
+            System.out.println("Room Game Mode: " + room.getGameMode());
+            System.out.println("Expected Game Mode: " + GameMode.GUESSING);
+            //only execute the following part once for each room
+            if (room.getGameMode() == GameMode.GUESSING && Objects.equals(userId, ownerId)) {
+                createGuessingQuestions(roomId); //create questions
+                roomService.resetPlayerScore(roomId); //reset player's score as 100
+            }
+           else if (room.getGameMode() == GameMode.BUDGET && Objects.equals(userId, ownerId)) {
+            createBudgetQuestions(roomId);
+            roomService.resetPlayerScore(roomId);
+        }
+        // Return a message indicating that the game is ready
+        return "The game is ready!";
+     } else {
+        // If not met, wait for the condition to be satisfied
+        try {
+            // Wait for a certain period and then recheck the condition
+            TimeUnit.SECONDS.sleep(1); // Wait for 1 second
+            return getReady(roomId, userId); // Recursive call to recheck the condition
+        } catch (InterruptedException e) {
+            // Handle interruption
+            log.error("Thread interrupted while waiting for players to join.", e);
+            Thread.currentThread().interrupt();
+            return "An error occurred while waiting for players to join.";
+          }
+        }
     }
 }

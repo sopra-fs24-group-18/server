@@ -22,18 +22,17 @@ public class QuestionController {
         this.roomService = roomService;
     }
 
-    @PostMapping("/{roomId}/guessMode/start")
-    public ResponseEntity<?> startGuessingGame(@PathVariable Long roomId) {
+    @PostMapping("/{roomId}/{userId}/getReady")
+    public ResponseEntity<?> getReadyForGame(@PathVariable Long roomId,@PathVariable Long userId) {
         try {
-            questionService.createGuessingQuestions(roomId);
-            roomService.resetPlayerScore(roomId);
+            questionService.getReady(roomId,userId);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body("Game could not start or questions could not be generated: " + e.getMessage());
+            return ResponseEntity.badRequest().body("Game could not start correctly: " + e.getMessage());
         }
     }
-
+/*
     @PostMapping("/{roomId}/budgetMode/start")
     public ResponseEntity<?> startBudgetGame(@PathVariable Long roomId) {
         try {
@@ -45,7 +44,7 @@ public class QuestionController {
             return ResponseEntity.badRequest().body("Game could not start or questions could not be generated: " + e.getMessage());
         }
     }
-
+*/
     @GetMapping("/{roomId}/{roundNumber}")
     public ResponseEntity<?> getQuestionById(@PathVariable Long roomId, @PathVariable int roundNumber) {
         try {

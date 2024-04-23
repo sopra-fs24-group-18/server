@@ -133,7 +133,7 @@ public class RoomService {
         return users;
     }
 
-    private Room findById(Long roomId){
+    public Room findById(Long roomId){
         Optional<Room> optinalRoom = roomRepository.findById(roomId);
         if (!optinalRoom.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The room is not exist!");
