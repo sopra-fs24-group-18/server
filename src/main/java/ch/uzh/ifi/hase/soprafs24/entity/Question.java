@@ -41,6 +41,16 @@ public class Question implements Serializable {
     @Column(nullable = true)
     private float answer; //item price for guessing mode
 
+    @Column(nullable = true)
+    private int leftRange; //item range for guessing mode
+
+    @Column(nullable = true)
+    private int rightRange; //item range for guessing mode
+
+    @Column(nullable = false)
+    private boolean blur = false; //picture effect, default as false
+
+
 
     public Long getId() {
         return id;
@@ -111,6 +121,27 @@ public class Question implements Serializable {
     }
     public void setAnswer(float answer) {
         this.answer = answer;
+    }
+
+    public int getLeftRange() {
+        return leftRange;
+    }
+    public void setLeftRange(int leftRange) {
+        this.leftRange = leftRange;
+    }
+    public int getRightRange() {
+        return rightRange;
+    }
+    public void setRightRange(int rightRange) {
+        this.rightRange = rightRange;
+    }
+
+
+    public boolean getBlur() {
+        return blur;
+    }
+    public void setBlur(boolean blur) {
+        this.blur = blur;
     }
 
 }

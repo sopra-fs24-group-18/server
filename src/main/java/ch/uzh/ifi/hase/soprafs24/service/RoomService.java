@@ -140,4 +140,27 @@ public class RoomService {
         }
         return optinalRoom.get();
     }
+
+    //retrive all users in the room
+    public List<User> getUsersByRoomId(Long roomId) {
+        // Retrieve the room entity based on roomId
+        Room room = findById(roomId);
+
+        // Extract player IDs from the room entity
+        String playerIdsString = room.getPlayerIds();
+        String[] playerIds = playerIdsString.split(",");
+        // Convert player IDs to Long
+        List<Long> playerIdsList = Arrays.stream(playerIds)
+                .map(Long::valueOf)
+                .collect(Collectors.toList());
+        // Query UserRepository to fetch users with player IDs
+        return userRepository.findAllById(playerIdsList);
+    }
+
+    public void resetPlayerScore(Long roomId) {
+        // Retrieve the list of users in the current room
+        List<User> userList = getUsersByRoomId(roomId);
+        // Call UserService to reset their scores to 100
+        userService.resetScore(userList);
+    }
 }

@@ -15,8 +15,9 @@ public class QuestionGetDTO {
     private String itemList;//BUDGET multiple items
     private String itemImageList;//BUDGET multiple items
     private int roundNumber;
-    private float budget; //for budget mode
-    private float answer; //item price for guessing mode
+    private int leftRange;
+    private int rightRange;
+    private boolean blur = false;
 
     public Long getId() {
         return id;
@@ -75,17 +76,24 @@ public class QuestionGetDTO {
         this.roundNumber = roundNumber;
     }
 
-    public float getBudget() {
-        return budget;
+    public int getLeftRange() {
+        return leftRange;
     }
-    public void setBudget(float budget) {
-        this.budget = budget;
+    public void setLeftRange(int leftRange) {
+        this.leftRange = leftRange;
+    }
+    public int getRightRange() {
+        return rightRange;
+    }
+    public void setRightRange(int rightRange) {
+        this.rightRange = rightRange;
     }
 
-    public float getAnswer() {
-        return answer;
+
+    public boolean getBlur() {
+        return blur;
     }
-    public void setAnswer(float answer) {
-        this.answer = answer;
+    public void setBlur(boolean blur) {
+        this.blur = blur;
     }
 }

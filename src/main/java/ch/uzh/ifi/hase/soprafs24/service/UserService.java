@@ -172,4 +172,10 @@ public class UserService {
         }
         return String.join(",", usernames);
     }
+
+    public void resetScore(List<User> userList) {
+        for (User user : userList) {
+            user.setScore(100L);
+        }
+    }
 }

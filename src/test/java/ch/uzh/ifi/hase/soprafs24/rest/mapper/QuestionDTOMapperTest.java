@@ -22,8 +22,8 @@ public class QuestionDTOMapperTest {
         question.setItemImage("image1.jpg");
         question.setItemList("item1,item2");
         question.setItemImageList("image1.jpg,image2.jpg");
-        question.setBudget(100f);
-        question.setAnswer(75f);
+        question.setLeftRange(0);
+        question.setRightRange(100);
 
         // Convert entity to DTO using the mapper
         QuestionGetDTO questionGetDTO = QuestionDTOMapper.INSTANCE.convertEntitytoQuestionGetDTO(question);
@@ -37,31 +37,9 @@ public class QuestionDTOMapperTest {
         assertEquals(question.getItemImage(), questionGetDTO.getItemImage());
         assertEquals(question.getItemList(), questionGetDTO.getItemList());
         assertEquals(question.getItemImageList(), questionGetDTO.getItemImageList());
-        assertEquals(question.getBudget(), questionGetDTO.getBudget());
-        assertEquals(question.getAnswer(), questionGetDTO.getAnswer());
+        assertEquals(question.getLeftRange(), questionGetDTO.getLeftRange());
+        assertEquals(question.getRightRange(), questionGetDTO.getRightRange());
+        assertEquals(question.getBlur(), questionGetDTO.getBlur());
     }
 
-    @Test
-    public void testConvertQuestionGetDTOtoEntity() {
-        // Create a sample DTO
-        QuestionGetDTO questionGetDTO = new QuestionGetDTO();
-
-        questionGetDTO.setRoomId(123L);
-        questionGetDTO.setGameMode(GameMode.GUESSING);
-        questionGetDTO.setRoundNumber(1);
-        questionGetDTO.setItemId(456L);
-        questionGetDTO.setItemImage("image1.jpg");
-        questionGetDTO.setItemList("item1,item2");
-        questionGetDTO.setItemImageList("image1.jpg,image2.jpg");
-        questionGetDTO.setBudget(100f);
-        questionGetDTO.setAnswer(75f);
-
-        // Convert DTO to entity using the mapper
-        Question question = QuestionDTOMapper.INSTANCE.convertQuestionGetDTOtoEntity(questionGetDTO);
-
-        // Check if the conversion is successful
-        assertEquals(questionGetDTO.getRoomId(), question.getRoomId());
-        assertEquals(questionGetDTO.getGameMode(), question.getGameMode());
-        assertEquals(questionGetDTO.getRoundNumber(), question.getRoundNumber());
-    }
 }

@@ -101,15 +101,11 @@ public class EbayAPIService {
                 String firstCategory = itemSummary.at("/categories/0/categoryName").asText();
                 String itemImage1 = itemSummary.at("/image/imageUrl").asText();
                 String itemImage2 = itemSummary.at("/additionalImages/1/imageUrl").asText();
-                float leftrange = 0;
-                float rightrange = 2 * itemPrice;
 
                 Item item = new Item();
                 item.setItemTitle(itemTitle);
                 item.setPrice(itemPrice);
                 item.setItemCat(firstCategory);
-                item.setLeftRange(leftrange);
-                item.setRightRange(rightrange);
 
                 if (itemImage1 == null && itemImage2 == null) {
                     item.setImageURL("default"); // Set default image URL

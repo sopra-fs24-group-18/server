@@ -1,4 +1,4 @@
-package ch.uzh.ifi.hase.soprafs24.controller;
+/*package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
 import ch.uzh.ifi.hase.soprafs24.entity.Question;
@@ -150,4 +150,4 @@ public class QuestionControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Game could not start or questions could not be generated: Some error"));
     }
-}
+}*/

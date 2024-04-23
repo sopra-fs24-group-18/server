@@ -2,11 +2,15 @@ package ch.uzh.ifi.hase.soprafs24.service;
 
 
 import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
+import ch.uzh.ifi.hase.soprafs24.constant.ToolType;
 import ch.uzh.ifi.hase.soprafs24.entity.Item;
 import ch.uzh.ifi.hase.soprafs24.entity.Question;
+import ch.uzh.ifi.hase.soprafs24.entity.Room;
+import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.ItemRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.QuestionRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs24.service.ToolService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +33,15 @@ public class QuestionService {
 
     private final ItemRepository itemRepository;
 
+    private final ToolService toolService;
+    private final RoomService roomService;
+
     @Autowired
-    public QuestionService(QuestionRepository questionRepository, ItemRepository itemRepository) {
+    public QuestionService(QuestionRepository questionRepository, ItemRepository itemRepository,ToolService toolService,RoomService roomService) {
         this.questionRepository = questionRepository;
         this.itemRepository = itemRepository;
+        this.toolService = toolService;
+        this.roomService = roomService;
     }
 
     private List<Item> getAllItems() {
@@ -59,6 +68,13 @@ public class QuestionService {
             Item selectedItem = allItems.get(round - 1); // Adjust index to start from 0
             selectedItems.add(selectedItem);
 
+            //generate random number between 0.2-0.4 to set guessing price range bar
+            double maxScale = 0.2 + Math.random() * 0.2;
+            double minScale = 0.2 + Math.random() * 0.2;
+            float selectedItemPrice = selectedItem.getPrice();
+            int leftRange = (int) Math.floor((1-minScale)*selectedItemPrice);
+            int rightRange = (int) Math.ceil((1+maxScale)*selectedItemPrice);
+
             // Create a Question object for the current round
             Question newQuestion = new Question();
             newQuestion.setRoomId(roomId);
@@ -66,7 +82,9 @@ public class QuestionService {
             newQuestion.setItemId(selectedItem.getId());
             newQuestion.setItemImage(selectedItem.getImageURL());
             newQuestion.setRoundNumber(round);
-            newQuestion.setAnswer(selectedItem.getPrice()); // Set the item's price as the answer
+            newQuestion.setAnswer(selectedItemPrice); // Set the item's price as the answer
+            newQuestion.setLeftRange(leftRange);
+            newQuestion.setRightRange(rightRange);
             // Save the Question object to the repository
             questionRepository.save(newQuestion);
         }
@@ -134,5 +152,57 @@ public class QuestionService {
     }
     public Question getQuestionsByRoomRound(Long roomId,int roundNumber) {
         return questionRepository.findAllByRoomIdAndRoundNumber(roomId, roundNumber);
+    }
+
+
+    public Question getQuestionsByRoomRoundandUserId(Long roomId,int roundNumber,Long userId) {
+        Question originQuestion = questionRepository.findAllByRoomIdAndRoundNumber(roomId, roundNumber);
+
+        // Create a new instance of Question
+        Question modifiedQuestion = new Question();
+        // Copy properties from the original question to the new question
+        modifiedQuestion.setId(originQuestion.getId());
+        modifiedQuestion.setRoomId(originQuestion.getRoomId());
+        modifiedQuestion.setGameMode(originQuestion.getGameMode());
+        modifiedQuestion.setItemId(originQuestion.getItemId());
+        modifiedQuestion.setItemImage(originQuestion.getItemImage());
+        modifiedQuestion.setRoundNumber(originQuestion.getRoundNumber());
+        modifiedQuestion.setAnswer(originQuestion.getAnswer());
+        modifiedQuestion.setLeftRange(originQuestion.getLeftRange());
+        modifiedQuestion.setRightRange(originQuestion.getRightRange());
+        modifiedQuestion.setBlur(originQuestion.getBlur());
+        // Get the user's tools
+        List<String> userTools = toolService.getUserTools(userId);
+        // Check if the user has the HINT tool
+        boolean hasHintTool = userTools != null && userTools.contains(ToolType.HINT.name());
+        // Get all users in the same room
+        List<User> roomUsers = roomService.getUsersByRoomId(roomId);
+
+        // Check if any other users in the room have the BLUR tool
+        boolean otherUsersHaveBlurTool = roomUsers.stream()
+                .filter(user -> !user.getId().equals(userId)) // Exclude the current user
+                .anyMatch(user -> {
+                    List<String> tools = toolService.getUserTools(user.getId());
+                    return tools != null && tools.contains(ToolType.BLUR.name());
+                });
+
+        // Adjust question properties based on tool usage
+        // Shrink the range into 0-0.2, directly apply change on left&right range may lead to override the price or make no change
+        double maxScale = Math.random() * 0.2;
+        double minScale = Math.random() * 0.2;
+        float originalPrice = originQuestion.getAnswer();
+        if (hasHintTool) {
+            // Adjust price range
+            int newLeftRange = (int) Math.floor(originalPrice * (1-minScale));
+            int newRightRange = (int) Math.ceil(originalPrice * (1+maxScale));
+            modifiedQuestion.setLeftRange(newLeftRange);
+            modifiedQuestion.setRightRange(newRightRange);
+        }
+        if (otherUsersHaveBlurTool) {
+            // Set blur property to true
+            modifiedQuestion.setBlur(true);
+        }
+
+        return modifiedQuestion;
     }
 }

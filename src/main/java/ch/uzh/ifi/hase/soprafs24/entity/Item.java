@@ -20,12 +20,6 @@ public class Item implements Serializable {
     @Column(nullable = false)
     private float price;
 
-    @Column(nullable = false)
-    private float leftRange;
-
-    @Column(nullable = false)
-    private float rightRange;
-
     @Column(nullable = true)
     private String itemDesc;
 
@@ -79,23 +73,6 @@ public class Item implements Serializable {
     public void setPrice(float price) {
         this.price = price;
     }
-
-    public float getLeftRange() {
-        return leftRange;
-    }
-
-    public void setLeftRange(float leftRange) {
-        this.leftRange = leftRange;
-    }
-
-    public float getRightRange() {
-        return rightRange;
-    }
-
-    public void setRightRange(float rightRange) {
-        this.rightRange = rightRange;
-    }
-
 
 
 }

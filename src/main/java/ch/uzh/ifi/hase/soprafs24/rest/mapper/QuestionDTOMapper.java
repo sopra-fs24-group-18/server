@@ -20,18 +20,9 @@ public interface QuestionDTOMapper {
     @Mapping(source = "itemList", target = "itemList")
     @Mapping(source = "itemImageList", target = "itemImageList")
     @Mapping(source = "roundNumber", target = "roundNumber")
-    @Mapping(source = "budget", target = "budget")
-    @Mapping(source = "answer", target = "answer")
+    @Mapping(source = "leftRange",target = "leftRange")
+    @Mapping(source = "rightRange",target = "rightRange")
+    @Mapping(source = "blur",target = "blur")
     QuestionGetDTO convertEntitytoQuestionGetDTO(Question question);
-    @Mapping(target = "id", ignore = true)
-    @Mapping(source = "roomId", target = "roomId")
-    @Mapping(source = "gameMode", target = "gameMode")
-    @Mapping(target = "itemId", ignore = true)
-    @Mapping(target = "itemImage", ignore = true)
-    @Mapping(target = "itemList", ignore = true)
-    @Mapping(target = "itemImageList", ignore = true)
-    @Mapping(source = "roundNumber", target = "roundNumber")
-    @Mapping(target = "budget", ignore = true)
-    @Mapping(target = "answer", ignore = true)
-    Question convertQuestionGetDTOtoEntity (QuestionGetDTO questionGetDTO);
+
 }

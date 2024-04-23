@@ -50,7 +50,8 @@ public class EbayController {
             apiUrl.append("category_ids=").append(categoryId).append("&");
         }
 
-        apiUrl.append("limit=200"); // Limit the number of results to 200 for each call
+        apiUrl.append("limit=200").append("&"); // Limit the number of results to 500 for each call
+        apiUrl.append("filter=price:[1..1000],priceCurrency:CHF");//Limit the upper bound
         try {
             // Prepare headers
             HttpHeaders headers = new HttpHeaders();
