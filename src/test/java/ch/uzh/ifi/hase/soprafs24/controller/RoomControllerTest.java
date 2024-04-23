@@ -1,7 +1,9 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
+import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.Room;
+import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.room.RoomPostDTO;
 import ch.uzh.ifi.hase.soprafs24.service.RoomService;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
@@ -19,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -139,6 +142,44 @@ public class RoomControllerTest {
       mockMvc.perform(postReqest).andExpect(status().isNotFound());
   }
 
+    @Test
+    public void retreiveRank_validInput() throws Exception {
+        User user1 = new User();
+        user1.setUsername("user1");
+        user1.setScore(100L);
+
+        User user2 = new User();
+        user2.setUsername("user2");
+        user2.setScore(70L);
+
+        List<User> allUsers = new ArrayList<>();
+        allUsers.add(user1);
+        allUsers.add(user2);
+
+        given(roomService.calculateRank(1L)).willReturn(allUsers);
+
+        // when
+        MockHttpServletRequestBuilder getRequest = get("/rooms/1/rank").contentType(MediaType.APPLICATION_JSON);
+
+        // then
+        mockMvc.perform(getRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].username", is(user1.getUsername())))
+                .andExpect(jsonPath("$[0].score", is(100)))
+                .andExpect(jsonPath("$[1].score", is(70)));
+    }
+
+    @Test
+    public void retreiveRank_invalidInput() throws Exception {
+        given(roomService.calculateRank(Mockito.anyLong())).willThrow(
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "The room was not found!"));
+
+        MockHttpServletRequestBuilder getRequest = get("/rooms/123456/rank").contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest)
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResponseStatusException));
+    }
 
   private String asJsonString(final Object object) {
     try {
