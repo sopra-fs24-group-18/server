@@ -246,3 +246,27 @@ user point fetch from server-side
 
 Try to connect the front and back end, test and fix logic.
 
+### Zien Zeng
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/117
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/62
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/104
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/105
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/122
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/21
+
+
+**Description**
+
+Implement endpoints to receive users' answer in guessing mode, then reward points according to the accuracy of their answers.
+
+Implement endpoints to receive users' answer in budget mode, then reward points according to the accuracy of their answers.
+
+Implement endpoints to rank the users.
+
+Implement endpoints to retreive the tool list of the user.
+
+**Plan for this week**
+
+Improve the code that have already written, complete tests and write report.
+
