@@ -43,7 +43,7 @@ public class RoomService {
     public Room createRoom(Room newRoom) {
         newRoom.setRoomCode(roomCodeGenerator(6));
         newRoom.setCurrentRound(0L);
-        newRoom.setRoundAmount(6L);
+        newRoom.setRoundAmount(3L);
         newRoom.setPlayerIds(newRoom.getOwnerId().toString());
 
         newRoom = roomRepository.save(newRoom);

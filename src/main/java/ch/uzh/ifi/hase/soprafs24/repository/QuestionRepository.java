@@ -4,10 +4,12 @@ import ch.uzh.ifi.hase.soprafs24.entity.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository("questionRepository")
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     Optional<Question> findById(long id);
     Question findAllByRoomIdAndRoundNumber(long roomId,int roundNumber);
+    List<Question> findAllByRoomId(long roomId);
 }

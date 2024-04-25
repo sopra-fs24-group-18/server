@@ -23,6 +23,8 @@ public class RoomGetDTO {
 
     private String playerNames;
 
+    private String readyIds;
+
     public Long getId() {
         return id;
     }
@@ -85,5 +87,13 @@ public class RoomGetDTO {
 
     public void setPlayerNames(String playerNames) {
         this.playerNames = playerNames;
+    }
+
+    public String getReadyIds() {
+        return readyIds;
+    }
+
+    public void setReadyIds(String readyIds) {
+        this.readyIds = readyIds;
     }
 }

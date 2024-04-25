@@ -57,6 +57,8 @@ public class User implements Serializable {
   @Column
   private String avatar;
 
+
+
   public Long getId() {
     return id;
   }
@@ -140,6 +142,7 @@ public class User implements Serializable {
   public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
+
 
 
 }

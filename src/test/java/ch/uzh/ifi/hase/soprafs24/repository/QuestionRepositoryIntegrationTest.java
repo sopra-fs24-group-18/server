@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -79,5 +80,36 @@ public class QuestionRepositoryIntegrationTest {
         assertEquals(question.getItemImage(), found.getItemImage());
         assertEquals(question.getLeftRange(), found.getLeftRange());
         assertEquals(question.getRightRange(), found.getRightRange());
+    }
+    @Test
+    public void findAllByRoomId_success() {
+        Question question = new Question();
+        question.setRoomId(1L);
+        question.setGameMode(GameMode.BUDGET);
+        question.setRoundNumber(2);
+        question.setItemId(1L);
+        question.setItemImage("image");
+        question.setLeftRange(0);
+        question.setRightRange(100);
+        entityManager.persist(question);
+        entityManager.flush();
+
+        Question question1 = new Question();
+        question1.setRoomId(1L);
+        question1.setGameMode(GameMode.BUDGET);
+        question1.setRoundNumber(2);
+        question1.setItemId(1L);
+        question1.setItemImage("image");
+        question1.setLeftRange(0);
+        question1.setRightRange(100);
+        entityManager.persist(question1);
+        entityManager.flush();
+
+
+        // when
+        List<Question> foundQuestions = questionRepository.findAllByRoomId(1L);
+
+        // then
+        assertEquals(2, foundQuestions.size()); // Check if two questions are found for room ID 1
     }
 }

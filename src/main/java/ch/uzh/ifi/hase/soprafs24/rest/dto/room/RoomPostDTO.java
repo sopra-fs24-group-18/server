@@ -10,6 +10,7 @@ public class RoomPostDTO {
   private GameMode gameMode;
   private Long playerAmount;
 
+
   public String getName() {
       return name;
   }

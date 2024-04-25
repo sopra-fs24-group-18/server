@@ -2,24 +2,25 @@ package ch.uzh.ifi.hase.soprafs24.service;
 
 
 import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
+import ch.uzh.ifi.hase.soprafs24.constant.ToolType;
 import ch.uzh.ifi.hase.soprafs24.entity.Item;
 import ch.uzh.ifi.hase.soprafs24.entity.Question;
 import ch.uzh.ifi.hase.soprafs24.entity.Room;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.ItemRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.QuestionRepository;
+import ch.uzh.ifi.hase.soprafs24.repository.RoomRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
@@ -33,14 +34,20 @@ public class QuestionServiceTest {
     private ItemRepository itemRepository;
 
     @Mock
+    private RoomRepository roomRepository;
+
+    @Mock
     private ToolService toolService;
 
     @Mock
     private RoomService roomService;
 
+
+
     @InjectMocks
     private QuestionService questionService;// to inject mock or spy dependencies into the fields of a tested object.
     private Room room;
+    private Room roomOnePerson;
     private List<Item> items;
 
     private User testUser;
@@ -56,6 +63,13 @@ public class QuestionServiceTest {
         room.setOwnerId(1L);
         room.setPlayerAmount(2L);
         room.setPlayerIds("1,2");
+
+        roomOnePerson = new Room();
+        roomOnePerson.setId(2L);
+        roomOnePerson.setOwnerId(1L);
+        roomOnePerson.setPlayerAmount(1L);
+        roomOnePerson.setPlayerIds("1");
+        roomOnePerson.setGameMode(GameMode.GUESSING);
 
 
         //Create mock item objects
@@ -76,26 +90,6 @@ public class QuestionServiceTest {
             itemArray[i] = item;
         }
         items = Arrays.asList(itemArray);
-        /*
-        item1 = new Item();
-        item1.setId(1L);
-        item1.setItemTitle("item1");
-        item1.setImageURL("image1");
-        item1.setPrice(100);
-
-        item2 = new Item();
-        item2.setId(2L);
-        item2.setItemTitle("item2");
-        item2.setImageURL("image2");
-        item2.setPrice(200);
-
-        item3 = new Item();
-        item3.setId(3L);
-        item3.setItemTitle("item3");
-        item3.setImageURL("image3");
-        item3.setPrice(300);
-
-*/
 
         //mock player
         testUser = new User();
@@ -104,16 +98,12 @@ public class QuestionServiceTest {
         testUser.setUsername("testUsername");
         testUser.setScore(0L);
 
+
         testUser2 = new User();
         testUser2.setId(2L);
         testUser2.setPassword("123");
         testUser2.setUsername("testUsername");
         testUser2.setScore(0L);
-
-
-        // Create mock Item objects
-       // itemsBudget = Arrays.asList(item1, new Item(), new Item(),new Item(), new Item(), new Item(),new Item(), new Item(), new Item());
-        //itemsGuessing =  Arrays.asList(item1, item2, item3);
 
         // Stub mock method calls
         Mockito.when(roomService.findById(Mockito.anyLong())).thenReturn(room);
@@ -123,10 +113,9 @@ public class QuestionServiceTest {
 
 
     @Test
-    public void testCreateGuessingQuestions() {
+    public void testCreateGuessingQuestionsSuccess() {
         // Arrange
         Mockito.when(itemRepository.findAll()).thenReturn(items);
-
         Mockito.when(questionRepository.save(Mockito.any())).thenReturn(new Question());
 
         // Act
@@ -135,11 +124,40 @@ public class QuestionServiceTest {
         // Assert
         Mockito.verify(itemRepository, times(1)).findAll();
         Mockito.verify(roomService, times(1)).findById(Mockito.anyLong());
-        Mockito.verify(questionRepository, times(3)).save(Mockito.any());
+        //Mockito.verify(questionRepository, times(3)).save(Mockito.any());
+
+        // verify price range
+        ArgumentCaptor<Question> argument = ArgumentCaptor.forClass(Question.class);
+        Mockito.verify(questionRepository, times(3)).save(argument.capture());
+        List<Question> savedQuestions = argument.getAllValues();
+        for (int i = 0; i < 3; i++) {
+            assertTrue(savedQuestions.get(i).getLeftRange() <= 80);
+            assertTrue(savedQuestions.get(i).getLeftRange() >= 60);
+            assertTrue(savedQuestions.get(i).getRightRange() <= 140);
+            assertTrue(savedQuestions.get(i).getRightRange() >= 120);
+        }
     }
 
     @Test
-    public void testCreateBudgetQuestions() {
+    public void testCreateGuessingQuestionsInValidItems() {
+        // Arrange
+        List<Item> shortItemList = items.subList(0, 2); //3 items are needed
+        Mockito.when(itemRepository.findAll()).thenReturn(shortItemList);
+
+        // Act and assert
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            questionService.createGuessingQuestions(1L);
+        });
+
+        // Assert
+        String expectedMessage = "Not enough items in the database for all rounds";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
+
+    @Test
+    public void testCreateBudgetQuestionsSuccess() {
         // Arrange
         Mockito.when(itemRepository.findAll()).thenReturn(items);
         Mockito.when(questionRepository.save(Mockito.any())).thenReturn(new Question());
@@ -150,8 +168,34 @@ public class QuestionServiceTest {
         // Assert
         Mockito.verify(itemRepository, times(1)).findAll();
         Mockito.verify(roomService, times(1)).findById(Mockito.anyLong());
-        Mockito.verify(questionRepository, times(3)).save(Mockito.any());
+
+        // verify budget range
+        ArgumentCaptor<Question> argument = ArgumentCaptor.forClass(Question.class);
+        Mockito.verify(questionRepository, times(3)).save(argument.capture());
+        List<Question> savedQuestions = argument.getAllValues();
+        for (int i = 0; i < 3; i++) {
+            assertTrue(savedQuestions.get(i).getBudget() <= 900);
+            assertTrue(savedQuestions.get(i).getBudget() >=100);
+        }
+
     }
+    @Test
+    public void testCreateBudgetQuestionsInValidItems() {
+        // Arrange
+        List<Item> shortItemList = items.subList(0, 2); //27 items are needed
+        Mockito.when(itemRepository.findAll()).thenReturn(shortItemList);
+
+        // Act and assert
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            questionService.createBudgetQuestions(1L);
+        });
+
+        // Assert
+        String expectedMessage = "Not enough items in the database for all rounds";
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedMessage));
+    }
+
 
     @Test
     public void testGetQuestionsByRoomRound() {
@@ -168,43 +212,85 @@ public class QuestionServiceTest {
     }
 
     @Test
-    public void testGetQuestionsByRoomRoundandUserId() {
+    public void testGetQuestionsByRoomRoundandUserIdWithHint() {
         // Arrange
+        Mockito.when(roomService.findById(Mockito.anyLong())).thenReturn(roomOnePerson);
+        Mockito.when(roomService.getUsersByRoomId(Mockito.anyLong())).thenReturn(Arrays.asList(testUser));
+
         Question question = new Question();
         question.setAnswer(100);
+
         Mockito.when(questionRepository.findAllByRoomIdAndRoundNumber(Mockito.anyLong(), Mockito.anyInt())).thenReturn(question);
-        Mockito.when(toolService.getUserTools(Mockito.anyLong())).thenReturn(Arrays.asList("HINT"));
+        Mockito.when(toolService.getUserTools(Mockito.anyLong())).thenReturn(Arrays.asList("HINT", "BLUR"));
 
         // Act
         Question result = questionService.getQuestionsByRoomRoundandUserId(1L, 1, 1L);
 
         // Assert
         assertNotNull(result);
-        assertTrue(result.getLeftRange() >= 80); //0.8-1
+        assertTrue(result.getLeftRange() >= 80); //after using hint tool, price range change to 0.8-1
         assertTrue(result.getRightRange() <= 120); //1-1.2
-        assertFalse(result.getBlur());
+        assertFalse(result.getBlur());//player owns blur tool won't be infected
     }
-
     @Test
-    public void testGetReady() {
-        // Arrange, room with only one person
-        Room room1 = new Room();
-        room1.setId(1L);
-        room1.setRoundAmount(3L);
-        room1.setOwnerId(1L);
-        room1.setPlayerAmount(1L);
-        room1.setPlayerIds("1");
-        room1.setGameMode(GameMode.GUESSING);
-        Mockito.when(roomService.findById(Mockito.anyLong())).thenReturn(room1);
-        Mockito.when(itemRepository.findAll()).thenReturn(items);
+    public void testGetQuestionsByRoomRoundandUserIdWithBlur() {
+        // Arrange
+        Question question = new Question();
+        question.setAnswer(100);
+        question.setLeftRange(60);
+        question.setRightRange(140);
+
+        Mockito.when(questionRepository.findAllByRoomIdAndRoundNumber(Mockito.anyLong(), Mockito.anyInt())).thenReturn(question);
+        Mockito.when(toolService.getUserTools(Mockito.anyLong())).thenReturn(Arrays.asList("BLUR"));
 
         // Act
-        String result = questionService.getReady(1L, 1L);
+        Question result = questionService.getQuestionsByRoomRoundandUserId(1L, 1, 1L);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(60,result.getLeftRange() ); //no hint tool, range shouldn't change
+        assertEquals(140,result.getRightRange() );
+        assertTrue(result.getBlur());//another player owns Blur
+    }
+    @Test
+    public void testGetQuestionsByRoomRoundandUserIdWithHintandBlur() {
+        // Arrange
+        Question question = new Question();
+        question.setAnswer(100);
+
+        Mockito.when(questionRepository.findAllByRoomIdAndRoundNumber(Mockito.anyLong(), Mockito.anyInt())).thenReturn(question);
+        Mockito.when(toolService.getUserTools(Mockito.anyLong())).thenReturn(Arrays.asList("HINT", "BLUR"));
+
+        // Act
+        Question result = questionService.getQuestionsByRoomRoundandUserId(1L, 1, 1L);
+
+        // Assert
+        assertNotNull(result);
+        assertTrue(result.getLeftRange() >= 80); //after using hint tool, price range change to 0.8-1
+        assertTrue(result.getRightRange() <= 120); //1-1.2
+        assertTrue(result.getBlur());//another player owns Blur
+    }
+
+
+    @Test
+    public void testOwnerGetReadySuccess() {
+        // Arrange, room with only one person
+        Mockito.when(roomService.findById(Mockito.anyLong())).thenReturn(roomOnePerson);
+        Mockito.when(itemRepository.findAll()).thenReturn(items);
+        Mockito.when(roomRepository.save(Mockito.any())).thenReturn(roomOnePerson);
+
+        // Act
+        String result = questionService.getReady(2L, 1L);
 
         // Assert
         assertEquals("The game is ready!", result);
-        Mockito.verify(roomService, times(2)).findById(Mockito.anyLong());
+        //System.out.println(roomOnePerson.getReadyIds());
+        Mockito.verify(roomService, times(3)).findById(Mockito.anyLong());
         Mockito.verify(roomService, times(1)).resetPlayerScore(Mockito.anyLong());
-        Mockito.verify(questionRepository, times(3)).save(Mockito.any());//verify the question is created
+        Mockito.verify(roomRepository, times(1)).save(Mockito.any());
+        Mockito.verify(questionRepository, times(3)).save(Mockito.any());//verify the question is created when Owner is ready
     }
+
+
+
 }

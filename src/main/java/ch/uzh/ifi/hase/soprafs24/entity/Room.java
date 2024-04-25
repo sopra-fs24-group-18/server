@@ -48,6 +48,9 @@ public class Room implements Serializable {
     @Column
     private Long currentRound;
 
+    @Column (nullable = true)
+    private String readyIds;
+
     public Long getId() {
         return id;
     }
@@ -119,4 +122,14 @@ public class Room implements Serializable {
     public void setCurrentRound(Long currentRound) {
         this.currentRound = currentRound;
     }
+
+    public String getReadyIds() {
+        return readyIds;
+    }
+
+    public void setReadyIds(String readyIds) {
+        this.readyIds = readyIds;
+    }
+
+
 }

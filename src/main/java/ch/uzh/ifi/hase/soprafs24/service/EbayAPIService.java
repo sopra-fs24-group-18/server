@@ -8,6 +8,8 @@ import com.ebay.api.client.auth.oauth2.model.Environment;
 import com.ebay.api.client.auth.oauth2.model.OAuthResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 
@@ -23,18 +25,9 @@ import java.util.Optional;
 /*@Transactional // define the scope of a single database transactio*/
 public class EbayAPIService {
 
-    //load authentication infomation firstly
-    /*
-    public EbayAPIService() {
-        try {
-            CredentialUtil.load(new FileInputStream("src/main/resources/ebayconfig.yaml"));
-        } catch (IOException e) {
-            // Handle exception if the file cannot be loaded
-            e.printStackTrace();
-        }
-    }
 
-     */
+    private final Logger log = LoggerFactory.getLogger(EbayAPIService.class);
+    private static final Logger logger = LoggerFactory.getLogger(EbayAPIService.class);
     public EbayAPIService() {
         loadCredentials(); // Load credentials when EbayAPIService is instantiated
     }
@@ -44,7 +37,7 @@ public class EbayAPIService {
         try {
             CredentialUtil.load(new FileInputStream("src/main/resources/ebayconfig.yaml"));
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error loading credentials", e);
         }
     }
 
@@ -135,7 +128,7 @@ public class EbayAPIService {
 
         }
         catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Error loading credentials", e);
         }
 
         return items;

@@ -24,6 +24,7 @@ public class QuestionController {
     @PostMapping("/{roomId}/{userId}/getReady")
     public ResponseEntity<?> getReadyForGame(@PathVariable Long roomId,@PathVariable Long userId) {
         try {
+            questionService.updateReadyList(roomId,userId);
             questionService.getReady(roomId,userId);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }

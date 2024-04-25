@@ -46,6 +46,7 @@ public interface RoomDTOMapper {
   @Mapping(source = "ownerId", target = "ownerId")
   @Mapping(source = "gameMode", target = "gameMode")
   @Mapping(source = "playerAmount", target = "playerAmount")
+  @Mapping(target = "readyIds", ignore = true)
   Room convertRoomPostDTOtoEntity(RoomPostDTO roomPostDTO);
 
   @Mapping(source = "id", target = "id")
@@ -54,6 +55,7 @@ public interface RoomDTOMapper {
   @Mapping(source = "roundAmount", target = "roundAmount")
   @Mapping(source = "gameMode", target = "gameMode")
   @Mapping(source = "playerAmount", target = "playerAmount")
+  @Mapping(source = "readyIds", target = "readyIds")
   @Mapping(target = "ownerName", ignore = true)
   @Mapping(target = "playerNames", ignore = true)
   RoomGetDTO convertEntityToRoomGetDTO(Room room);

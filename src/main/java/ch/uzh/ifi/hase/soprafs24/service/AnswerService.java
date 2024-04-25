@@ -69,7 +69,7 @@ public class AnswerService {
           try {
               Thread.sleep(1000);
           } catch (InterruptedException e) {
-              e.printStackTrace();
+              log.error("Error submitting answer", e);
           }
       }
       Long point = 0L;

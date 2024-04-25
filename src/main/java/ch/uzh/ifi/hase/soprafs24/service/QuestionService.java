@@ -9,18 +9,16 @@ import ch.uzh.ifi.hase.soprafs24.entity.Room;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.ItemRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.QuestionRepository;
-import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
-import ch.uzh.ifi.hase.soprafs24.service.ToolService;
+import java.security.SecureRandom;
+
+import ch.uzh.ifi.hase.soprafs24.repository.RoomRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
-import java.util.concurrent.TimeUnit;
 
+import java.util.concurrent.TimeUnit;
 import java.util.*;
 
 import static ch.uzh.ifi.hase.soprafs24.constant.GameMode.GUESSING;
@@ -36,13 +34,16 @@ public class QuestionService {
 
     private final ToolService toolService;
     private final RoomService roomService;
+    private final RoomRepository roomRepository;
 
     @Autowired
-    public QuestionService(QuestionRepository questionRepository, ItemRepository itemRepository, ToolService toolService, RoomService roomService) {
+    public QuestionService(QuestionRepository questionRepository, ItemRepository itemRepository, ToolService toolService, RoomService roomService,RoomRepository roomRepository) {
         this.questionRepository = questionRepository;
         this.itemRepository = itemRepository;
         this.toolService = toolService;
         this.roomService = roomService;
+        this.roomRepository = roomRepository;
+
     }
 
     private List<Item> getAllItems() {
@@ -73,8 +74,10 @@ public class QuestionService {
             selectedItems.add(selectedItem);
 
             //generate random number between 0.2-0.4 to set guessing price range bar
-            double maxScale = 0.2 + Math.random() * 0.2;
-            double minScale = 0.2 + Math.random() * 0.2;
+            // Create a SecureRandom instance
+            SecureRandom secureRandom = new SecureRandom();
+            double maxScale = 0.2 + secureRandom.nextDouble() * 0.2;
+            double minScale = 0.2 + secureRandom.nextDouble() * 0.2;
             float selectedItemPrice = selectedItem.getPrice();
             int leftRange = (int) Math.floor((1 - minScale) * selectedItemPrice);
             int rightRange = (int) Math.ceil((1 + maxScale) * selectedItemPrice);
@@ -122,7 +125,9 @@ public class QuestionService {
             }
 
             //randomly determine the item number to calculate budget
-            int budgetItemNum = (int) (Math.random() * 9) + 1;//at least one item
+            // Create a SecureRandom instance
+            SecureRandom secureRandom = new SecureRandom();
+            int budgetItemNum = (int) (secureRandom.nextDouble()  * 9) + 1;//at least one item
             //shuffle selected items order
             Collections.shuffle(selectedItems);
             float budget = 0;
@@ -195,8 +200,9 @@ public class QuestionService {
 
         // Adjust question properties based on tool usage
         // Shrink the range into 0-0.2, directly apply change on left&right range may lead to override the price or make no change
-        double maxScale = Math.random() * 0.2;
-        double minScale = Math.random() * 0.2;
+        SecureRandom secureRandom = new SecureRandom();
+        double maxScale = secureRandom.nextDouble()  * 0.2;
+        double minScale = secureRandom.nextDouble()  * 0.2;
         float originalPrice = originQuestion.getAnswer();
         if (hasHintTool) {
             // Adjust price range
@@ -212,13 +218,39 @@ public class QuestionService {
 
         return modifiedQuestion;
     }
+    public Long updateReadyList(Long roomId, Long userId)
+    {
+        Room room = roomService.findById(roomId);
+        String readyPlayer = room.getReadyIds();
+        String[] readyPlayerArray;
+        Long actualAmount;
+        // Check if userId is already in readyPlayer
+        if (readyPlayer == null) {
+            readyPlayer = ""; // Initialize readyPlayer to an empty string
+            readyPlayer += userId; //add current user to the list
+            room.setReadyIds(readyPlayer); // Update the room's readyPlayer list
+            actualAmount =  1L;
+        }
+        else {
+            readyPlayerArray = readyPlayer.split(",");
+            if (!readyPlayer.contains(userId.toString())) {
+                readyPlayer += "," + userId;
+                room.setReadyIds(readyPlayer); // Update the room's readyPlayer list
+                actualAmount =  (long) readyPlayerArray.length+1;
+            }else{
+                actualAmount =  (long) readyPlayerArray.length;
+            }
+
+        }
+        roomRepository.save(room);
+        return actualAmount;
+    }
 
     public String getReady(Long roomId, Long userId) {
         Room room = roomService.findById(roomId);
-        Long requireAmount = room.getPlayerAmount();
-        String[] playerIds = room.getPlayerIds().split(",");
-        Long actualAmount = Long.valueOf(playerIds.length);
         Long ownerId = room.getOwnerId();
+        Long requireAmount = room.getPlayerAmount();
+        Long actualAmount = updateReadyList(roomId, userId);
 
         // Check if the required amount is already met
         if (actualAmount.equals(requireAmount)) {
