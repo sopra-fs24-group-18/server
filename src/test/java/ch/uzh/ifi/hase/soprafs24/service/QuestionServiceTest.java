@@ -283,7 +283,7 @@ public class QuestionServiceTest {
         String result = questionService.getReady(2L, 1L);
 
         // Assert
-        assertEquals("The game is ready!", result);
+        assertEquals("ready", result);
         //System.out.println(roomOnePerson.getReadyIds());
         Mockito.verify(roomService, times(3)).findById(Mockito.anyLong());
         Mockito.verify(roomService, times(1)).resetPlayerScore(Mockito.anyLong());

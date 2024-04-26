@@ -7,6 +7,8 @@ import ch.uzh.ifi.hase.soprafs24.entity.Room;
 import ch.uzh.ifi.hase.soprafs24.entity.Tool;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.RoomRepository;
+import ch.uzh.ifi.hase.soprafs24.repository.ToolRepository;
+import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,13 +27,15 @@ import static org.mockito.Mockito.times;
 public class ToolServiceTest {
 
   @Mock
-  private RoomRepository roomRepository;
+  private ToolRepository toolRepository;
+  @Mock
+  private UserRepository userRepository;
 
   @Mock
   private UserService userService;
 
   @InjectMocks
-  private RoomService roomService;
+  private ToolService toolService;
 
   private Tool testTool;
   private User testUser;
@@ -41,7 +45,7 @@ public class ToolServiceTest {
     MockitoAnnotations.openMocks(this);
 
     // given
-    Tool testTool = new Tool();
+    testTool = new Tool();
     testTool.setType(ToolType.HINT);
     testTool.setPrice(30L);
     testTool.setDescription("This is a hint tool!");
@@ -52,11 +56,26 @@ public class ToolServiceTest {
     testUser.setUsername("testUsername");
     testUser.setCreationDate(LocalDate.now());
     testUser.setBirthday(LocalDate.now());
-
-
   }
 
     @Test
     public void uesTool_validInputs_success() {
+      testUser.setScore(100L);
+      Mockito.when(userService.getUserById(Mockito.anyLong())).thenReturn(Optional.ofNullable(testUser));
+      Mockito.when(toolRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(testTool));
+      toolService.useTool(1L, 1L);
+
+      assertEquals("HINT", testUser.getToolStatus());
+      assertEquals("HINT", testUser.getToolList());
+    }
+
+    @Test
+    public void uesTool_invalidInputs_success() {
+        testUser.setScore(10L);
+        Mockito.when(userService.getUserById(Mockito.anyLong())).thenReturn(Optional.ofNullable(testUser));
+        Mockito.when(toolRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(testTool));
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> toolService.useTool(1L, 1L));
+        assertEquals(HttpStatus.FORBIDDEN, exception.getStatus());
     }
 }

@@ -129,7 +129,7 @@ public class QuestionServiceIntegrationTest {
         List<Question> questions = questionRepository.findAllByRoomId(1L);
 
         // Assert
-        assertEquals("The game is ready!", result);
+        assertEquals("ready", result);
         assertEquals(3, questions.size()); //questions are created
         assertNotNull(room.getReadyIds()); //id is added
 

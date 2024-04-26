@@ -164,7 +164,7 @@ public class AnswerService {
         }
     }
 
-    private void updateUserScore(Long userId, Long points) {
+    public void updateUserScore(Long userId, Long points) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (!optionalUser.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user was not found!");
