@@ -264,10 +264,12 @@ public class QuestionService {
             roomService.resetPlayerScore(roomId);
         }
         // Return a message indicating that the game is ready
-        return "The game is ready!";
+        return "ready";
      } else {
+
+            return "wait";
         // If not met, wait for the condition to be satisfied
-        try {
+      /*  try {
             // Wait for a certain period and then recheck the condition
             TimeUnit.SECONDS.sleep(1); // Wait for 1 second
             return getReady(roomId, userId); // Recursive call to recheck the condition
@@ -276,7 +278,7 @@ public class QuestionService {
             log.error("Thread interrupted while waiting for players to join.", e);
             Thread.currentThread().interrupt();
             return "An error occurred while waiting for players to join.";
-          }
+          }*/
         }
     }
 }

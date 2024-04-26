@@ -55,7 +55,7 @@ public class QuestionControllerTest {
         // Performing the request
         mockMvc.perform(post("/games/1/1/getReady")
                         .contentType(MediaType.APPLICATION_JSON))
-                        .andExpect(status().isNoContent());
+                        .andExpect(status().isOk());
 
         // Verifying that the service methods were called
         verify(questionService).getReady(1L, 1L);
