@@ -270,3 +270,24 @@ Implement endpoints to retreive the tool list of the user.
 
 Improve the code that have already written, complete tests and write report.
 
+
+## Week 4 (4.22-4.28)
+### Yanyang Gong
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/45
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/42
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/134
+
+
+**Description**
+
+Implement endpoint to reset players' score at the beginning of the game.
+Implement endpoint to manage Ready Statuses in multi-players game.
+Write tests.
+Write report.
+
+**Plan for this week**
+
+Implement logic for Single-Player mode.
+Fix/modify potential bugs/logics based on the client side feedback.
+
