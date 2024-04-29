@@ -291,3 +291,17 @@ Write report.
 Implement logic for Single-Player mode.
 Fix/modify potential bugs/logics based on the client side feedback.
 
+### Bingjie Xue
+**Issues worked on**
+*    [#45](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/38)
+*    [#48](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/39)
+
+
+**Description**
+
+Adjust front-end logic for fetch rank, point, game start.
+
+**Plan for this week**
+
+Debugging.
+
