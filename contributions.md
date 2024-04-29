@@ -338,7 +338,7 @@ Fix/modify potential bugs/logics based on the client side feedback.
 
 ### Lu Li
 **Issues worked on**
-*    [#38](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/38)
+*    [#55](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/55)
 *    [#17](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/17)
 *    [#37](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/37)
 
