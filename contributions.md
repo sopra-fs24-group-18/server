@@ -287,8 +287,6 @@ Write tests.
 Write report.
 
 **Plan for this week**
-
-Implement logic for Single-Player mode.
 Fix/modify potential bugs/logics based on the client side feedback.
 
 ### Bingjie Xue
