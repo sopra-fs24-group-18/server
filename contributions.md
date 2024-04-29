@@ -351,4 +351,5 @@ Integrate and modified the UI of gameroom.
 
 **Plan for this week**
 
-Fix/modify potential bugs/logics based on the client side feedback.
+Modify the tooldisplay logic.
+Modify the profile info display.
