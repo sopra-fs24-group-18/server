@@ -335,3 +335,20 @@ Write report.
 **Plan for this week**
 
 Fix/modify potential bugs/logics based on the client side feedback.
+
+### Lu Li
+**Issues worked on**
+*    [#38](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/38)
+*    [#17](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/17)
+*    [#37](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/37)
+
+
+**Description**
+
+Modified the UI for rank page.
+Modified the join room function.
+Integrate and modified the UI of gameroom.
+
+**Plan for this week**
+
+Fix/modify potential bugs/logics based on the client side feedback.
