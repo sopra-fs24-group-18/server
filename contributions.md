@@ -327,9 +327,11 @@ Debug, and starting to design the part of ui for budget mode.
 
 
 **Description**
+
 Modify functionality related to tool using.
 Write tests for functions related to room, answer and tool.
 Write report.
 
 **Plan for this week**
+
 Fix/modify potential bugs/logics based on the client side feedback.
