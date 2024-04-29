@@ -303,3 +303,18 @@ Adjust front-end logic for fetch rank, point, game start.
 
 Debugging.
 
+### Yunfan Zhou
+**Issues worked on**
+*    [#35](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/35)
+*    [#12](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/12)
+*    [#37](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/37)
+
+**Description**
+
+Adjust front-end logic for game get ready, get start, send answer, and countdown.
+Add room code display.
+Fixed some bug and the formats.
+
+**Plan for this week**
+
+Debug, and starting to design the part of ui for budget mode.
