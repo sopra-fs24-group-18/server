@@ -270,3 +270,68 @@ Implement endpoints to retreive the tool list of the user.
 
 Improve the code that have already written, complete tests and write report.
 
+
+## Week 4 (4.22-4.28)
+### Yanyang Gong
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/45
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/42
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/134
+
+
+**Description**
+
+Implement endpoint to reset players' score at the beginning of the game.
+Implement endpoint to manage Ready Statuses in multi-players game.
+Write tests.
+Write report.
+
+**Plan for this week**
+Fix/modify potential bugs/logics based on the client side feedback.
+
+### Bingjie Xue
+**Issues worked on**
+*    [#45](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/38)
+*    [#48](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/39)
+
+
+**Description**
+
+Adjust front-end logic for fetch rank, point, game start.
+
+**Plan for this week**
+
+Debugging.
+
+### Yunfan Zhou
+**Issues worked on**
+*    [#35](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/35)
+*    [#12](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/12)
+*    [#37](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/37)
+
+**Description**
+
+Adjust front-end logic for game get ready, get start, send answer, and countdown.
+Add room code display.
+Fixed some bug and the formats.
+
+**Plan for this week**
+
+Debug, and starting to design the part of ui for budget mode.
+
+### Zien Zeng
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/104
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/21
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/111
+
+
+**Description**
+
+Modify functionality related to tool using.
+Write tests for functions related to room, answer and tool.
+Write report.
+
+**Plan for this week**
+
+Fix/modify potential bugs/logics based on the client side feedback.
