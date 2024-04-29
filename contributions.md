@@ -318,3 +318,18 @@ Fixed some bug and the formats.
 **Plan for this week**
 
 Debug, and starting to design the part of ui for budget mode.
+
+### Zien Zeng
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/104
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/21
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/111
+
+
+**Description**
+Modify functionality related to tool using.
+Write tests for functions related to room, answer and tool.
+Write report.
+
+**Plan for this week**
+Fix/modify potential bugs/logics based on the client side feedback.
