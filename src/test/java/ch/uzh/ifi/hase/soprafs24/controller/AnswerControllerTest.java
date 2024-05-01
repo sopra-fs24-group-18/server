@@ -49,7 +49,7 @@ public class AnswerControllerTest {
     // then
     mockMvc.perform(postRequest)
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$", is(100)));
+        .andExpect(jsonPath("$.point", is(100)));
   }
 
     @Test
@@ -69,7 +69,7 @@ public class AnswerControllerTest {
                         .content(asJsonString(answerPostDTO));
                 mockMvc.perform(postRequest)
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$", is(100)));
+                        .andExpect(jsonPath("$.point", is(100)));
 
                 latch.countDown();
             } catch (Exception e) {
@@ -94,7 +94,7 @@ public class AnswerControllerTest {
                         .content(asJsonString(answerPostDTO));
                 mockMvc.perform(postRequest)
                         .andExpect(status().isOk())
-                        .andExpect(jsonPath("$", is(100)));
+                        .andExpect(jsonPath("$.point", is(100)));
 
                 // 用户2执行完毕，倒计数减1
                 latch.countDown();
@@ -103,11 +103,9 @@ public class AnswerControllerTest {
             }
         });
 
-        // 启动用户1和用户2的线程
         user1Thread.start();
         user2Thread.start();
 
-        // 等待所有线程执行完毕
         latch.await();
     }
 
@@ -148,7 +146,7 @@ public class AnswerControllerTest {
         // then
         mockMvc.perform(postRequest)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", is(100)));
+                .andExpect(jsonPath("$.point", is(100)));
     }
 
     @Test
