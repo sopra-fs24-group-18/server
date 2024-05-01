@@ -32,37 +32,7 @@ public class QuestionController {
             return ResponseEntity.badRequest().body("Game could not start correctly: " + e.getMessage());
         }
     }
-/*
-    @PostMapping("/{roomId}/budgetMode/start")
-    public ResponseEntity<?> startBudgetGame(@PathVariable Long roomId) {
-        try {
-            questionService.createBudgetQuestions(roomId);
-            roomService.resetPlayerScore(roomId);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        }
-        catch (Exception e) {
-            return ResponseEntity.badRequest().body("Game could not start or questions could not be generated: " + e.getMessage());
-        }
-    }
 
-    @GetMapping("/{roomId}/{roundNumber}")
-    public ResponseEntity<?> getQuestionById(@PathVariable Long roomId, @PathVariable int roundNumber) {
-        try {
-            Question question = questionService.getQuestionsByRoomRound(roomId, roundNumber);
-            if (question != null) {
-                QuestionGetDTO questionGetDTO = QuestionDTOMapper.INSTANCE.convertEntitytoQuestionGetDTO(question);
-                return ResponseEntity.ok(questionGetDTO);
-            }
-            else {
-                return ResponseEntity.notFound().build();
-            }
-        }
-        catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
-        }
-
-    }
-*/
     @GetMapping("/{roomId}/{roundNumber}/{userId}")
     public ResponseEntity<?> getQuestionByUserId(@PathVariable Long roomId, @PathVariable int roundNumber,@PathVariable Long userId) {
         try {

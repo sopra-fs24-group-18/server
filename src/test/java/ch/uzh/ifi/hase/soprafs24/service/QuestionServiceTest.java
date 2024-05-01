@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,6 +42,9 @@ public class QuestionServiceTest {
 
     @Mock
     private RoomService roomService;
+
+    @Mock
+    private UserService userService;
 
 
 
@@ -278,6 +282,7 @@ public class QuestionServiceTest {
         Mockito.when(roomService.findById(Mockito.anyLong())).thenReturn(roomOnePerson);
         Mockito.when(itemRepository.findAll()).thenReturn(items);
         Mockito.when(roomRepository.save(Mockito.any())).thenReturn(roomOnePerson);
+        Mockito.when(userService.getUserById(Mockito.any())).thenReturn(Optional.ofNullable(testUser));
 
         // Act
         String result = questionService.getReady(2L, 1L);
@@ -286,7 +291,7 @@ public class QuestionServiceTest {
         assertEquals("ready", result);
         //System.out.println(roomOnePerson.getReadyIds());
         Mockito.verify(roomService, times(3)).findById(Mockito.anyLong());
-        Mockito.verify(roomService, times(1)).resetPlayerScore(Mockito.anyLong());
+        Mockito.verify(userService, times(1)).getUserById(Mockito.anyLong());
         Mockito.verify(roomRepository, times(1)).save(Mockito.any());
         Mockito.verify(questionRepository, times(3)).save(Mockito.any());//verify the question is created when Owner is ready
     }

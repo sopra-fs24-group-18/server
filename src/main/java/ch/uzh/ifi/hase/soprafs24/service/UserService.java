@@ -178,4 +178,5 @@ public class UserService {
             user.setScore(100L);
         }
     }
+
 }

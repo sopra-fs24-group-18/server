@@ -17,7 +17,11 @@ public class QuestionGetDTO {
     private int roundNumber;
     private int leftRange;
     private int rightRange;
+    private int originLeftRange;
+    private int originRightRange;
     private boolean blur = false;
+
+
 
     public Long getId() {
         return id;
@@ -87,6 +91,19 @@ public class QuestionGetDTO {
     }
     public void setRightRange(int rightRange) {
         this.rightRange = rightRange;
+    }
+
+    public int getOriginLeftRange() {
+        return originLeftRange;
+    }
+    public void setOriginLeftRange(int originLeftRange) {
+        this.originLeftRange = originLeftRange;
+    }
+    public int getOriginRightRange() {
+        return originRightRange;
+    }
+    public void setOriginRightRange(int originRightRange) {
+        this.originRightRange = originRightRange;
     }
 
 

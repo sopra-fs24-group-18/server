@@ -22,6 +22,8 @@ public interface QuestionDTOMapper {
     @Mapping(source = "roundNumber", target = "roundNumber")
     @Mapping(source = "leftRange",target = "leftRange")
     @Mapping(source = "rightRange",target = "rightRange")
+    @Mapping(source = "originLeftRange",target = "originLeftRange")
+    @Mapping(source = "originRightRange",target = "originRightRange")
     @Mapping(source = "blur",target = "blur")
     QuestionGetDTO convertEntitytoQuestionGetDTO(Question question);
 

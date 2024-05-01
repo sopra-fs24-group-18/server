@@ -48,6 +48,12 @@ public class Question implements Serializable {
     @Column(nullable = true)
     private int rightRange; //item range for guessing mode
 
+    @Column(nullable = true)
+    private int originLeftRange; //item range for guessing mode before applying hint
+
+    @Column(nullable = true)
+    private int originRightRange; //item range for guessing mode before applying hint
+
     @Column(nullable = false)
     private boolean blur = false; //picture effect, default as false
 
@@ -135,6 +141,19 @@ public class Question implements Serializable {
     }
     public void setRightRange(int rightRange) {
         this.rightRange = rightRange;
+    }
+
+    public int getOriginLeftRange() {
+        return originLeftRange;
+    }
+    public void setOriginLeftRange(int originLeftRange) {
+        this.originLeftRange = originLeftRange;
+    }
+    public int getOriginRightRange() {
+        return originRightRange;
+    }
+    public void setOriginRightRange(int originRightRange) {
+        this.originRightRange = originRightRange;
     }
 
 

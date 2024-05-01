@@ -24,6 +24,8 @@ public class QuestionDTOMapperTest {
         question.setItemImageList("image1.jpg,image2.jpg");
         question.setLeftRange(0);
         question.setRightRange(100);
+        question.setOriginLeftRange(0);
+        question.setOriginRightRange(80);
         //using default value of blur
 
         // Convert entity to DTO using the mapper
@@ -40,6 +42,8 @@ public class QuestionDTOMapperTest {
         assertEquals(question.getItemImageList(), questionGetDTO.getItemImageList());
         assertEquals(question.getLeftRange(), questionGetDTO.getLeftRange());
         assertEquals(question.getRightRange(), questionGetDTO.getRightRange());
+        assertEquals(question.getOriginLeftRange(), questionGetDTO.getOriginLeftRange());
+        assertEquals(question.getOriginRightRange(), questionGetDTO.getOriginRightRange());
         assertEquals(question.getBlur(), questionGetDTO.getBlur());
     }
 

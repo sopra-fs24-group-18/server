@@ -15,8 +15,10 @@ import ch.uzh.ifi.hase.soprafs24.repository.RoomRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.concurrent.TimeUnit;
 import java.util.*;
@@ -36,13 +38,16 @@ public class QuestionService {
     private final RoomService roomService;
     private final RoomRepository roomRepository;
 
+    private final UserService userService;
+
     @Autowired
-    public QuestionService(QuestionRepository questionRepository, ItemRepository itemRepository, ToolService toolService, RoomService roomService,RoomRepository roomRepository) {
+    public QuestionService(QuestionRepository questionRepository, ItemRepository itemRepository, ToolService toolService, RoomService roomService,RoomRepository roomRepository,UserService userService) {
         this.questionRepository = questionRepository;
         this.itemRepository = itemRepository;
         this.toolService = toolService;
         this.roomService = roomService;
         this.roomRepository = roomRepository;
+        this.userService = userService;
 
     }
 
@@ -183,6 +188,8 @@ public class QuestionService {
         modifiedQuestion.setLeftRange(originQuestion.getLeftRange());
         modifiedQuestion.setRightRange(originQuestion.getRightRange());
         modifiedQuestion.setBlur(originQuestion.getBlur());
+        modifiedQuestion.setOriginLeftRange(originQuestion.getLeftRange());
+        modifiedQuestion.setOriginRightRange(originQuestion.getRightRange());
         // Get the user's tools
         List<String> userTools = toolService.getUserTools(userId);
         // Check if the user has the HINT tool
@@ -251,17 +258,23 @@ public class QuestionService {
         Long ownerId = room.getOwnerId();
         Long requireAmount = room.getPlayerAmount();
         Long actualAmount = updateReadyList(roomId, userId);
+        Optional<User> currentUserOpt = userService.getUserById(userId);
+
+        if (currentUserOpt.isPresent()) {
+            User currentUser = currentUserOpt.get(); // Extract the user object from the optional
+            currentUser.setScore(100L); // reset score
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cannot reset score due to the user is not exist!");
+        }
 
         // Check if the required amount is already met
         if (actualAmount.equals(requireAmount)) {
             //only execute the following part once for each room
             if (room.getGameMode() == GameMode.GUESSING && Objects.equals(userId, ownerId)) {
                 createGuessingQuestions(roomId); //create questions
-                roomService.resetPlayerScore(roomId); //reset player's score as 100
             }
            else if (room.getGameMode() == GameMode.BUDGET && Objects.equals(userId, ownerId)) {
             createBudgetQuestions(roomId);
-            roomService.resetPlayerScore(roomId);
         }
         // Return a message indicating that the game is ready
         return "ready";
