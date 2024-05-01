@@ -22,6 +22,7 @@ public class QuestionDTOMapperTest {
         question.setItemImage("image1.jpg");
         question.setItemList("item1,item2");
         question.setItemImageList("image1.jpg,image2.jpg");
+        question.setBudget(123);
         question.setLeftRange(0);
         question.setRightRange(100);
         question.setOriginLeftRange(0);
@@ -45,6 +46,7 @@ public class QuestionDTOMapperTest {
         assertEquals(question.getOriginLeftRange(), questionGetDTO.getOriginLeftRange());
         assertEquals(question.getOriginRightRange(), questionGetDTO.getOriginRightRange());
         assertEquals(question.getBlur(), questionGetDTO.getBlur());
+        assertEquals(question.getBudget(), questionGetDTO.getBudget());
     }
 
 }

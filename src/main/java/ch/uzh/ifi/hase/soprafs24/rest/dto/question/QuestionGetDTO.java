@@ -21,6 +21,8 @@ public class QuestionGetDTO {
     private int originRightRange;
     private boolean blur = false;
 
+    private float budget;
+
 
 
     public Long getId() {
@@ -112,5 +114,12 @@ public class QuestionGetDTO {
     }
     public void setBlur(boolean blur) {
         this.blur = blur;
+    }
+
+    public float getBudget() {
+        return budget;
+    }
+    public void setBudget(float budget) {
+        this.budget = budget;
     }
 }

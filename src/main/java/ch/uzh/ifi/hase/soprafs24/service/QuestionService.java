@@ -114,7 +114,7 @@ public class QuestionService {
         // Loop through each round (3 rounds)
         for (int round = 1; round <= 3; round++) {
 
-            int numItems = 9; //9 items per round
+            int numItems = 6; //6 items per round
             // Ensure there are enough items left in the list
             if (allItems.size() < numItems) {
                 throw new RuntimeException("Not enough items in the database for all rounds");
@@ -124,7 +124,7 @@ public class QuestionService {
             List<Item> selectedItems = new ArrayList<>();
 
             // Select a random subset of items from the remaining ones
-            for (int i = round * numItems - 9; i < round * numItems; i++) {
+            for (int i = round * numItems - 6; i < round * numItems; i++) {
                 Item selectedItem = allItems.get(i);
                 selectedItems.add(selectedItem);
             }
@@ -132,7 +132,7 @@ public class QuestionService {
             //randomly determine the item number to calculate budget
             // Create a SecureRandom instance
             SecureRandom secureRandom = new SecureRandom();
-            int budgetItemNum = (int) (secureRandom.nextDouble()  * 9) + 1;//at least one item
+            int budgetItemNum = (int) (secureRandom.nextDouble()  * 6) + 1;//at least one item
             //shuffle selected items order
             Collections.shuffle(selectedItems);
             float budget = 0;
@@ -190,6 +190,9 @@ public class QuestionService {
         modifiedQuestion.setBlur(originQuestion.getBlur());
         modifiedQuestion.setOriginLeftRange(originQuestion.getLeftRange());
         modifiedQuestion.setOriginRightRange(originQuestion.getRightRange());
+        modifiedQuestion.setItemList(originQuestion.getItemList());
+        modifiedQuestion.setItemImageList(originQuestion.getItemImageList());
+        modifiedQuestion.setBudget(originQuestion.getBudget());
         // Get the user's tools
         List<String> userTools = toolService.getUserTools(userId);
         // Check if the user has the HINT tool
