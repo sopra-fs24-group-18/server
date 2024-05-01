@@ -1,6 +1,8 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Answer;
+import ch.uzh.ifi.hase.soprafs24.repository.QuestionRepository;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.answer.AnswerGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.answer.AnswerPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.AnswerDTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.AnswerService;
@@ -19,18 +21,29 @@ public class AnswerController {
   @PostMapping("/answers/guessMode")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public Long calculatePointGuessingMode(@RequestBody AnswerPostDTO answerPostDTO) {
+  public AnswerGetDTO calculatePointGuessingMode(@RequestBody AnswerPostDTO answerPostDTO) {
       Answer answer = AnswerDTOMapper.INSTANCE.convertAnswerPostDTOtoEntity(answerPostDTO);
       answerService.saveAnswer(answer);
-      return answerService.calculatePoints(answer);
+      Long point = answerService.calculatePoints(answer);
+
+      AnswerGetDTO answerGetDTO = new AnswerGetDTO();
+      answerGetDTO.setPoint(point);
+      answerGetDTO.setRealPrice(answerService.getRealPrice(answer));
+      return answerGetDTO;
   }
 
   @PostMapping("/answers/budgetMode")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public Long calculatePointBudgetMode(@RequestBody AnswerPostDTO answerPostDTO) {
+  public AnswerGetDTO calculatePointBudgetMode(@RequestBody AnswerPostDTO answerPostDTO) {
       Answer answer = AnswerDTOMapper.INSTANCE.convertAnswerPostDTOtoEntity(answerPostDTO);
       answerService.saveAnswer(answer);
-      return answerService.calculatePoints(answer);
+      Long point = answerService.calculatePoints(answer);
+
+
+      AnswerGetDTO answerGetDTO = new AnswerGetDTO();
+      answerGetDTO.setPoint(point);
+      answerGetDTO.setRealPrice(answerService.calculateTotalPrice(answer));
+      return answerGetDTO;
   }
 }

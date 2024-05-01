@@ -112,17 +112,7 @@ public class AnswerService {
         List<Answer> answers = answerRepository.findByQuestionId(answer.getQuestionId());
         Map<Long, Float> sumPriceMap = new HashMap<>();
         for (Answer ans : answers) {
-            List<Long> itemIds = Arrays.stream(ans.getChosenItemList().split(","))
-                    .map(Long::valueOf)
-                    .collect(Collectors.toList());
-
-            // Retrieve the items from the database using the item ids
-            List<Item> items = itemRepository.findAllByIdIn(itemIds);
-
-            // Calculate the sum of prices for the items
-            Float sumPrice = items.stream()
-                    .map(Item::getPrice)
-                    .reduce(0F, Float::sum);
+            Float sumPrice = calculateTotalPrice(ans);
 
             // Store the sum of prices for the user in the map
             sumPriceMap.put(ans.getUserId(), sumPrice);
@@ -176,5 +166,29 @@ public class AnswerService {
         user.setToolList(null);
         user.setToolStatus(null);
         userRepository.save(user);
+    }
+
+    public Float getRealPrice(Answer answer) {
+        Optional<Question> optionalQuestion = questionRepository.findById(answer.getQuestionId());
+        if(!optionalQuestion.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The question was not found!");
+        }
+        Question question = optionalQuestion.get();
+        return question.getAnswer();
+    }
+
+    public Float calculateTotalPrice(Answer answer) {
+        List<Long> itemIds = Arrays.stream(answer.getChosenItemList().split(","))
+                .map(Long::valueOf)
+                .collect(Collectors.toList());
+
+        // Retrieve the items from the database using the item ids
+        List<Item> items = itemRepository.findAllByIdIn(itemIds);
+
+        // Calculate the sum of prices for the items
+        Float sumPrice = items.stream()
+                .map(Item::getPrice)
+                .reduce(0F, Float::sum);
+        return sumPrice;
     }
 }
