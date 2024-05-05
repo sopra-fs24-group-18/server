@@ -25,7 +25,7 @@ public class DataLoader implements ApplicationRunner {
         Tool tool2 = new Tool();
         tool2.setType(ToolType.BLUR);
         tool2.setDescription("Using this tool, you can blur others' images in next round.");
-        tool2.setPrice(30L);
+        tool2.setPrice(60L);
         toolRepository.save(tool2);
     }
 }

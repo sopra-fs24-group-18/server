@@ -94,7 +94,7 @@ public class RoomService {
     }
 
     public void exitRoom(Long roomId, Long userId) {
-        userService.getUserById(userId);
+        Optional<User> optionalUser = userService.getUserById(userId);
         Room room = findById(roomId);
 
         String playerIds = room.getPlayerIds();
@@ -106,6 +106,9 @@ public class RoomService {
             }
             newPlayerList.add(id);
         }
+        User user = optionalUser.get();
+        user.setScore(100L);
+        userRepository.save(user);
 
         if (userId.equals(room.getOwnerId())) {
             if (!newPlayerList.isEmpty()) {

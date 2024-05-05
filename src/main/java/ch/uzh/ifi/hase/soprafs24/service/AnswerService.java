@@ -64,14 +64,16 @@ public class AnswerService {
       String[] playerIds = room.get().getPlayerIds().split(",");
       Long playerAmount = Long.valueOf(playerIds.length);
 
-      // check if all users have submitted the answers
-      while (!playerAmount.equals(answerRepository.countByQuestionId(answer.getQuestionId()))) {
-          try {
-              Thread.sleep(1000);
-          } catch (InterruptedException e) {
-              log.error("Error submitting answer", e);
+      int answeredPlayers = 0;
+      do{
+          Set<Long> userIds = new HashSet<>();
+          List<Answer> answers = answerRepository.findByQuestionId(question.getId());
+          for (Answer ans : answers) {
+              userIds.add(ans.getUserId());
           }
-      }
+          answeredPlayers = userIds.size();
+      }while (!playerAmount.equals(answeredPlayers));
+
       Long point = 0L;
       // all users have submitted the answers, calculate the rank and reward the points
       if(question.getGameMode().equals(GameMode.GUESSING)){
