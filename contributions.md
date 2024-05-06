@@ -422,3 +422,21 @@ Separate profile management page and lobby page.
 **Plan for this week**
 
 Add some funtionalities related to tools.
+
+### Yunfan Zhou
+**Issues worked on**
+
+*    [#51](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/51)
+*    [#52](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/52)
+*    [#67](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/67)
+
+**Description**
+
+Designed ui to display items in budget mode. 
+Handle the logic to select the multiples items, and submit user's answer for budget mode.
+Adjust routers for budget mode.
+
+**Plan for this week**
+
+Implement tools on budget mode, improve the effect of tools on both guessing and budget mode.
+
