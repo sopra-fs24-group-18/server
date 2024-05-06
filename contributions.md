@@ -386,3 +386,17 @@ Modify the /getready endpoint to reset the player's score once they are ready, t
 
 Modify the /getquestion endpoint for the BUDGET MODE TOOLS (to be discussed whether the current endpoint is sufficient or if new logic is needed).     
 Write README.
+
+### Lu Li
+**Issues worked on**
+
+*    [#64](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/64)
+*    [#65](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/65)
+*    [#66](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/66)
+
+**Description**
+improve the logic and UI of tool display.
+Fixed bugs in fetching user's info in profile page.
+
+**Plan for this week**
+Implement upload avator in profile page. 
