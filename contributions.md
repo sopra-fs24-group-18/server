@@ -395,8 +395,10 @@ Write README.
 *    [#66](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/66)
 
 **Description**
+
 improve the logic and UI of tool display.
 Fixed bugs in fetching user's info in profile page.
 
 **Plan for this week**
+
 Implement upload avator in profile page. 
