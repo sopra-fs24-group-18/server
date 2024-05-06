@@ -378,9 +378,11 @@ Improing the ui design of front-end.
 *   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/139
 
 **Description**
-Modify the /getquestion endpoint, add original price range attribute (price before applying HINT tool)
+
+Modify the /getquestion endpoint, add original price range attribute (price before applying HINT tool).          
 Modify the /getready endpoint to reset the player's score once they are ready, to avoid data inconsistency among clients.
 
 **Plan for this week**
-Modify the /getquestion endpoint for the BUDGET MODE TOOLS (to be discussed whether the current endpoint is sufficient or if new logic is needed).
+
+Modify the /getquestion endpoint for the BUDGET MODE TOOLS (to be discussed whether the current endpoint is sufficient or if new logic is needed).     
 Write README.
