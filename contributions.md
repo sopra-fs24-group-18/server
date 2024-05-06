@@ -402,3 +402,23 @@ Fixed bugs in fetching user's info in profile page.
 **Plan for this week**
 
 Implement upload avator in profile page. 
+
+### Zien Zeng
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/141
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/142
+*    [#59](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/59)
+*    [#60](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/60)
+*    [#61](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/61)
+
+**Description**
+
+Backend: Modify endpoints related to waiting for all players' answer submissions and return real item price to players after they submitting answers.
+
+Frontend: Design a new waiting page after player submitting their answers.
+Design a new component for players to enter room code.
+Seperate profile management page and lobby page.
+
+**Plan for this week**
+
+Add some funtionalities related to tools.
