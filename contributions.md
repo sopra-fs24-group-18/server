@@ -291,8 +291,8 @@ Fix/modify potential bugs/logics based on the client side feedback.
 
 ### Bingjie Xue
 **Issues worked on**
-*    [#45](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/38)
-*    [#48](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/39)
+*    [#38](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/38)
+*    [#39](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/39)
 
 
 **Description**
@@ -353,3 +353,20 @@ Integrate and modified the UI of gameroom.
 
 Modify the tooldisplay logic.
 Modify the profile info display.
+
+M4
+## Week 1 (4.29-5.5)
+
+### Bingjie Xue
+**Issues worked on**
+*    [#14](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/14)
+*    [#15](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/15)
+*    [#58](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/58)
+
+**Description**
+
+Design loading page before game start. Improve ui design of points display.
+
+**Plan for this week**
+
+Improing the ui design of front-end.
