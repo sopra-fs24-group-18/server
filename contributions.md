@@ -417,7 +417,7 @@ Backend: Modify endpoints related to waiting for all players' answer submissions
 
 Frontend: Design a new waiting page after player submitting their answers.
 Design a new component for players to enter room code.
-Seperate profile management page and lobby page.
+Separate profile management page and lobby page.
 
 **Plan for this week**
 
