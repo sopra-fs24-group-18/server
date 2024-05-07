@@ -26,6 +26,8 @@ public interface QuestionDTOMapper {
     @Mapping(source = "originRightRange",target = "originRightRange")
     @Mapping(source = "budget",target = "budget")
     @Mapping(source = "blur",target = "blur")
+    @Mapping(source = "selectedItemNum",target = "selectedItemNum")
+    @Mapping(source = "selectedItemList",target = "selectedItemList")
     QuestionGetDTO convertEntitytoQuestionGetDTO(Question question);
 
 }

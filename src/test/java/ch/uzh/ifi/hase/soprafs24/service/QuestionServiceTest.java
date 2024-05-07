@@ -77,14 +77,14 @@ public class QuestionServiceTest {
 
 
         //Create mock item objects
-        Item[] itemArray = new Item[27];
+        Item[] itemArray = new Item[18];
 
         String commonTitle = "item";
         String commonImageUrl = "image";
         int commonPrice = 100;
 
-        // Create 9 items in a loop
-        for (int i = 0; i < 27; i++) {
+        // 6 items per round, totally 3 rounds
+        for (int i = 0; i < 18; i++) {
 
             Item item = new Item();
             item.setId((long) (i + 1));
@@ -178,8 +178,11 @@ public class QuestionServiceTest {
         Mockito.verify(questionRepository, times(3)).save(argument.capture());
         List<Question> savedQuestions = argument.getAllValues();
         for (int i = 0; i < 3; i++) {
-            assertTrue(savedQuestions.get(i).getBudget() <= 900);
-            assertTrue(savedQuestions.get(i).getBudget() >=100);
+            assertTrue(savedQuestions.get(i).getBudget() <= 600);
+            assertTrue(savedQuestions.get(i).getBudget() >= 100);
+            assertNotNull(savedQuestions.get(i).getSelectedItemList());
+            assertTrue(savedQuestions.get(i).getSelectedItemNum() >= 1); //at least one item should be selected to calculate budget
+            assertTrue(savedQuestions.get(i).getSelectedItemNum() <= 6); //at most 6
         }
 
     }
@@ -223,6 +226,7 @@ public class QuestionServiceTest {
 
         Question question = new Question();
         question.setAnswer(100);
+        question.setSelectedItemNum(1);
 
         Mockito.when(questionRepository.findAllByRoomIdAndRoundNumber(Mockito.anyLong(), Mockito.anyInt())).thenReturn(question);
         Mockito.when(toolService.getUserTools(Mockito.anyLong())).thenReturn(Arrays.asList("HINT", "BLUR"));
@@ -234,6 +238,7 @@ public class QuestionServiceTest {
         assertNotNull(result);
         assertTrue(result.getLeftRange() >= 80); //after using hint tool, price range change to 0.8-1
         assertTrue(result.getRightRange() <= 120); //1-1.2
+        assertEquals(1,result.getSelectedItemNum());
         assertFalse(result.getBlur());//player owns blur tool won't be infected
     }
     @Test
@@ -243,6 +248,7 @@ public class QuestionServiceTest {
         question.setAnswer(100);
         question.setLeftRange(60);
         question.setRightRange(140);
+        question.setSelectedItemNum(1);
 
         Mockito.when(questionRepository.findAllByRoomIdAndRoundNumber(Mockito.anyLong(), Mockito.anyInt())).thenReturn(question);
         Mockito.when(toolService.getUserTools(Mockito.anyLong())).thenReturn(Arrays.asList("BLUR"));
@@ -255,6 +261,7 @@ public class QuestionServiceTest {
         assertEquals(60,result.getLeftRange() ); //no hint tool, range shouldn't change
         assertEquals(140,result.getRightRange() );
         assertTrue(result.getBlur());//another player owns Blur
+        assertNotEquals(1,result.getSelectedItemNum()); //without hint tool, this term should not be returned
     }
     @Test
     public void testGetQuestionsByRoomRoundandUserIdWithHintandBlur() {

@@ -1,10 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto.question;
-
 import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
 public class QuestionGetDTO {
     private Long id;
@@ -20,8 +15,9 @@ public class QuestionGetDTO {
     private int originLeftRange;
     private int originRightRange;
     private boolean blur = false;
-
     private float budget;
+    private String selectedItemList;
+    private int selectedItemNum;
 
 
 
@@ -108,7 +104,6 @@ public class QuestionGetDTO {
         this.originRightRange = originRightRange;
     }
 
-
     public boolean getBlur() {
         return blur;
     }
@@ -121,5 +116,18 @@ public class QuestionGetDTO {
     }
     public void setBudget(float budget) {
         this.budget = budget;
+    }
+
+    public String getSelectedItemList() {
+        return selectedItemList;
+    }
+    public void setSelectedItemList(String selectedItemList) {
+        this.selectedItemList =selectedItemList;
+    }
+
+    public int getSelectedItemNum(){return selectedItemNum;}
+
+    public void setSelectedItemNum(int selectedItemNum){
+        this.selectedItemNum = selectedItemNum;
     }
 }

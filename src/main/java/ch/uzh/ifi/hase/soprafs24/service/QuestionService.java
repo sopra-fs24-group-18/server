@@ -136,10 +136,12 @@ public class QuestionService {
             //shuffle selected items order
             Collections.shuffle(selectedItems);
             float budget = 0;
+            List<Long> budgetItemList = new ArrayList<>();
             // Calculate the budget by summing the prices of selected items and rounding up
             for (int i = 0; i < budgetItemNum; i++) {
                 float price = selectedItems.get(i).getPrice();
                 budget += price;
+                budgetItemList.add(selectedItems.get(i).getId());
             }
             budget = (float) Math.ceil(budget);
 
@@ -161,6 +163,8 @@ public class QuestionService {
             newQuestion.setItemImageList(itemImageList.toString());
             newQuestion.setRoundNumber(round);
             newQuestion.setBudget(budget);
+            newQuestion.setSelectedItemNum(budgetItemNum);
+            newQuestion.setSelectedItemList(budgetItemList.toString());
 
             // Save the Question object to the repository
             questionRepository.save(newQuestion);
@@ -193,6 +197,7 @@ public class QuestionService {
         modifiedQuestion.setItemList(originQuestion.getItemList());
         modifiedQuestion.setItemImageList(originQuestion.getItemImageList());
         modifiedQuestion.setBudget(originQuestion.getBudget());
+        //modifiedQuestion.setSelectedItemList(originQuestion.getSelectedItemList());
         // Get the user's tools
         List<String> userTools = toolService.getUserTools(userId);
         // Check if the user has the HINT tool
@@ -220,6 +225,8 @@ public class QuestionService {
             int newRightRange = (int) Math.ceil(originalPrice * (1 + maxScale));
             modifiedQuestion.setLeftRange(newLeftRange);
             modifiedQuestion.setRightRange(newRightRange);
+            // Budget mode, only offer number if has hint tool
+            modifiedQuestion.setSelectedItemNum(originQuestion.getSelectedItemNum());
         }
         if (otherUsersHaveBlurTool) {
             // Set blur property to true
