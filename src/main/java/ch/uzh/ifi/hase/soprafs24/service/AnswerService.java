@@ -64,15 +64,16 @@ public class AnswerService {
       String[] playerIds = room.get().getPlayerIds().split(",");
       Long playerAmount = Long.valueOf(playerIds.length);
 
-      int answeredPlayers = 0;
+      Long answeredPlayers = 0L;
       do{
           Set<Long> userIds = new HashSet<>();
           List<Answer> answers = answerRepository.findByQuestionId(question.getId());
           for (Answer ans : answers) {
               userIds.add(ans.getUserId());
           }
-          answeredPlayers = userIds.size();
+          answeredPlayers = Long.valueOf(userIds.size());
       }while (!playerAmount.equals(answeredPlayers));
+
 
       Long point = 0L;
       // all users have submitted the answers, calculate the rank and reward the points
@@ -87,6 +88,7 @@ public class AnswerService {
   }
 
     private Long rankGuessMode(Answer answer, String[] playerIds, Float realPrice) {
+      //TODO：换成Set！！！
         List<Answer> answers = answerRepository.findByQuestionId(answer.getQuestionId());
         Collections.sort(answers, (a1, a2) -> Float.compare(Math.abs(a1.getGuessedPrice() - realPrice),
                 Math.abs(a2.getGuessedPrice() - realPrice)));
@@ -180,6 +182,9 @@ public class AnswerService {
     }
 
     public Float calculateTotalPrice(Answer answer) {
+      if(answer.getChosenItemList() == null || answer.getChosenItemList().length() == 0){
+          return 0.0F;
+      }
         List<Long> itemIds = Arrays.stream(answer.getChosenItemList().split(","))
                 .map(Long::valueOf)
                 .collect(Collectors.toList());

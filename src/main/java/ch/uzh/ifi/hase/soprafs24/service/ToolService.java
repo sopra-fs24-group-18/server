@@ -69,6 +69,7 @@ public class ToolService {
                 break;
             case BLUR:
                 // Find the room containing the current user
+                // TODO：这里有bug！！！
                 Optional<Room> optionalRoom = roomRepository.findByPlayerIdsContaining(userId.toString());
                 Room room = optionalRoom.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Room not found"));
 
