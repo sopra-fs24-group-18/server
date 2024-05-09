@@ -151,7 +151,7 @@ While our project currently offers two game modes, there's room for expansion to
 Although our project primarily focuses on the core gameplay experience, there's potential to incorporate additional features to further elevate user engagement. Such as background music (BGM) to enhance the atmosphere, customizable game room backgrounds to personalize the experience, and built-in communication tools to facilitate interaction among players during gameplay sessions.
 
 
-## Authors and acknowledgment
+## Authors and acknowledgment 💪
 <a name="authorsandacknowledgment"></a>
 ### Contributors
 
