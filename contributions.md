@@ -446,11 +446,12 @@ Implement tools on budget mode, improve the effect of tools on both guessing and
 ### Bingjie Xue
 **Issues worked on**
 *    [#71](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/71)
-
+*    [#72](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/72)
 
 **Description**
 
 Add instruction on mainpage for this game.
+Make timer consistent.
 
 **Plan for this week**
 
