@@ -457,3 +457,18 @@ Make timer consistent.
 
 Improing the ui design of front-end.
 
+### Yanyang Gong
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/144
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/145
+
+**Description**
+
+Implement logic to handle HINT Tool under budget mode, add selected item number and selected item list to question entity.         
+Write ReadMe.
+
+**Plan for this week**
+
+Refine tests. 
+
+Enhance client-side features for better usability.
