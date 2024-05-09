@@ -440,3 +440,19 @@ Adjust routers for budget mode.
 
 Implement tools on budget mode, improve the effect of tools on both guessing and budget mode.
 
+
+## Week 2 (5.6-5.12)
+
+### Bingjie Xue
+**Issues worked on**
+*    [#71](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/71)
+
+
+**Description**
+
+Add instruction on mainpage for this game.
+
+**Plan for this week**
+
+Improing the ui design of front-end.
+
