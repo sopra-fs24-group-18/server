@@ -47,7 +47,7 @@ public class ToolService {
         return this.toolRepository.findAll();
     }
 
-    public void useTool(Long toolId, Long userId) {
+    public void useTool(Long toolId, Long roomId, Long userId) {
         Optional<User> optionalUser = userService.getUserById(userId);
         User user = optionalUser.get();
 
@@ -62,15 +62,20 @@ public class ToolService {
         String toolList = user.getToolList() == null ? tool.getType().name() : user.getToolList() + "," + tool.getType();
         user.setToolList(toolList);
 
+        String toolStatus = user.getToolStatus();
+
         switch (tool.getType()) {
             case HINT:
-                String toolStatus = user.getToolStatus() == null ? ToolType.HINT.name() : user.getToolStatus() + "," + ToolType.HINT;
+            case Defense:
+            case Boost:
+            case Gamble:
+                toolStatus = toolStatus == null ? ToolType.HINT.name() : user.getToolStatus() + "," + ToolType.HINT;
                 user.setToolStatus(toolStatus);
                 break;
+
             case BLUR:
                 // Find the room containing the current user
-                // TODO：这里有bug！！！
-                Optional<Room> optionalRoom = roomRepository.findByPlayerIdsContaining(userId.toString());
+                Optional<Room> optionalRoom = roomRepository.findById(roomId);
                 Room room = optionalRoom.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Room not found"));
 
                 // Get player IDs in the room

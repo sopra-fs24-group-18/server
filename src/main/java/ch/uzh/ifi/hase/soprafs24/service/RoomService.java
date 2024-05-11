@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs24.service;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Room;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
+import ch.uzh.ifi.hase.soprafs24.repository.AnswerRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.RoomRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import org.slf4j.Logger;
@@ -32,12 +33,14 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final UserService userService;
     private final UserRepository userRepository;
+    private final AnswerRepository answerRepository;
 
     @Autowired
-    public RoomService(@Qualifier("roomRepository") RoomRepository roomRepository, UserService userService, UserRepository userRepository) {
+    public RoomService(@Qualifier("roomRepository") RoomRepository roomRepository, UserService userService, UserRepository userRepository, AnswerRepository answerRepository) {
         this.roomRepository = roomRepository;
         this.userService = userService;
         this.userRepository = userRepository;
+        this.answerRepository = answerRepository;
     }
 
     public Room createRoom(Room newRoom) {
@@ -109,6 +112,7 @@ public class RoomService {
         User user = optionalUser.get();
         user.setScore(100L);
         userRepository.save(user);
+        answerRepository.deleteByUserId(userId);
 
         if (userId.equals(room.getOwnerId())) {
             if (!newPlayerList.isEmpty()) {

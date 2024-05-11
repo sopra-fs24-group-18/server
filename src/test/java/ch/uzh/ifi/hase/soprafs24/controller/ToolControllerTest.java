@@ -72,7 +72,7 @@ public class ToolControllerTest {
 
   @Test
   public void useTool_validInput() throws Exception {
-    doNothing().when(toolService).useTool(Mockito.anyLong(), Mockito.anyLong());
+    doNothing().when(toolService).useTool(Mockito.anyLong(), Mockito.anyLong(), Mockito.anyLong());
 
     // when
     MockHttpServletRequestBuilder postReqest = post("/tools/1/1")
@@ -85,7 +85,7 @@ public class ToolControllerTest {
     @Test
     public void useTool_invalidInputs() throws Exception {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Tool not found!"))
-                .when(toolService).useTool(Mockito.anyLong(), Mockito.anyLong());
+                .when(toolService).useTool(Mockito.anyLong(), Mockito.anyLong(), Mockito.anyLong());
 
         MockHttpServletRequestBuilder postReqest = post("/tools/1/1")
                 .contentType(MediaType.APPLICATION_JSON);

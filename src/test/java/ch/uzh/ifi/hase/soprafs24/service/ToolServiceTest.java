@@ -63,7 +63,7 @@ public class ToolServiceTest {
       testUser.setScore(100L);
       Mockito.when(userService.getUserById(Mockito.anyLong())).thenReturn(Optional.ofNullable(testUser));
       Mockito.when(toolRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(testTool));
-      toolService.useTool(1L, 1L);
+      toolService.useTool(1L, 1L, 1L);
 
       assertEquals("HINT", testUser.getToolStatus());
       assertEquals("HINT", testUser.getToolList());
@@ -75,7 +75,7 @@ public class ToolServiceTest {
         Mockito.when(userService.getUserById(Mockito.anyLong())).thenReturn(Optional.ofNullable(testUser));
         Mockito.when(toolRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(testTool));
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> toolService.useTool(1L, 1L));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> toolService.useTool(1L, 1L, 1L));
         assertEquals(HttpStatus.FORBIDDEN, exception.getStatus());
     }
 }

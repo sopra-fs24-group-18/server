@@ -205,6 +205,9 @@ public class QuestionService {
         // Get all users in the same room
         List<User> roomUsers = roomService.getUsersByRoomId(roomId);
 
+        User u = userService.getUserById(userId).get();
+        boolean hasDefenseTool = u.getToolStatus().contains(ToolType.Defense.name());
+
         // Check if any other users in the room have the BLUR tool
         boolean otherUsersHaveBlurTool = roomUsers.stream()
                 .filter(user -> !user.getId().equals(userId)) // Exclude the current user
@@ -228,7 +231,7 @@ public class QuestionService {
             // Budget mode, only offer number if has hint tool
             modifiedQuestion.setSelectedItemNum(originQuestion.getSelectedItemNum());
         }
-        if (otherUsersHaveBlurTool) {
+        if (!hasDefenseTool && otherUsersHaveBlurTool) {
             // Set blur property to true
             modifiedQuestion.setBlur(true);
         }

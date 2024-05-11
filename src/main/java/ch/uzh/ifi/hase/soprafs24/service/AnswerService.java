@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
 import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
+import ch.uzh.ifi.hase.soprafs24.constant.ToolType;
 import ch.uzh.ifi.hase.soprafs24.entity.*;
 import ch.uzh.ifi.hase.soprafs24.repository.*;
 import org.slf4j.Logger;
@@ -56,16 +57,18 @@ public class AnswerService {
       }
       Question question = optionalQuestion.get();
 
-      Optional<Room> room = roomRepository.findById(question.getRoomId());
-      if (!room.isPresent()) {
-          throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The room was not found!");
-      }
-
-      String[] playerIds = room.get().getPlayerIds().split(",");
-      Long playerAmount = Long.valueOf(playerIds.length);
-
+      String[] playerIds;
+      Long playerAmount = 0L;
       Long answeredPlayers = 0L;
       do{
+          Optional<Room> optionalRoom = roomRepository.findById(question.getRoomId());
+          if (!optionalRoom.isPresent()) {
+              throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The room was not found!");
+          }
+
+          playerIds = optionalRoom.get().getPlayerIds().split(",");
+          playerAmount = Long.valueOf(playerIds.length);
+
           Set<Long> userIds = new HashSet<>();
           List<Answer> answers = answerRepository.findByQuestionId(question.getId());
           for (Answer ans : answers) {
@@ -73,7 +76,6 @@ public class AnswerService {
           }
           answeredPlayers = Long.valueOf(userIds.size());
       }while (!playerAmount.equals(answeredPlayers));
-
 
       Long point = 0L;
       // all users have submitted the answers, calculate the rank and reward the points
@@ -88,8 +90,12 @@ public class AnswerService {
   }
 
     private Long rankGuessMode(Answer answer, String[] playerIds, Float realPrice) {
-      //TODO：换成Set！！！
-        List<Answer> answers = answerRepository.findByQuestionId(answer.getQuestionId());
+        // using Set to prevent user double-click the submit button and submit same answers for multiple times
+        Set<Answer> answersSet = new HashSet<>(answerRepository.findByQuestionId(answer.getQuestionId()));
+
+        // convert Set to List in order to sort the answer entries
+        List<Answer> answers = new ArrayList<>(answersSet);
+
         Collections.sort(answers, (a1, a2) -> Float.compare(Math.abs(a1.getGuessedPrice() - realPrice),
                 Math.abs(a2.getGuessedPrice() - realPrice)));
 
@@ -164,9 +170,21 @@ public class AnswerService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user was not found!");
         }
         User user = optionalUser.get();
+        Long score = user.getScore() + points;
 
-        Long oldScore = user.getScore();
-        user.setScore(oldScore + points);
+        if(user.getToolStatus().contains(ToolType.Boost.name()) && points.equals(100L)){
+            score += 60L;
+        }
+        if(user.getToolStatus().contains(ToolType.Gamble.name())){
+            if(points.equals(100L)) {
+                score *= 3;
+            }
+            else{
+                score = 0L;
+            }
+        }
+
+        user.setScore(score);
         user.setToolList(null);
         user.setToolStatus(null);
         userRepository.save(user);

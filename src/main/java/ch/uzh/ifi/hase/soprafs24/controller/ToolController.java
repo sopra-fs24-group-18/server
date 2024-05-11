@@ -34,11 +34,11 @@ public class ToolController {
       return toolService.getTools();
   }
 
-  @PostMapping("/tools/{toolId}/{userId}")
+  @PostMapping("/tools/{toolId}/{roomId}/{userId}")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public ResponseEntity<?> useTool(@PathVariable Long toolId, @PathVariable Long userId){
-      toolService.useTool(toolId, userId);
+  public ResponseEntity<?> useTool(@PathVariable Long toolId, @PathVariable Long roomId, @PathVariable Long userId){
+      toolService.useTool(toolId, roomId, userId);
       return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Buy and use the tool successfully!");
   }
 
