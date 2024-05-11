@@ -15,6 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import static org.hamcrest.Matchers.is;
@@ -41,7 +43,10 @@ public class AnswerControllerTest {
     answerPostDTO.setUserId(1L);
     answerPostDTO.setQuestionId(1L);
 
-    given(answerService.calculatePoints(Mockito.any())).willReturn(100L);
+    List<Long> list = new ArrayList<>();
+    list.add(100L);
+    list.add(0L);
+    given(answerService.calculatePoints(Mockito.any())).willReturn(list);
 
     MockHttpServletRequestBuilder postRequest = post("/answers/guessMode")
             .contentType(MediaType.APPLICATION_JSON)
@@ -86,8 +91,11 @@ public class AnswerControllerTest {
                 answerPostDTO.setUserId(2L);
                 answerPostDTO.setQuestionId(1L);
 
-                // 模拟用户2提交答案2
-                given(answerService.calculatePoints(Mockito.any())).willReturn(100L);
+                List<Long> list = new ArrayList<>();
+                list.add(100L);
+                list.add(0L);
+                // user2 submit answer2
+                given(answerService.calculatePoints(Mockito.any())).willReturn(list);
 
                 MockHttpServletRequestBuilder postRequest = post("/answers/guessMode")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -138,7 +146,10 @@ public class AnswerControllerTest {
         answerPostDTO.setUserId(1L);
         answerPostDTO.setQuestionId(1L);
 
-        given(answerService.calculatePoints(Mockito.any())).willReturn(100L);
+        List<Long> list = new ArrayList<>();
+        list.add(100L);
+        list.add(0L);
+        given(answerService.calculatePoints(Mockito.any())).willReturn(list);
 
         MockHttpServletRequestBuilder postRequest = post("/answers/budgetMode")
                 .contentType(MediaType.APPLICATION_JSON)

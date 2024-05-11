@@ -206,7 +206,10 @@ public class QuestionService {
         List<User> roomUsers = roomService.getUsersByRoomId(roomId);
 
         User u = userService.getUserById(userId).get();
-        boolean hasDefenseTool = u.getToolStatus().contains(ToolType.Defense.name());
+        boolean hasDefenseTool = false;
+        if(u.getToolStatus() != null) {
+            hasDefenseTool = u.getToolStatus().contains(ToolType.DEFENSE.name());
+        }
 
         // Check if any other users in the room have the BLUR tool
         boolean otherUsersHaveBlurTool = roomUsers.stream()

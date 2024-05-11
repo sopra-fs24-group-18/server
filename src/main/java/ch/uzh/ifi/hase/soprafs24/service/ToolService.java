@@ -66,15 +66,14 @@ public class ToolService {
 
         switch (tool.getType()) {
             case HINT:
-            case Defense:
-            case Boost:
-            case Gamble:
-                toolStatus = toolStatus == null ? ToolType.HINT.name() : user.getToolStatus() + "," + ToolType.HINT;
+            case DEFENSE:
+            case BONUS:
+            case GAMBLE:
+                toolStatus = toolStatus == null ? tool.getType().name() : user.getToolStatus() + "," + tool.getType();
                 user.setToolStatus(toolStatus);
                 break;
 
             case BLUR:
-                // Find the room containing the current user
                 Optional<Room> optionalRoom = roomRepository.findById(roomId);
                 Room room = optionalRoom.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Room not found"));
 

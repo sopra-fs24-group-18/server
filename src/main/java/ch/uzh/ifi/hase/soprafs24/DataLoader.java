@@ -29,19 +29,19 @@ public class DataLoader implements ApplicationRunner {
         toolRepository.save(tool2);
 
         Tool tool3 = new Tool();
-        tool3.setType(ToolType.Defense);
+        tool3.setType(ToolType.DEFENSE);
         tool3.setDescription("Using this tool, you can prevent from images being blurred by others.");
-        tool3.setPrice(30L);
+        tool3.setPrice(20L);
         toolRepository.save(tool3);
 
         Tool tool4 = new Tool();
-        tool4.setType(ToolType.Boost);
+        tool4.setType(ToolType.BONUS);
         tool4.setDescription("Using this tool, if you are No.1 in the next round, you can get an extra 50 points.");
         tool4.setPrice(20L);
         toolRepository.save(tool4);
 
         Tool tool5 = new Tool();
-        tool5.setType(ToolType.Boost);
+        tool5.setType(ToolType.GAMBLE);
         tool5.setDescription("Using this tool, if you are No.1 in the next round, you can triple your points, otherwise you loss all your points.");
         tool5.setPrice(40L);
         toolRepository.save(tool5);

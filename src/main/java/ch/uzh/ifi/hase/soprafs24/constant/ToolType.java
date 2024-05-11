@@ -1,5 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.constant;
 
 public enum ToolType {
-  HINT, BLUR, Defense, Boost, Gamble;
+  HINT, BLUR, DEFENSE, BONUS, GAMBLE;
 }

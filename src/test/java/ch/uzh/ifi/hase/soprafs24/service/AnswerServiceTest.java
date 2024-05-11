@@ -88,9 +88,9 @@ public class AnswerServiceTest {
 
       doNothing().when(answerService).updateUserScore(Mockito.anyLong(), Mockito.anyLong());
 
-      Long point1 = answerService.calculatePoints(testAnswer1);
-      Long point2 = answerService.calculatePoints(testAnswer2);
-      assertEquals(70L, point1);
-      assertEquals(100L, point2);
+      List<Long> point1 = answerService.calculatePoints(testAnswer1);
+      List<Long> point2 = answerService.calculatePoints(testAnswer2);
+      assertEquals(70L, point1.get(0));
+      assertEquals(100L, point2.get(0));
   }
 }

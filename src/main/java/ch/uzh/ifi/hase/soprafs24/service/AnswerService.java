@@ -50,7 +50,7 @@ public class AnswerService {
       answerRepository.flush();
   }
 
-  public Long calculatePoints(Answer answer) {
+  public List<Long> calculatePoints(Answer answer) {
       Optional<Question> optionalQuestion = questionRepository.findById(answer.getQuestionId());
       if(!optionalQuestion.isPresent()){
           throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The question was not found!");
@@ -86,7 +86,14 @@ public class AnswerService {
           point = rankBudgetMode(answer, playerIds, question.getBudget());
       }
 
-      return point;
+      // Update the user's score
+      Long bonus = updateUserScore(answer.getUserId(), point);
+
+      List<Long> list = new ArrayList<>();
+      list.add(point);
+      list.add(bonus);
+
+      return list;
   }
 
     private Long rankGuessMode(Answer answer, String[] playerIds, Float realPrice) {
@@ -102,24 +109,35 @@ public class AnswerService {
         Long userId = answer.getUserId();
         // Find the user's rank in the sorted list
         int rank = -1;
+        int previousRank = -1;
         for (int i = 0; i < Math.min(3, playerIds.length); i++) {
             if (userId.equals(answers.get(i).getUserId())) {
                 rank = i;
+                // Check if there are previous users with the same score
+                if (i > 0 && answers.get(i - 1).getGuessedPrice().equals(answers.get(i).getGuessedPrice())) {
+                    previousRank = i - 1; // Set previousRank to the index of the last user with the same score
+                }
                 break;
             }
+        }
+
+        if (previousRank != -1) {
+            rank = previousRank;
         }
 
         // Calculate the points based on the user's rank
         Long points = reward(rank);
 
-        // Update the user's score
-        updateUserScore(userId, points);
-
         return points;
     }
 
     private Long rankBudgetMode(Answer answer, String[] playerIds, Float budget) {
-        List<Answer> answers = answerRepository.findByQuestionId(answer.getQuestionId());
+        // using Set to prevent user double-click the submit button and submit same answers for multiple times
+        Set<Answer> answersSet = new HashSet<>(answerRepository.findByQuestionId(answer.getQuestionId()));
+
+        // convert Set to List in order to sort the answer entries
+        List<Answer> answers = new ArrayList<>(answersSet);
+
         Map<Long, Float> sumPriceMap = new HashMap<>();
         for (Answer ans : answers) {
             Float sumPrice = calculateTotalPrice(ans);
@@ -130,24 +148,37 @@ public class AnswerService {
 
         // Sort the map by sum of prices in ascending order
         List<Map.Entry<Long, Float>> sortedEntries = sumPriceMap.entrySet().stream()
-                .sorted(Map.Entry.<Long, Float>comparingByValue().reversed())
+                .sorted((entry1, entry2) -> {
+                    // Calculate the absolute difference between budget and sum price
+                    Float diff1 = Math.abs(entry1.getValue() - budget);
+                    Float diff2 = Math.abs(entry2.getValue() - budget);
+                    // Compare absolute differences
+                    return diff2.compareTo(diff1);
+                })
                 .collect(Collectors.toList());
+
 
         Long userId = answer.getUserId();
         // Find the user's rank in the sorted list
         int rank = -1;
+        int previousRank = -1;
         for (int i = 0; i < sortedEntries.size(); i++) {
             if (sortedEntries.get(i).getKey().equals(userId)) {
                 rank = i;
+                // Check if there are previous users with the same score
+                if (i > 0 && sortedEntries.get(i - 1).getValue().equals(sortedEntries.get(i).getValue())) {
+                    previousRank = i - 1; // Set previousRank to the index of the last user with the same score
+                }
                 break;
             }
         }
 
+        if (previousRank != -1) {
+            rank = previousRank;
+        }
+
         // Calculate the points based on the user's rank
         Long points = reward(rank);
-
-        // Update the user's score
-        updateUserScore(userId, points);
 
         return points;
     }
@@ -164,30 +195,39 @@ public class AnswerService {
         }
     }
 
-    public void updateUserScore(Long userId, Long points) {
+    public Long updateUserScore(Long userId, Long points) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (!optionalUser.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user was not found!");
         }
         User user = optionalUser.get();
-        Long score = user.getScore() + points;
+        Long oldScore = user.getScore();
+        Long newScore = oldScore + points;
 
-        if(user.getToolStatus().contains(ToolType.Boost.name()) && points.equals(100L)){
-            score += 60L;
-        }
-        if(user.getToolStatus().contains(ToolType.Gamble.name())){
-            if(points.equals(100L)) {
-                score *= 3;
+        Long bonus = 0L;
+
+        if(user.getToolStatus() != null) {
+            if (user.getToolStatus().contains(ToolType.BONUS.name()) && points.equals(100L)) {
+                bonus = 60L;
+                newScore += bonus;
             }
-            else{
-                score = 0L;
+            if (user.getToolStatus().contains(ToolType.GAMBLE.name())) {
+                if (points.equals(100L)) {
+                    bonus = 3 * oldScore;
+                    newScore += bonus;
+                }
+                else {
+                    bonus = -oldScore;
+                    newScore = 0L;
+                }
             }
         }
 
-        user.setScore(score);
+        user.setScore(newScore);
         user.setToolList(null);
         user.setToolStatus(null);
         userRepository.save(user);
+        return bonus;
     }
 
     public Float getRealPrice(Answer answer) {

@@ -5,6 +5,8 @@ public class AnswerGetDTO {
 
     private Float realPrice;
 
+    private Long bonus;
+
     public Long getPoint() {
         return point;
     }
@@ -19,5 +21,13 @@ public class AnswerGetDTO {
 
     public void setRealPrice(Float realPrice) {
         this.realPrice = realPrice;
+    }
+
+    public Long getBonus() {
+        return bonus;
+    }
+
+    public void setBonus(Long bonus) {
+        this.bonus = bonus;
     }
 }

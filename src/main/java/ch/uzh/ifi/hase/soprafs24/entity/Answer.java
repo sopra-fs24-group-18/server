@@ -14,7 +14,7 @@ public class Answer implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ans_seq")
     private Long id;
 
-    @Column(nullable = false)
+    @Column()
     private Long questionId;
 
     @Column(nullable = false)

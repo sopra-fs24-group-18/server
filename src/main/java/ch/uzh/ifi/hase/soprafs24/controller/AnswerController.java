@@ -9,6 +9,8 @@ import ch.uzh.ifi.hase.soprafs24.service.AnswerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class AnswerController {
 
@@ -24,10 +26,11 @@ public class AnswerController {
   public AnswerGetDTO calculatePointGuessingMode(@RequestBody AnswerPostDTO answerPostDTO) {
       Answer answer = AnswerDTOMapper.INSTANCE.convertAnswerPostDTOtoEntity(answerPostDTO);
       answerService.saveAnswer(answer);
-      Long point = answerService.calculatePoints(answer);
+      List<Long> point = answerService.calculatePoints(answer);
 
       AnswerGetDTO answerGetDTO = new AnswerGetDTO();
-      answerGetDTO.setPoint(point);
+      answerGetDTO.setPoint(point.get(0));
+      answerGetDTO.setBonus(point.get(1));
       answerGetDTO.setRealPrice(answerService.getRealPrice(answer));
       return answerGetDTO;
   }
@@ -38,11 +41,11 @@ public class AnswerController {
   public AnswerGetDTO calculatePointBudgetMode(@RequestBody AnswerPostDTO answerPostDTO) {
       Answer answer = AnswerDTOMapper.INSTANCE.convertAnswerPostDTOtoEntity(answerPostDTO);
       answerService.saveAnswer(answer);
-      Long point = answerService.calculatePoints(answer);
-
+      List<Long> point = answerService.calculatePoints(answer);
 
       AnswerGetDTO answerGetDTO = new AnswerGetDTO();
-      answerGetDTO.setPoint(point);
+      answerGetDTO.setPoint(point.get(0));
+      answerGetDTO.setBonus(point.get(1));
       answerGetDTO.setRealPrice(answerService.calculateTotalPrice(answer));
       return answerGetDTO;
   }
