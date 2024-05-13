@@ -503,8 +503,8 @@ Double check the backend code to improve robustness.
 
 Implemented blur and tool in budget mode. 
 Improved the effect of blur and hint tool in guessing mode.
-Adjusted the display of waitting answer page.
-Adjusted route in lobby and prepare for budget mode.
+Adjusted the ui of waitting answer page.
+Adjusted route in lobby and prepare page for budget mode.
 
 **Plan for this week**
 
