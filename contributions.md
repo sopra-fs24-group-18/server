@@ -493,7 +493,7 @@ Refine tests.
 
 Double check the backend code to improve robustness.
 
-### Bingjie Xue
+### Yunfan Zhou
 **Issues worked on**
 *    [#81](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/81)
 *    [#84](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/84)
