@@ -472,3 +472,23 @@ Write ReadMe.
 Refine tests. 
 
 Enhance client-side features for better usability.
+
+### Zien Zeng
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/141
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/148
+*   [#61](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/61)
+*   [#86](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/86)
+
+**Description**
+
+Frontend: Modify the shop page to incorporate three newly added tools. Modify the logic of answer-waiting page to display the points obtained by users in this round.
+
+Backend: Implement functionalities related to three newly added tools.
+Improve the logic of receiving users' answers and calculating relevant points.
+
+**Plan for this week**
+
+Refine tests. 
+
+Double check the backend code to improve robustness.
