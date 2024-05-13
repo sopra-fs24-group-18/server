@@ -492,3 +492,21 @@ Improve the logic of receiving users' answers and calculating relevant points.
 Refine tests. 
 
 Double check the backend code to improve robustness.
+
+### Bingjie Xue
+**Issues worked on**
+*    [#81](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/81)
+*    [#84](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/84)
+*    [#67](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/67)
+
+**Description**
+
+Implemented blur and tool in budget mode. 
+Improved the effect of blur and hint tool in guessing mode.
+Adjusted the display of waitting answer page.
+Adjusted route in lobby and prepare for budget mode.
+
+**Plan for this week**
+
+Improving ui for better user experience.
+Add change backgroud function.
