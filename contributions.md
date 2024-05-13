@@ -533,3 +533,23 @@ Adjust Profile page of editing information.
 Improve UI for frontend. 
 
 improve error/success message display.
+
+
+## Week 3 (5.13-5.19)
+
+### Bingjie Xue
+**Issues worked on**
+*    [#21](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/21)
+*    [#22](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/22)
+*    [#70](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/70)
+*    [#71](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/71)
+
+**Description**
+
+Add ui design for register & prepare & instruciton page.
+Limit username and password length.
+
+**Plan for this week**
+
+Improing the ui design of front-end.
+
