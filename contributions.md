@@ -510,3 +510,26 @@ Adjusted route in lobby and prepare page for budget mode.
 
 Improving ui for better user experience.
 Add change backgroud function.
+
+### Lu Li
+**Issues worked on**
+*   [#73](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/73)
+*   [#78](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/78)
+*   [#79](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/79)
+*   [#85](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/85) 
+
+**Description**
+
+Clear local storage upon window/tab closure to prevent data leakage and maintain security.
+
+Handle Browser Back and Refresh Events for User Navigation in RouterProteter.
+
+Adjust UI of Roomcreation page.
+
+Adjust Profile page of editing information.
+
+**Plan for this week**
+
+Improve UI for frontend. 
+
+improve error/success message display.
