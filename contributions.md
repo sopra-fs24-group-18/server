@@ -472,3 +472,84 @@ Write ReadMe.
 Refine tests. 
 
 Enhance client-side features for better usability.
+
+### Zien Zeng
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/141
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/148
+*   [#61](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/61)
+*   [#86](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/86)
+
+**Description**
+
+Frontend: Modify the shop page to incorporate three newly added tools. Modify the logic of answer-waiting page to display the points obtained by users in this round.
+
+Backend: Implement functionalities related to three newly added tools.
+Improve the logic of receiving users' answers and calculating relevant points.
+
+**Plan for this week**
+
+Refine tests. 
+
+Double check the backend code to improve robustness.
+
+### Yunfan Zhou
+**Issues worked on**
+*    [#81](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/81)
+*    [#84](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/84)
+*    [#67](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/67)
+
+**Description**
+
+Implemented blur and hint tool in budget mode. 
+Improved the effect of blur and hint tool in guessing mode.
+Adjusted the ui of waitting-answer page.
+Adjusted route in lobby and prepare page for budget mode.
+
+**Plan for this week**
+
+Improving ui for better user experience.
+Add change backgroud function.
+
+### Lu Li
+**Issues worked on**
+*   [#73](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/73)
+*   [#78](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/78)
+*   [#79](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/79)
+*   [#85](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/85) 
+
+**Description**
+
+Clear local storage upon window/tab closure to prevent data leakage and maintain security.
+
+Handle Browser Back and Refresh Events for User Navigation in RouterProteter.
+
+Adjust UI of Roomcreation page.
+
+Adjust Profile page of editing information.
+
+**Plan for this week**
+
+Improve UI for frontend. 
+
+improve error/success message display.
+
+
+## Week 3 (5.13-5.19)
+
+### Bingjie Xue
+**Issues worked on**
+*    [#21](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/21)
+*    [#22](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/22)
+*    [#70](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/70)
+*    [#71](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/71)
+
+**Description**
+
+Add ui design for register & prepare & instruciton page.
+Limit username and password length.
+
+**Plan for this week**
+
+Improing the ui design of front-end.
+
