@@ -58,43 +58,6 @@ public class EbayAPIService {
         };
         return null;
     }
-    /*
-    //single item
-    //parse json info in response
-    public static Optional<Item> extractItemInfo(String responseBody) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode responseJson = objectMapper.readTree(responseBody);
-
-            String itemTitle = responseJson.at("/itemSummaries/0/title").asText();
-            float itemPrice = (float) responseJson.at("/itemSummaries/0/price/value").asDouble();
-            String firstCategory = responseJson.at("/itemSummaries/0/categories/0/categoryName").asText();
-            String itemImage1 = responseJson.at("/itemSummaries/0/image/imageUrl").asText();
-            String itemImage2 = responseJson.at("/itemSummaries/0/additionalImages/1/imageUrl").asText();
-            float leftrange = 0;
-            float rightrange = 2*itemPrice;
-
-
-            Item item = new Item();
-            item.setItemTitle(itemTitle);
-            item.setPrice(itemPrice);
-            item.setItemCat(firstCategory);
-            item.setLeftRange(leftrange);
-            item.setRightRange(rightrange);
-
-            if (itemImage1 == null && itemImage2 == null) {
-                item.setImageURL("default"); // Set default image URL
-            } else {
-                // Set imageURL to itemImage2 if itemImage1 is null, otherwise set it to itemImage1
-                item.setImageURL(itemImage1 != null ? itemImage1 : itemImage2);
-            }
-            return Optional.of(item);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return Optional.empty();
-        }
-    }
-*/
     public static List<Item> extractItemsInfo(String responseBody) {
         List<Item> items = new ArrayList<>();
 

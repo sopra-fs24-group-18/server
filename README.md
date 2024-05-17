@@ -167,4 +167,7 @@ Although our project primarily focuses on the core gameplay experience, there's 
 
 ## License
 <a name="license"></a>
-[Non-Profit Open Software License version 3.0](LICENSE)
+[MIT License](LICENSE)
+
+❗
+The developers should also pay attention to the [API License Agreement of Ebay](https://developer.ebay.com/join/api-license-agreement) .

@@ -241,6 +241,37 @@ public class UserControllerTest {
 
     }
 
+    @Test
+    public void updateUser_invalidInput() throws Exception {
+        // Prepare test data
+        UserPutDTO userPutDTO = new UserPutDTO();
+        userPutDTO.setId(1L);
+        userPutDTO.setUsername(" "); // Provide new username with white space only
+        userPutDTO.setPassword("newPassword");
+        userPutDTO.setToken("dummyToken");
+
+        // Stubbing userRepository behavior
+        User existingUser = new User(); // create a dummy existing user
+        existingUser.setId(1L);
+        existingUser.setUsername("existingUsername");
+        existingUser.setPassword("existingPassword");
+        existingUser.setToken("dummyToken");
+
+        given(userRepository.findByUsername(Mockito.any())).willReturn(null);
+        given(userRepository.findById(Mockito.anyLong())).willReturn(Optional.of(existingUser));
+        given(userService.updateUser(Mockito.anyLong(), Mockito.any())).willThrow(
+                new ResponseStatusException(HttpStatus.BAD_REQUEST));
+
+
+        // Perform the request and validate the response
+        mockMvc.perform(put("/users/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(userPutDTO)))
+                .andExpect(status().isBadRequest());
+
+    }
+
+
 
 
     /**

@@ -2,7 +2,6 @@ package ch.uzh.ifi.hase.soprafs24.service;
 
 
 import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
-import ch.uzh.ifi.hase.soprafs24.constant.ToolType;
 import ch.uzh.ifi.hase.soprafs24.entity.Item;
 import ch.uzh.ifi.hase.soprafs24.entity.Question;
 import ch.uzh.ifi.hase.soprafs24.entity.Room;
@@ -10,18 +9,12 @@ import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.ItemRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.QuestionRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.RoomRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;

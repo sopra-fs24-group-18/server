@@ -128,6 +128,11 @@ public class UserService {
          throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
                  "The user has no right to edit this page");
      }
+     //if new username is not null, username cannot be empty string or string with whitespace only
+     if (new_username!= null && new_username.isBlank()) {
+         throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                 "The username cannot be empty");
+     }
      //if new username is not null and not equal to the orginal name, check the duplication
      if (new_username!= null && !new_username.equals(existingUser.getUsername())){
          User existingUserWithNewUsername = userRepository.findByUsername(new_username);
@@ -145,10 +150,13 @@ public class UserService {
          existingUser.setAvatar(new_avatar);
      }
      if (new_password != null){
+         if (new_password.isBlank()){
+             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                     "The password cannot be empty");
+         }
          existingUser.setPassword(new_password);
      }
      return userRepository.save(existingUser);
-
  }
 
     public void logout(User userInput){
