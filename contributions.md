@@ -553,3 +553,21 @@ Limit username and password length.
 
 Improing the ui design of front-end.
 
+
+### Yanyang Gong
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/149
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/150
+
+**Description**
+
+Modify the logic of updating userProfile.  
+Refine tests.  
+Modify Liscence and ReadMe.
+
+**Plan for this week**
+
+Debug.  
+Prepare for the presentation & report.
+
+
