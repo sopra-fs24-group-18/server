@@ -1,15 +1,11 @@
 package ch.uzh.ifi.hase.soprafs24.repository;
 
 import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
-import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.Room;
-import ch.uzh.ifi.hase.soprafs24.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-
-import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -34,7 +30,6 @@ public class RoomRepositoryIntegrationTest {
     room.setOwnerId(4L);
     room.setRoundAmount(6L);
     room.setPlayerIds("4,1");
-    room.setCurrentRound(1L);
 
     entityManager.persist(room);
     entityManager.flush();

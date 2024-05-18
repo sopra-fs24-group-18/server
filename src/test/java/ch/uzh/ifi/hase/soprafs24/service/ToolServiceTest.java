@@ -1,12 +1,8 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
-import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
 import ch.uzh.ifi.hase.soprafs24.constant.ToolType;
-import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
-import ch.uzh.ifi.hase.soprafs24.entity.Room;
 import ch.uzh.ifi.hase.soprafs24.entity.Tool;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
-import ch.uzh.ifi.hase.soprafs24.repository.RoomRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.ToolRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,10 +15,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.times;
 
 public class ToolServiceTest {
 
@@ -46,6 +43,7 @@ public class ToolServiceTest {
 
     // given
     testTool = new Tool();
+    testTool.setId(1L);
     testTool.setType(ToolType.HINT);
     testTool.setPrice(30L);
     testTool.setDescription("This is a hint tool!");
@@ -63,7 +61,7 @@ public class ToolServiceTest {
       testUser.setScore(100L);
       Mockito.when(userService.getUserById(Mockito.anyLong())).thenReturn(Optional.ofNullable(testUser));
       Mockito.when(toolRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(testTool));
-      toolService.useTool(1L, 1L);
+      toolService.useTool(1L, 1L, 1L);
 
       assertEquals("HINT", testUser.getToolStatus());
       assertEquals("HINT", testUser.getToolList());
@@ -75,7 +73,17 @@ public class ToolServiceTest {
         Mockito.when(userService.getUserById(Mockito.anyLong())).thenReturn(Optional.ofNullable(testUser));
         Mockito.when(toolRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(testTool));
 
-        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> toolService.useTool(1L, 1L));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> toolService.useTool(1L, 1L, 1L));
         assertEquals(HttpStatus.FORBIDDEN, exception.getStatus());
+    }
+
+    @Test
+    public void getUserTools_validInputs_success() {
+        testUser.setToolList("HINT");
+        Mockito.when(userService.getUserById(Mockito.anyLong())).thenReturn(Optional.ofNullable(testUser));
+
+        List<String> userTools = toolService.getUserTools(1L);
+
+        assertEquals(Arrays.asList("HINT"), userTools);
     }
 }

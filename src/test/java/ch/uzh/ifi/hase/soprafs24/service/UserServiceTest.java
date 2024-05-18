@@ -206,4 +206,32 @@ public class UserServiceTest {
         // Check if the status code of the exception is 404 (Not Found)
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
     }
+    @Test
+    public void updateUser_invalidNewName() {
+        // given
+        String updatedUsername = " ";
+        String updatedPassword = "testPassword";
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
+        // when
+        User updatedUser = new User();
+        updatedUser.setUsername(updatedUsername);
+        updatedUser.setPassword(updatedPassword);
+        // then
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.updateUser(1L, updatedUser));
+        assertEquals("The username cannot be empty", exception.getReason());
+    }
+    @Test
+    public void updateUser_invalidNewPassword() {
+        // given
+        String updatedUsername = "newUsername";
+        String updatedPassword = " ";
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
+        // when
+        User updatedUser = new User();
+        updatedUser.setUsername(updatedUsername);
+        updatedUser.setPassword(updatedPassword);
+        // then
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.updateUser(1L, updatedUser));
+        assertEquals("The password cannot be empty", exception.getReason());
+    }
 }

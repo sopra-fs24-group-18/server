@@ -270,3 +270,304 @@ Implement endpoints to retreive the tool list of the user.
 
 Improve the code that have already written, complete tests and write report.
 
+
+## Week 4 (4.22-4.28)
+### Yanyang Gong
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/45
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/42
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/134
+
+
+**Description**
+
+Implement endpoint to reset players' score at the beginning of the game.
+Implement endpoint to manage Ready Statuses in multi-players game.
+Write tests.
+Write report.
+
+**Plan for this week**
+Fix/modify potential bugs/logics based on the client side feedback.
+
+### Bingjie Xue
+**Issues worked on**
+*    [#38](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/38)
+*    [#39](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/39)
+
+
+**Description**
+
+Adjust front-end logic for fetch rank, point, game start.
+
+**Plan for this week**
+
+Debugging.
+
+### Yunfan Zhou
+**Issues worked on**
+*    [#35](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/35)
+*    [#12](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/12)
+*    [#37](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/37)
+
+**Description**
+
+Adjust front-end logic for game get ready, get start, send answer, and countdown.
+Add room code display.
+Fixed some bug and the formats.
+
+**Plan for this week**
+
+Debug, and starting to design the part of ui for budget mode.
+
+### Zien Zeng
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/104
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/21
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/111
+
+
+**Description**
+
+Modify functionality related to tool using.
+Write tests for functions related to room, answer and tool.
+Write report.
+
+**Plan for this week**
+
+Fix/modify potential bugs/logics based on the client side feedback.
+
+### Lu Li
+**Issues worked on**
+*    [#55](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/55)
+*    [#17](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/17)
+*    [#37](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/37)
+
+
+**Description**
+
+Modified the UI for rank page.
+Modified the join room function.
+Integrate and modified the UI of gameroom.
+
+**Plan for this week**
+
+Modify the tooldisplay logic.
+Modify the profile info display.
+
+M4
+## Week 1 (4.29-5.5)
+
+### Bingjie Xue
+**Issues worked on**
+*    [#14](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/14)
+*    [#15](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/15)
+*    [#58](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/58)
+
+**Description**
+
+Design loading page before game start. Improve ui design of points display.
+
+**Plan for this week**
+
+Improing the ui design of front-end.
+
+### Yanyang Gong
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/136
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/138
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/139
+
+**Description**
+
+Modify the /getquestion endpoint, add original price range attribute (price before applying HINT tool).          
+Modify the /getready endpoint to reset the player's score once they are ready, to avoid data inconsistency among clients.
+
+**Plan for this week**
+
+Modify the /getquestion endpoint for the BUDGET MODE TOOLS (to be discussed whether the current endpoint is sufficient or if new logic is needed).     
+Write README.
+
+### Lu Li
+**Issues worked on**
+
+*    [#64](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/64)
+*    [#65](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/65)
+*    [#66](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/66)
+
+**Description**
+
+improve the logic and UI of tool display.
+Fixed bugs in fetching user's info in profile page.
+
+**Plan for this week**
+
+Implement upload avator in profile page. 
+
+### Zien Zeng
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/141
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/142
+*    [#59](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/59)
+*    [#60](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/60)
+*    [#61](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/61)
+
+**Description**
+
+Backend: Modify endpoints related to waiting for all players' answer submissions and return real item price to players after they submitting answers.
+
+Frontend: Design a new waiting page after player submitting their answers.
+Design a new component for players to enter room code.
+Separate profile management page and lobby page.
+
+**Plan for this week**
+
+Add some funtionalities related to tools.
+
+### Yunfan Zhou
+**Issues worked on**
+
+*    [#51](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/51)
+*    [#52](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/52)
+*    [#67](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/67)
+
+**Description**
+
+Designed ui to display items in budget mode. 
+Handle the logic to select the multiples items, and submit user's answer for budget mode.
+Adjust routers for budget mode.
+
+**Plan for this week**
+
+Implement tools on budget mode, improve the effect of tools on both guessing and budget mode.
+
+
+## Week 2 (5.6-5.12)
+
+### Bingjie Xue
+**Issues worked on**
+*    [#71](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/71)
+*    [#72](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/72)
+
+**Description**
+
+Add instruction on mainpage for this game.
+Make timer consistent.
+
+**Plan for this week**
+
+Improing the ui design of front-end.
+
+### Yanyang Gong
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/144
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/145
+
+**Description**
+
+Implement logic to handle HINT Tool under budget mode, add selected item number and selected item list to question entity.         
+Write ReadMe.
+
+**Plan for this week**
+
+Refine tests. 
+
+Enhance client-side features for better usability.
+
+### Zien Zeng
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/141
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/148
+*   [#61](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/61)
+*   [#86](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/86)
+
+**Description**
+
+Frontend: Modify the shop page to incorporate three newly added tools. Modify the logic of answer-waiting page to display the points obtained by users in this round.
+
+Backend: Implement functionalities related to three newly added tools.
+Improve the logic of receiving users' answers and calculating relevant points.
+
+**Plan for this week**
+
+Refine tests. 
+
+Double check the backend code to improve robustness.
+
+### Yunfan Zhou
+**Issues worked on**
+*    [#81](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/81)
+*    [#84](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/84)
+*    [#67](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/67)
+
+**Description**
+
+Implemented blur and hint tool in budget mode. 
+Improved the effect of blur and hint tool in guessing mode.
+Adjusted the ui of waitting-answer page.
+Adjusted route in lobby and prepare page for budget mode.
+
+**Plan for this week**
+
+Improving ui for better user experience.
+Add change backgroud function.
+
+### Lu Li
+**Issues worked on**
+*   [#73](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/73)
+*   [#78](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/78)
+*   [#79](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/79)
+*   [#85](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/85) 
+
+**Description**
+
+Clear local storage upon window/tab closure to prevent data leakage and maintain security.
+
+Handle Browser Back and Refresh Events for User Navigation in RouterProteter.
+
+Adjust UI of Roomcreation page.
+
+Adjust Profile page of editing information.
+
+**Plan for this week**
+
+Improve UI for frontend. 
+
+improve error/success message display.
+
+
+## Week 3 (5.13-5.19)
+
+### Bingjie Xue
+**Issues worked on**
+*    [#21](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/21)
+*    [#22](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/22)
+*    [#70](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/70)
+*    [#71](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/71)
+
+**Description**
+
+Add ui design for register & prepare & instruciton page.
+Limit username and password length.
+
+**Plan for this week**
+
+Improing the ui design of front-end.
+
+
+### Yanyang Gong
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/149
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/150
+
+**Description**
+
+Modify the logic of updating userProfile.  
+Refine tests.  
+Modify Liscence and ReadMe.
+
+**Plan for this week**
+
+Debug.  
+Prepare for the presentation & report.
+
+

@@ -4,7 +4,6 @@ import ch.uzh.ifi.hase.soprafs24.entity.Room;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.room.RoomGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.room.RoomPostDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.user.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.user.UserPointsGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.RoomDTOMapper;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.UserDTOMapper;
@@ -17,13 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * User Controller
- * This class is responsible for handling all REST request that are related to
- * the user.
- * The controller will receive the request and delegate the execution to the
- * UserService and finally return the result.
- */
 @RestController
 public class RoomController {
 
@@ -43,7 +35,7 @@ public class RoomController {
     Room roomInput = RoomDTOMapper.INSTANCE.convertRoomPostDTOtoEntity(roomPostDTO);
     // create room
     Room createdRoom = roomService.createRoom(roomInput);
-    // convert internal representation of user back to API
+    // convert internal representation of room back to API
     RoomGetDTO roomGetDTO = RoomDTOMapper.INSTANCE.convertEntityToRoomGetDTO(createdRoom);
 
     roomGetDTO.setOwnerName(userService.userId2Username(createdRoom.getOwnerId()));

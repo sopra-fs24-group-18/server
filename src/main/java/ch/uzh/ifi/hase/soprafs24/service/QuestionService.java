@@ -15,8 +15,10 @@ import ch.uzh.ifi.hase.soprafs24.repository.RoomRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.concurrent.TimeUnit;
 import java.util.*;
@@ -36,18 +38,21 @@ public class QuestionService {
     private final RoomService roomService;
     private final RoomRepository roomRepository;
 
+    private final UserService userService;
+
     @Autowired
-    public QuestionService(QuestionRepository questionRepository, ItemRepository itemRepository, ToolService toolService, RoomService roomService,RoomRepository roomRepository) {
+    public QuestionService(QuestionRepository questionRepository, ItemRepository itemRepository, ToolService toolService, RoomService roomService,RoomRepository roomRepository,UserService userService) {
         this.questionRepository = questionRepository;
         this.itemRepository = itemRepository;
         this.toolService = toolService;
         this.roomService = roomService;
         this.roomRepository = roomRepository;
+        this.userService = userService;
 
     }
 
     private List<Item> getAllItems() {
-        return itemRepository.findAll(); // Assuming itemRepository exists
+        return itemRepository.findItemWithImage(); // need item with image only
     }
 
 
@@ -109,7 +114,7 @@ public class QuestionService {
         // Loop through each round (3 rounds)
         for (int round = 1; round <= 3; round++) {
 
-            int numItems = 9; //9 items per round
+            int numItems = 6; //6 items per round
             // Ensure there are enough items left in the list
             if (allItems.size() < numItems) {
                 throw new RuntimeException("Not enough items in the database for all rounds");
@@ -119,7 +124,7 @@ public class QuestionService {
             List<Item> selectedItems = new ArrayList<>();
 
             // Select a random subset of items from the remaining ones
-            for (int i = round * numItems - 9; i < round * numItems; i++) {
+            for (int i = round * numItems - 6; i < round * numItems; i++) {
                 Item selectedItem = allItems.get(i);
                 selectedItems.add(selectedItem);
             }
@@ -127,14 +132,16 @@ public class QuestionService {
             //randomly determine the item number to calculate budget
             // Create a SecureRandom instance
             SecureRandom secureRandom = new SecureRandom();
-            int budgetItemNum = (int) (secureRandom.nextDouble()  * 9) + 1;//at least one item
+            int budgetItemNum = (int) (secureRandom.nextDouble()  * 5) + 1;//at least one item
             //shuffle selected items order
             Collections.shuffle(selectedItems);
             float budget = 0;
+            List<Long> budgetItemList = new ArrayList<>();
             // Calculate the budget by summing the prices of selected items and rounding up
             for (int i = 0; i < budgetItemNum; i++) {
                 float price = selectedItems.get(i).getPrice();
                 budget += price;
+                budgetItemList.add(selectedItems.get(i).getId());
             }
             budget = (float) Math.ceil(budget);
 
@@ -156,6 +163,8 @@ public class QuestionService {
             newQuestion.setItemImageList(itemImageList.toString());
             newQuestion.setRoundNumber(round);
             newQuestion.setBudget(budget);
+            newQuestion.setSelectedItemNum(budgetItemNum);
+            newQuestion.setSelectedItemList(budgetItemList.toString());
 
             // Save the Question object to the repository
             questionRepository.save(newQuestion);
@@ -183,12 +192,24 @@ public class QuestionService {
         modifiedQuestion.setLeftRange(originQuestion.getLeftRange());
         modifiedQuestion.setRightRange(originQuestion.getRightRange());
         modifiedQuestion.setBlur(originQuestion.getBlur());
+        modifiedQuestion.setOriginLeftRange(originQuestion.getLeftRange());
+        modifiedQuestion.setOriginRightRange(originQuestion.getRightRange());
+        modifiedQuestion.setItemList(originQuestion.getItemList());
+        modifiedQuestion.setItemImageList(originQuestion.getItemImageList());
+        modifiedQuestion.setBudget(originQuestion.getBudget());
+        //modifiedQuestion.setSelectedItemList(originQuestion.getSelectedItemList());
         // Get the user's tools
         List<String> userTools = toolService.getUserTools(userId);
         // Check if the user has the HINT tool
         boolean hasHintTool = userTools != null && userTools.contains(ToolType.HINT.name());
         // Get all users in the same room
         List<User> roomUsers = roomService.getUsersByRoomId(roomId);
+
+        User u = userService.getUserById(userId).get();
+        boolean hasDefenseTool = false;
+        if(u.getToolStatus() != null) {
+            hasDefenseTool = u.getToolStatus().contains(ToolType.DEFENSE.name());
+        }
 
         // Check if any other users in the room have the BLUR tool
         boolean otherUsersHaveBlurTool = roomUsers.stream()
@@ -210,8 +231,10 @@ public class QuestionService {
             int newRightRange = (int) Math.ceil(originalPrice * (1 + maxScale));
             modifiedQuestion.setLeftRange(newLeftRange);
             modifiedQuestion.setRightRange(newRightRange);
+            // Budget mode, only offer number if has hint tool
+            modifiedQuestion.setSelectedItemNum(originQuestion.getSelectedItemNum());
         }
-        if (otherUsersHaveBlurTool) {
+        if (!hasDefenseTool && otherUsersHaveBlurTool) {
             // Set blur property to true
             modifiedQuestion.setBlur(true);
         }
@@ -251,17 +274,23 @@ public class QuestionService {
         Long ownerId = room.getOwnerId();
         Long requireAmount = room.getPlayerAmount();
         Long actualAmount = updateReadyList(roomId, userId);
+        Optional<User> currentUserOpt = userService.getUserById(userId);
+
+        if (currentUserOpt.isPresent()) {
+            User currentUser = currentUserOpt.get(); // Extract the user object from the optional
+            currentUser.setScore(100L); // reset score
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cannot reset score due to the user is not exist!");
+        }
 
         // Check if the required amount is already met
         if (actualAmount.equals(requireAmount)) {
             //only execute the following part once for each room
             if (room.getGameMode() == GameMode.GUESSING && Objects.equals(userId, ownerId)) {
                 createGuessingQuestions(roomId); //create questions
-                roomService.resetPlayerScore(roomId); //reset player's score as 100
             }
            else if (room.getGameMode() == GameMode.BUDGET && Objects.equals(userId, ownerId)) {
             createBudgetQuestions(roomId);
-            roomService.resetPlayerScore(roomId);
         }
         // Return a message indicating that the game is ready
         return "ready";

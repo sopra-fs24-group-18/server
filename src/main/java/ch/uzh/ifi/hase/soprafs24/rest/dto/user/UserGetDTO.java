@@ -2,13 +2,11 @@ package ch.uzh.ifi.hase.soprafs24.rest.dto.user;
 
 import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 
-import javax.persistence.Column;
 import java.time.LocalDate;
 
 public class UserGetDTO {
 
   private Long id;
-//  private String name;
   private String username;
 //  private String token;
   private UserStatus status;
@@ -34,14 +32,6 @@ public class UserGetDTO {
   public void setId(Long id) {
     this.id = id;
   }
-
-//  public String getName() {
-//    return name;
-//  }
-//
-//  public void setName(String name) {
-//    this.name = name;
-//  }
 
   public String getUsername() {
     return username;

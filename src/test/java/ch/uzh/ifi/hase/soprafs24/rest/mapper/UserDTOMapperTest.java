@@ -2,9 +2,7 @@ package ch.uzh.ifi.hase.soprafs24.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.user.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.user.UserPostDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.user.UserPutDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.user.*;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -74,5 +72,37 @@ public class UserDTOMapperTest {
         assertEquals(userPutDTO.getPassword(), user.getPassword());
     }
 
-    
+    @Test
+    public void test_fromUser_toUserPointsGetDTO_success() {
+        // create User
+        User user = new User();
+        user.setUsername("firstname@lastname");
+        user.setStatus(UserStatus.OFFLINE);
+        user.setToken("1");
+        user.setScore(100L);
+
+        UserPointsGetDTO userPointsGetDTO = UserDTOMapper.INSTANCE.convertEntityToUserPointsGetDTO(user);
+
+        assertEquals(user.getUsername(), userPointsGetDTO.getUsername());
+        assertEquals(user.getScore(),userPointsGetDTO.getScore());
+    }
+
+    @Test
+    public void test_fromUser_toUserReducedGetDTO_success() {
+        // create User
+        User user = new User();
+        user.setUsername("firstname@lastname");
+        user.setStatus(UserStatus.OFFLINE);
+        user.setAvatar("avatar1");
+        user.setCreationDate(LocalDate.now());
+        user.setToken("1");
+
+        UserReducedGetDTO userReducedGetDTO = UserDTOMapper.INSTANCE.convertEntityToUserReducedGetDTO(user);
+
+        assertEquals(user.getUsername(), userReducedGetDTO.getUsername());
+        assertEquals(user.getStatus(), userReducedGetDTO.getStatus());
+        assertEquals(user.getAvatar(), userReducedGetDTO.getAvatar());
+        assertEquals(user.getCreationDate(),userReducedGetDTO.getCreationDate());
+        assertEquals(user.getToken(), userReducedGetDTO.getToken());
+    }
 }

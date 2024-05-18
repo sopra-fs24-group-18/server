@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs24.service;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Room;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
+import ch.uzh.ifi.hase.soprafs24.repository.AnswerRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.RoomRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import org.slf4j.Logger;
@@ -16,13 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * User Service
- * This class is the "worker" and responsible for all functionality related to
- * the user
- * (e.g., it creates, modifies, deletes, finds). The result will be passed back
- * to the caller.
- */
 @Service
 @Transactional
 public class RoomService {
@@ -32,17 +26,18 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final UserService userService;
     private final UserRepository userRepository;
+    private final AnswerRepository answerRepository;
 
     @Autowired
-    public RoomService(@Qualifier("roomRepository") RoomRepository roomRepository, UserService userService, UserRepository userRepository) {
+    public RoomService(@Qualifier("roomRepository") RoomRepository roomRepository, UserService userService, UserRepository userRepository, AnswerRepository answerRepository) {
         this.roomRepository = roomRepository;
         this.userService = userService;
         this.userRepository = userRepository;
+        this.answerRepository = answerRepository;
     }
 
     public Room createRoom(Room newRoom) {
         newRoom.setRoomCode(roomCodeGenerator(6));
-        newRoom.setCurrentRound(0L);
         newRoom.setRoundAmount(3L);
         newRoom.setPlayerIds(newRoom.getOwnerId().toString());
 
@@ -60,7 +55,7 @@ public class RoomService {
         do{
             StringBuilder sb = new StringBuilder(length);
             for (int i = 0; i < length; i++) {
-                int randomNumber = random.nextInt(10); // 生成0到9之间的随机数
+                int randomNumber = random.nextInt(10); // generate random integer between 0 and 9
                 sb.append(randomNumber);
             }
             roomCode = sb.toString();
@@ -78,15 +73,18 @@ public class RoomService {
 
         String playerIds = room.getPlayerIds();
         String[] ids = playerIds.split(",");
-        if(ids.length >= room.getPlayerAmount()){
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Sorry, you cannot enter the room. The room is full!");
-        }
+
         for (String id : ids) {
             Long trimmedId = Long.parseLong(id.trim());
             if (trimmedId.equals(userId)) {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "You have already entered the room!");
             }
         }
+
+        if(ids.length >= room.getPlayerAmount()){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Sorry, you cannot enter the room. The room is full!");
+        }
+
         playerIds = playerIds + "," + userId;
         room.setPlayerIds(playerIds);
         roomRepository.save(room);
@@ -94,7 +92,7 @@ public class RoomService {
     }
 
     public void exitRoom(Long roomId, Long userId) {
-        userService.getUserById(userId);
+        Optional<User> optionalUser = userService.getUserById(userId);
         Room room = findById(roomId);
 
         String playerIds = room.getPlayerIds();
@@ -106,6 +104,10 @@ public class RoomService {
             }
             newPlayerList.add(id);
         }
+        User user = optionalUser.get();
+        user.setScore(100L);
+        userRepository.save(user);
+        answerRepository.deleteByUserId(userId);
 
         if (userId.equals(room.getOwnerId())) {
             if (!newPlayerList.isEmpty()) {

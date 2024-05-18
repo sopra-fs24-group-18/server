@@ -2,7 +2,6 @@ package ch.uzh.ifi.hase.soprafs24.service;
 
 
 import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
-import ch.uzh.ifi.hase.soprafs24.constant.ToolType;
 import ch.uzh.ifi.hase.soprafs24.entity.Item;
 import ch.uzh.ifi.hase.soprafs24.entity.Question;
 import ch.uzh.ifi.hase.soprafs24.entity.Room;
@@ -10,17 +9,12 @@ import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.ItemRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.QuestionRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.RoomRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
@@ -41,6 +35,9 @@ public class QuestionServiceTest {
 
     @Mock
     private RoomService roomService;
+
+    @Mock
+    private UserService userService;
 
 
 
@@ -73,14 +70,14 @@ public class QuestionServiceTest {
 
 
         //Create mock item objects
-        Item[] itemArray = new Item[27];
+        Item[] itemArray = new Item[18];
 
         String commonTitle = "item";
         String commonImageUrl = "image";
         int commonPrice = 100;
 
-        // Create 9 items in a loop
-        for (int i = 0; i < 27; i++) {
+        // 6 items per round, totally 3 rounds
+        for (int i = 0; i < 18; i++) {
 
             Item item = new Item();
             item.setId((long) (i + 1));
@@ -102,7 +99,7 @@ public class QuestionServiceTest {
         testUser2 = new User();
         testUser2.setId(2L);
         testUser2.setPassword("123");
-        testUser2.setUsername("testUsername");
+        testUser2.setUsername("testUsername2");
         testUser2.setScore(0L);
 
         // Stub mock method calls
@@ -115,14 +112,14 @@ public class QuestionServiceTest {
     @Test
     public void testCreateGuessingQuestionsSuccess() {
         // Arrange
-        Mockito.when(itemRepository.findAll()).thenReturn(items);
+        Mockito.when(itemRepository.findItemWithImage()).thenReturn(items);
         Mockito.when(questionRepository.save(Mockito.any())).thenReturn(new Question());
 
         // Act
         assertDoesNotThrow(() -> questionService.createGuessingQuestions(1L));
 
         // Assert
-        Mockito.verify(itemRepository, times(1)).findAll();
+        Mockito.verify(itemRepository, times(1)).findItemWithImage();
         Mockito.verify(roomService, times(1)).findById(Mockito.anyLong());
         //Mockito.verify(questionRepository, times(3)).save(Mockito.any());
 
@@ -142,7 +139,7 @@ public class QuestionServiceTest {
     public void testCreateGuessingQuestionsInValidItems() {
         // Arrange
         List<Item> shortItemList = items.subList(0, 2); //3 items are needed
-        Mockito.when(itemRepository.findAll()).thenReturn(shortItemList);
+        Mockito.when(itemRepository.findItemWithImage()).thenReturn(shortItemList);
 
         // Act and assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
@@ -159,14 +156,14 @@ public class QuestionServiceTest {
     @Test
     public void testCreateBudgetQuestionsSuccess() {
         // Arrange
-        Mockito.when(itemRepository.findAll()).thenReturn(items);
+        Mockito.when(itemRepository.findItemWithImage()).thenReturn(items);
         Mockito.when(questionRepository.save(Mockito.any())).thenReturn(new Question());
 
         // Act
         assertDoesNotThrow(() -> questionService.createBudgetQuestions(1L));
 
         // Assert
-        Mockito.verify(itemRepository, times(1)).findAll();
+        Mockito.verify(itemRepository, times(1)).findItemWithImage();
         Mockito.verify(roomService, times(1)).findById(Mockito.anyLong());
 
         // verify budget range
@@ -174,8 +171,11 @@ public class QuestionServiceTest {
         Mockito.verify(questionRepository, times(3)).save(argument.capture());
         List<Question> savedQuestions = argument.getAllValues();
         for (int i = 0; i < 3; i++) {
-            assertTrue(savedQuestions.get(i).getBudget() <= 900);
-            assertTrue(savedQuestions.get(i).getBudget() >=100);
+            assertTrue(savedQuestions.get(i).getBudget() <= 600);
+            assertTrue(savedQuestions.get(i).getBudget() >= 100);
+            assertNotNull(savedQuestions.get(i).getSelectedItemList());
+            assertTrue(savedQuestions.get(i).getSelectedItemNum() >= 1); //at least one item should be selected to calculate budget
+            assertTrue(savedQuestions.get(i).getSelectedItemNum() <= 6); //at most 6
         }
 
     }
@@ -183,7 +183,7 @@ public class QuestionServiceTest {
     public void testCreateBudgetQuestionsInValidItems() {
         // Arrange
         List<Item> shortItemList = items.subList(0, 2); //27 items are needed
-        Mockito.when(itemRepository.findAll()).thenReturn(shortItemList);
+        Mockito.when(itemRepository.findItemWithImage()).thenReturn(shortItemList);
 
         // Act and assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
@@ -219,9 +219,11 @@ public class QuestionServiceTest {
 
         Question question = new Question();
         question.setAnswer(100);
+        question.setSelectedItemNum(1);
 
         Mockito.when(questionRepository.findAllByRoomIdAndRoundNumber(Mockito.anyLong(), Mockito.anyInt())).thenReturn(question);
         Mockito.when(toolService.getUserTools(Mockito.anyLong())).thenReturn(Arrays.asList("HINT", "BLUR"));
+        Mockito.when(userService.getUserById(Mockito.anyLong())).thenReturn(Optional.ofNullable(testUser));
 
         // Act
         Question result = questionService.getQuestionsByRoomRoundandUserId(1L, 1, 1L);
@@ -230,6 +232,7 @@ public class QuestionServiceTest {
         assertNotNull(result);
         assertTrue(result.getLeftRange() >= 80); //after using hint tool, price range change to 0.8-1
         assertTrue(result.getRightRange() <= 120); //1-1.2
+        assertEquals(1,result.getSelectedItemNum());
         assertFalse(result.getBlur());//player owns blur tool won't be infected
     }
     @Test
@@ -239,9 +242,11 @@ public class QuestionServiceTest {
         question.setAnswer(100);
         question.setLeftRange(60);
         question.setRightRange(140);
+        question.setSelectedItemNum(1);
 
         Mockito.when(questionRepository.findAllByRoomIdAndRoundNumber(Mockito.anyLong(), Mockito.anyInt())).thenReturn(question);
         Mockito.when(toolService.getUserTools(Mockito.anyLong())).thenReturn(Arrays.asList("BLUR"));
+        Mockito.when(userService.getUserById(Mockito.anyLong())).thenReturn(Optional.ofNullable(testUser));
 
         // Act
         Question result = questionService.getQuestionsByRoomRoundandUserId(1L, 1, 1L);
@@ -251,6 +256,7 @@ public class QuestionServiceTest {
         assertEquals(60,result.getLeftRange() ); //no hint tool, range shouldn't change
         assertEquals(140,result.getRightRange() );
         assertTrue(result.getBlur());//another player owns Blur
+        assertNotEquals(1,result.getSelectedItemNum()); //without hint tool, this term should not be returned
     }
     @Test
     public void testGetQuestionsByRoomRoundandUserIdWithHintandBlur() {
@@ -260,6 +266,7 @@ public class QuestionServiceTest {
 
         Mockito.when(questionRepository.findAllByRoomIdAndRoundNumber(Mockito.anyLong(), Mockito.anyInt())).thenReturn(question);
         Mockito.when(toolService.getUserTools(Mockito.anyLong())).thenReturn(Arrays.asList("HINT", "BLUR"));
+        Mockito.when(userService.getUserById(Mockito.anyLong())).thenReturn(Optional.ofNullable(testUser));
 
         // Act
         Question result = questionService.getQuestionsByRoomRoundandUserId(1L, 1, 1L);
@@ -276,8 +283,9 @@ public class QuestionServiceTest {
     public void testOwnerGetReadySuccess() {
         // Arrange, room with only one person
         Mockito.when(roomService.findById(Mockito.anyLong())).thenReturn(roomOnePerson);
-        Mockito.when(itemRepository.findAll()).thenReturn(items);
+        Mockito.when(itemRepository.findItemWithImage()).thenReturn(items);
         Mockito.when(roomRepository.save(Mockito.any())).thenReturn(roomOnePerson);
+        Mockito.when(userService.getUserById(Mockito.any())).thenReturn(Optional.ofNullable(testUser));
 
         // Act
         String result = questionService.getReady(2L, 1L);
@@ -286,7 +294,7 @@ public class QuestionServiceTest {
         assertEquals("ready", result);
         //System.out.println(roomOnePerson.getReadyIds());
         Mockito.verify(roomService, times(3)).findById(Mockito.anyLong());
-        Mockito.verify(roomService, times(1)).resetPlayerScore(Mockito.anyLong());
+        Mockito.verify(userService, times(1)).getUserById(Mockito.anyLong());
         Mockito.verify(roomRepository, times(1)).save(Mockito.any());
         Mockito.verify(questionRepository, times(3)).save(Mockito.any());//verify the question is created when Owner is ready
     }

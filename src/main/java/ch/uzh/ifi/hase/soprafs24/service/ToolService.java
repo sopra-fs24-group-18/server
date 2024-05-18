@@ -14,13 +14,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -47,7 +45,7 @@ public class ToolService {
         return this.toolRepository.findAll();
     }
 
-    public void useTool(Long toolId, Long userId) {
+    public void useTool(Long toolId, Long roomId, Long userId) {
         Optional<User> optionalUser = userService.getUserById(userId);
         User user = optionalUser.get();
 
@@ -62,14 +60,19 @@ public class ToolService {
         String toolList = user.getToolList() == null ? tool.getType().name() : user.getToolList() + "," + tool.getType();
         user.setToolList(toolList);
 
+        String toolStatus = user.getToolStatus();
+
         switch (tool.getType()) {
             case HINT:
-                String toolStatus = user.getToolStatus() == null ? ToolType.HINT.name() : user.getToolStatus() + "," + ToolType.HINT;
+            case DEFENSE:
+            case BONUS:
+            case GAMBLE:
+                toolStatus = toolStatus == null ? tool.getType().name() : user.getToolStatus() + "," + tool.getType();
                 user.setToolStatus(toolStatus);
                 break;
+
             case BLUR:
-                // Find the room containing the current user
-                Optional<Room> optionalRoom = roomRepository.findByPlayerIdsContaining(userId.toString());
+                Optional<Room> optionalRoom = roomRepository.findById(roomId);
                 Room room = optionalRoom.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Room not found"));
 
                 // Get player IDs in the room

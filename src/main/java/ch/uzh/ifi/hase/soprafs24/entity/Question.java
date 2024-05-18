@@ -39,6 +39,13 @@ public class Question implements Serializable {
     @Column(nullable = true)
     private float budget; //for budget mode
 
+    @Lob
+    @Column(nullable = true)
+    private String selectedItemList;//selected item list to calculate budget
+
+    @Column(nullable = true)
+    private int selectedItemNum; //selected item number to calculate budget
+
     @Column(nullable = true)
     private float answer; //item price for guessing mode
 
@@ -47,6 +54,12 @@ public class Question implements Serializable {
 
     @Column(nullable = true)
     private int rightRange; //item range for guessing mode
+
+    @Column(nullable = true)
+    private int originLeftRange; //item range for guessing mode before applying hint
+
+    @Column(nullable = true)
+    private int originRightRange; //item range for guessing mode before applying hint
 
     @Column(nullable = false)
     private boolean blur = false; //picture effect, default as false
@@ -137,12 +150,38 @@ public class Question implements Serializable {
         this.rightRange = rightRange;
     }
 
+    public int getOriginLeftRange() {
+        return originLeftRange;
+    }
+    public void setOriginLeftRange(int originLeftRange) {
+        this.originLeftRange = originLeftRange;
+    }
+    public int getOriginRightRange() {
+        return originRightRange;
+    }
+    public void setOriginRightRange(int originRightRange) {
+        this.originRightRange = originRightRange;
+    }
+
 
     public boolean getBlur() {
         return blur;
     }
     public void setBlur(boolean blur) {
         this.blur = blur;
+    }
+
+    public String getSelectedItemList() {
+        return selectedItemList;
+    }
+    public void setSelectedItemList(String selectedItemList) {
+        this.selectedItemList =selectedItemList;
+    }
+
+    public int getSelectedItemNum(){return selectedItemNum;}
+
+    public void setSelectedItemNum(int selectedItemNum){
+        this.selectedItemNum = selectedItemNum;
     }
 
 }

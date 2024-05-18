@@ -65,6 +65,8 @@ public class RoomControllerTest {
     roomPostDTO.setPlayerAmount(5L);
 
     given(roomService.createRoom(Mockito.any())).willReturn(room);
+    given(userService.userId2Username(Mockito.anyLong())).willReturn("u1");
+    given(userService.userIdList2UsernameList(Mockito.anyString())).willReturn("u1");
 
     // when/then -> do the request + validate the result
     MockHttpServletRequestBuilder postRequest = post("/rooms")
@@ -91,6 +93,8 @@ public class RoomControllerTest {
     room.setOwnerId(4L);
 
     given(roomService.enterRoom(Mockito.anyString(), Mockito.anyLong())).willReturn(room);
+    given(userService.userId2Username(Mockito.anyLong())).willReturn("u1");
+    given(userService.userIdList2UsernameList(Mockito.anyString())).willReturn("u1,u2,u3");
 
     // when
     MockHttpServletRequestBuilder postReqest = post("/rooms/123456/1/enter")
@@ -100,7 +104,7 @@ public class RoomControllerTest {
     mockMvc.perform(postReqest).andExpect(status().isOk())
             .andExpect(jsonPath("$.name", is(room.getName())))
             .andExpect(jsonPath("$.playerAmount", is(room.getPlayerAmount().intValue())))
-            .andExpect(jsonPath("$.ownerName", nullValue()))
+            .andExpect(jsonPath("$.ownerName", is("u1")))
             .andExpect(jsonPath("$.gameMode", is(room.getGameMode().toString())));
   }
 

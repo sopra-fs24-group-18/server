@@ -1,9 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Question;
-import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.question.QuestionGetDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.user.UserPostDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -22,7 +20,12 @@ public interface QuestionDTOMapper {
     @Mapping(source = "roundNumber", target = "roundNumber")
     @Mapping(source = "leftRange",target = "leftRange")
     @Mapping(source = "rightRange",target = "rightRange")
+    @Mapping(source = "originLeftRange",target = "originLeftRange")
+    @Mapping(source = "originRightRange",target = "originRightRange")
+    @Mapping(source = "budget",target = "budget")
     @Mapping(source = "blur",target = "blur")
+    @Mapping(source = "selectedItemNum",target = "selectedItemNum")
+    @Mapping(source = "selectedItemList",target = "selectedItemList")
     QuestionGetDTO convertEntitytoQuestionGetDTO(Question question);
 
 }
