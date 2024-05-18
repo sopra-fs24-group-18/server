@@ -112,14 +112,14 @@ public class QuestionServiceTest {
     @Test
     public void testCreateGuessingQuestionsSuccess() {
         // Arrange
-        Mockito.when(itemRepository.findAll()).thenReturn(items);
+        Mockito.when(itemRepository.findItemWithImage()).thenReturn(items);
         Mockito.when(questionRepository.save(Mockito.any())).thenReturn(new Question());
 
         // Act
         assertDoesNotThrow(() -> questionService.createGuessingQuestions(1L));
 
         // Assert
-        Mockito.verify(itemRepository, times(1)).findAll();
+        Mockito.verify(itemRepository, times(1)).findItemWithImage();
         Mockito.verify(roomService, times(1)).findById(Mockito.anyLong());
         //Mockito.verify(questionRepository, times(3)).save(Mockito.any());
 
@@ -139,7 +139,7 @@ public class QuestionServiceTest {
     public void testCreateGuessingQuestionsInValidItems() {
         // Arrange
         List<Item> shortItemList = items.subList(0, 2); //3 items are needed
-        Mockito.when(itemRepository.findAll()).thenReturn(shortItemList);
+        Mockito.when(itemRepository.findItemWithImage()).thenReturn(shortItemList);
 
         // Act and assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
@@ -156,14 +156,14 @@ public class QuestionServiceTest {
     @Test
     public void testCreateBudgetQuestionsSuccess() {
         // Arrange
-        Mockito.when(itemRepository.findAll()).thenReturn(items);
+        Mockito.when(itemRepository.findItemWithImage()).thenReturn(items);
         Mockito.when(questionRepository.save(Mockito.any())).thenReturn(new Question());
 
         // Act
         assertDoesNotThrow(() -> questionService.createBudgetQuestions(1L));
 
         // Assert
-        Mockito.verify(itemRepository, times(1)).findAll();
+        Mockito.verify(itemRepository, times(1)).findItemWithImage();
         Mockito.verify(roomService, times(1)).findById(Mockito.anyLong());
 
         // verify budget range
@@ -183,7 +183,7 @@ public class QuestionServiceTest {
     public void testCreateBudgetQuestionsInValidItems() {
         // Arrange
         List<Item> shortItemList = items.subList(0, 2); //27 items are needed
-        Mockito.when(itemRepository.findAll()).thenReturn(shortItemList);
+        Mockito.when(itemRepository.findItemWithImage()).thenReturn(shortItemList);
 
         // Act and assert
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
@@ -283,7 +283,7 @@ public class QuestionServiceTest {
     public void testOwnerGetReadySuccess() {
         // Arrange, room with only one person
         Mockito.when(roomService.findById(Mockito.anyLong())).thenReturn(roomOnePerson);
-        Mockito.when(itemRepository.findAll()).thenReturn(items);
+        Mockito.when(itemRepository.findItemWithImage()).thenReturn(items);
         Mockito.when(roomRepository.save(Mockito.any())).thenReturn(roomOnePerson);
         Mockito.when(userService.getUserById(Mockito.any())).thenReturn(Optional.ofNullable(testUser));
 

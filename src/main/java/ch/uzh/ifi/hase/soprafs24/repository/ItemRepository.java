@@ -10,5 +10,8 @@ import java.util.List;
 public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findAll();
 
+    @Query("SELECT i FROM Item i WHERE i.imageURL <> 'default' AND i.imageURL <> ''")
+    List<Item> findItemWithImage();
+
     List<Item> findAllByIdIn(List<Long> itemIds);
 }
