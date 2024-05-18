@@ -132,7 +132,7 @@ public class QuestionService {
             //randomly determine the item number to calculate budget
             // Create a SecureRandom instance
             SecureRandom secureRandom = new SecureRandom();
-            int budgetItemNum = (int) (secureRandom.nextDouble()  * 6) + 1;//at least one item
+            int budgetItemNum = (int) (secureRandom.nextDouble()  * 5) + 1;//at least one item
             //shuffle selected items order
             Collections.shuffle(selectedItems);
             float budget = 0;

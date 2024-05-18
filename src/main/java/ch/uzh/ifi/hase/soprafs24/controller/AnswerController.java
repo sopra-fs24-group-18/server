@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Answer;
-import ch.uzh.ifi.hase.soprafs24.repository.QuestionRepository;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.answer.AnswerGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.answer.AnswerPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.AnswerDTOMapper;

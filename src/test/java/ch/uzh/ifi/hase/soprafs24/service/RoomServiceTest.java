@@ -1,9 +1,9 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
 import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
-import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.Room;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
+import ch.uzh.ifi.hase.soprafs24.repository.AnswerRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.RoomRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,8 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,6 +28,12 @@ public class RoomServiceTest {
 
   @Mock
   private UserService userService;
+
+  @Mock
+  private UserRepository userRepository;
+
+  @Mock
+  private AnswerRepository answerRepository;
 
   @InjectMocks
   private RoomService roomService;
@@ -51,7 +55,6 @@ public class RoomServiceTest {
     testRoom.setOwnerId(8L);
     testRoom.setRoundAmount(6L);
     testRoom.setPlayerIds("8");
-    testRoom.setCurrentRound(1L);
 
     testUser = new User();
     testUser.setId(1L);
@@ -107,6 +110,7 @@ public class RoomServiceTest {
         User user = new User();
         user.setId(8L);
         user.setPassword("123");
+        user.setUsername("u1");
 
         Mockito.when(userService.getUserById(Mockito.anyLong())).thenReturn(Optional.ofNullable(user));
         Mockito.when(roomRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(testRoom));

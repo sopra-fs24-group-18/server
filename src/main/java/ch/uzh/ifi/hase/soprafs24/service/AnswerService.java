@@ -10,13 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.annotation.Resource;
-import javax.persistence.PersistenceContext;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,8 +28,6 @@ public class AnswerService {
   private final UserRepository userRepository;
   private final ItemRepository itemRepository;
 
-    @Resource
-    private PlatformTransactionManager platformTransactionManager;
 
   @Autowired
   public AnswerService(@Qualifier("answerRepository") AnswerRepository answerRepository, QuestionRepository questionRepository,
@@ -78,7 +72,7 @@ public class AnswerService {
       }while (!playerAmount.equals(answeredPlayers));
 
       Long point = 0L;
-      // all users have submitted the answers, calculate the rank and reward the points
+      // all users have submitted the answers, now calculate the rank and reward the points
       if(question.getGameMode().equals(GameMode.GUESSING)){
           point = rankGuessMode(answer, playerIds, question.getAnswer());
       }
@@ -109,20 +103,22 @@ public class AnswerService {
         Long userId = answer.getUserId();
         // Find the user's rank in the sorted list
         int rank = -1;
-        int previousRank = -1;
-        for (int i = 0; i < Math.min(3, playerIds.length); i++) {
+        for (int i = 0; i < answers.size(); i++) {
             if (userId.equals(answers.get(i).getUserId())) {
                 rank = i;
-                // Check if there are previous users with the same score
-                if (i > 0 && answers.get(i - 1).getGuessedPrice().equals(answers.get(i).getGuessedPrice())) {
-                    previousRank = i - 1; // Set previousRank to the index of the last user with the same score
-                }
                 break;
             }
         }
 
-        if (previousRank != -1) {
-            rank = previousRank;
+        // Check if there are previous users with the same score
+        if (rank != -1) {
+            for (int i = rank - 1; i >= 0; i--) {
+                if (Math.abs(answers.get(i).getGuessedPrice() - realPrice) == Math.abs(answers.get(rank).getGuessedPrice() - realPrice)) {
+                    rank = i;
+                } else {
+                    break;
+                }
+            }
         }
 
         // Calculate the points based on the user's rank
@@ -153,7 +149,7 @@ public class AnswerService {
                     Float diff1 = Math.abs(entry1.getValue() - budget);
                     Float diff2 = Math.abs(entry2.getValue() - budget);
                     // Compare absolute differences
-                    return diff2.compareTo(diff1);
+                    return diff1.compareTo(diff2);
                 })
                 .collect(Collectors.toList());
 
@@ -161,20 +157,22 @@ public class AnswerService {
         Long userId = answer.getUserId();
         // Find the user's rank in the sorted list
         int rank = -1;
-        int previousRank = -1;
         for (int i = 0; i < sortedEntries.size(); i++) {
             if (sortedEntries.get(i).getKey().equals(userId)) {
                 rank = i;
-                // Check if there are previous users with the same score
-                if (i > 0 && sortedEntries.get(i - 1).getValue().equals(sortedEntries.get(i).getValue())) {
-                    previousRank = i - 1; // Set previousRank to the index of the last user with the same score
-                }
                 break;
             }
         }
 
-        if (previousRank != -1) {
-            rank = previousRank;
+        // Check if there are previous users with the same score
+        if (rank != -1) {
+            for (int i = rank - 1; i >= 0; i--) {
+                if (Math.abs(sortedEntries.get(i).getValue() - budget) == Math.abs(sortedEntries.get(rank).getValue() - budget)) {
+                    rank = i;
+                } else {
+                    break;
+                }
+            }
         }
 
         // Calculate the points based on the user's rank
@@ -243,17 +241,17 @@ public class AnswerService {
       if(answer.getChosenItemList() == null || answer.getChosenItemList().length() == 0){
           return 0.0F;
       }
-        List<Long> itemIds = Arrays.stream(answer.getChosenItemList().split(","))
-                .map(Long::valueOf)
-                .collect(Collectors.toList());
+      List<Long> itemIds = Arrays.stream(answer.getChosenItemList().split(","))
+              .map(Long::valueOf)
+              .collect(Collectors.toList());
 
-        // Retrieve the items from the database using the item ids
-        List<Item> items = itemRepository.findAllByIdIn(itemIds);
+      // Retrieve the items from the database using the item ids
+      List<Item> items = itemRepository.findAllByIdIn(itemIds);
 
-        // Calculate the sum of prices for the items
-        Float sumPrice = items.stream()
-                .map(Item::getPrice)
-                .reduce(0F, Float::sum);
-        return sumPrice;
+      // Calculate the sum of prices for the items
+      Float sumPrice = items.stream()
+              .map(Item::getPrice)
+              .reduce(0F, Float::sum);
+      return sumPrice;
     }
 }

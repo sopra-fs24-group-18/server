@@ -1,6 +1,8 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
+import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
 import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
+import ch.uzh.ifi.hase.soprafs24.entity.Room;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.user.UserPostDTO;
@@ -228,8 +230,6 @@ public class UserControllerTest {
         existingUser.setPassword("existingPassword");
         existingUser.setToken("dummyToken");
 
-        given(userRepository.findByUsername(Mockito.any())).willReturn(null);
-        given(userRepository.findById(Mockito.anyLong())).willReturn(Optional.of(existingUser));
         given(userService.updateUser(Mockito.anyLong(), Mockito.any())).willReturn(existingUser);
 
 
@@ -257,8 +257,6 @@ public class UserControllerTest {
         existingUser.setPassword("existingPassword");
         existingUser.setToken("dummyToken");
 
-        given(userRepository.findByUsername(Mockito.any())).willReturn(null);
-        given(userRepository.findById(Mockito.anyLong())).willReturn(Optional.of(existingUser));
         given(userService.updateUser(Mockito.anyLong(), Mockito.any())).willThrow(
                 new ResponseStatusException(HttpStatus.BAD_REQUEST));
 
@@ -271,6 +269,40 @@ public class UserControllerTest {
 
     }
 
+    @Test
+    public void logout_success() throws Exception {
+        UserPutDTO userPutDTO = new UserPutDTO();
+        userPutDTO.setId(1L);
+        userPutDTO.setUsername("username");
+        userPutDTO.setToken("token");
+
+        doNothing().when(userService).logout(Mockito.any());
+
+        // when
+        MockHttpServletRequestBuilder putReqest = put("/logout")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(userPutDTO));
+
+        // then
+        mockMvc.perform(putReqest).andExpect(status().isOk());
+    }
+
+    @Test
+    public void logout_invalidToken() throws Exception {
+        UserPutDTO userPutDTO = new UserPutDTO();
+        userPutDTO.setId(1L);
+        userPutDTO.setUsername("username");
+        userPutDTO.setToken("token");
+
+        doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!"))
+                .when(userService).logout(Mockito.any());
+
+        MockHttpServletRequestBuilder putReqest = put("/logout")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(userPutDTO));
+
+        mockMvc.perform(putReqest).andExpect(status().isNotFound());
+    }
 
 
 

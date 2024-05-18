@@ -5,16 +5,6 @@ import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
 import javax.persistence.*;
 import java.io.Serializable;
 
-/**
- * Internal User Representation
- * This class composes the internal representation of the user and defines how
- * the user is stored in the database.
- * Every variable will be mapped into a database field with the @Column
- * annotation
- * - nullable = false -> this cannot be left empty
- * - unique = true -> this value must be unqiue across the database -> composes
- * the primary key
- */
 @Entity
 @Table(name = "ROOM")
 @SequenceGenerator(name = "room_seq", sequenceName = "room_sequence", allocationSize = 1)
@@ -44,9 +34,6 @@ public class Room implements Serializable {
 
     @Column(nullable = false)
     private String playerIds;
-
-    @Column
-    private Long currentRound;
 
     @Column (nullable = true)
     private String readyIds;
@@ -115,14 +102,6 @@ public class Room implements Serializable {
         this.playerIds = playerIds;
     }
 
-    public Long getCurrentRound() {
-        return currentRound;
-    }
-
-    public void setCurrentRound(Long currentRound) {
-        this.currentRound = currentRound;
-    }
-
     public String getReadyIds() {
         return readyIds;
     }
@@ -130,6 +109,5 @@ public class Room implements Serializable {
     public void setReadyIds(String readyIds) {
         this.readyIds = readyIds;
     }
-
 
 }

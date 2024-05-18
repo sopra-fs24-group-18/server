@@ -1,10 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto.room;
 
 import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
-import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
-
-import javax.persistence.Column;
-import java.time.LocalDate;
 
 public class RoomGetDTO {
     private Long id;

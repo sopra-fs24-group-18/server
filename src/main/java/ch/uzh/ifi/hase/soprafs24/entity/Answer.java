@@ -1,7 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
-import ch.uzh.ifi.hase.soprafs24.constant.GameMode;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -14,7 +12,7 @@ public class Answer implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ans_seq")
     private Long id;
 
-    @Column()
+    @Column(nullable = false)
     private Long questionId;
 
     @Column(nullable = false)

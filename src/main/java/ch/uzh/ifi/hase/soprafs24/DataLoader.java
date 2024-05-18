@@ -36,7 +36,7 @@ public class DataLoader implements ApplicationRunner {
 
         Tool tool4 = new Tool();
         tool4.setType(ToolType.BONUS);
-        tool4.setDescription("Using this tool, if you are No.1 in the next round, you can get an extra 50 points.");
+        tool4.setDescription("Using this tool, if you are No.1 in the next round, you can get an extra 60 points.");
         tool4.setPrice(20L);
         toolRepository.save(tool4);
 

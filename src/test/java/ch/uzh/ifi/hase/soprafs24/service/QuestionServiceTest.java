@@ -99,7 +99,7 @@ public class QuestionServiceTest {
         testUser2 = new User();
         testUser2.setId(2L);
         testUser2.setPassword("123");
-        testUser2.setUsername("testUsername");
+        testUser2.setUsername("testUsername2");
         testUser2.setScore(0L);
 
         // Stub mock method calls
@@ -223,6 +223,7 @@ public class QuestionServiceTest {
 
         Mockito.when(questionRepository.findAllByRoomIdAndRoundNumber(Mockito.anyLong(), Mockito.anyInt())).thenReturn(question);
         Mockito.when(toolService.getUserTools(Mockito.anyLong())).thenReturn(Arrays.asList("HINT", "BLUR"));
+        Mockito.when(userService.getUserById(Mockito.anyLong())).thenReturn(Optional.ofNullable(testUser));
 
         // Act
         Question result = questionService.getQuestionsByRoomRoundandUserId(1L, 1, 1L);
@@ -245,6 +246,7 @@ public class QuestionServiceTest {
 
         Mockito.when(questionRepository.findAllByRoomIdAndRoundNumber(Mockito.anyLong(), Mockito.anyInt())).thenReturn(question);
         Mockito.when(toolService.getUserTools(Mockito.anyLong())).thenReturn(Arrays.asList("BLUR"));
+        Mockito.when(userService.getUserById(Mockito.anyLong())).thenReturn(Optional.ofNullable(testUser));
 
         // Act
         Question result = questionService.getQuestionsByRoomRoundandUserId(1L, 1, 1L);
@@ -264,6 +266,7 @@ public class QuestionServiceTest {
 
         Mockito.when(questionRepository.findAllByRoomIdAndRoundNumber(Mockito.anyLong(), Mockito.anyInt())).thenReturn(question);
         Mockito.when(toolService.getUserTools(Mockito.anyLong())).thenReturn(Arrays.asList("HINT", "BLUR"));
+        Mockito.when(userService.getUserById(Mockito.anyLong())).thenReturn(Optional.ofNullable(testUser));
 
         // Act
         Question result = questionService.getQuestionsByRoomRoundandUserId(1L, 1, 1L);

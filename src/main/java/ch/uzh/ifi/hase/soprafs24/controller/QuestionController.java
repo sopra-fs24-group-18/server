@@ -4,7 +4,6 @@ import ch.uzh.ifi.hase.soprafs24.entity.Question;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.question.QuestionGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.QuestionDTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.QuestionService;
-import ch.uzh.ifi.hase.soprafs24.service.RoomService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

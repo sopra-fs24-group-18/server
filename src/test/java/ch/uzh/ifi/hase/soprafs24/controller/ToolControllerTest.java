@@ -1,15 +1,9 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.constant.ToolType;
-import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.Tool;
-import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.ToolRepository;
-import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.user.UserPostDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.user.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs24.service.ToolService;
-import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -25,11 +19,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -75,7 +67,7 @@ public class ToolControllerTest {
     doNothing().when(toolService).useTool(Mockito.anyLong(), Mockito.anyLong(), Mockito.anyLong());
 
     // when
-    MockHttpServletRequestBuilder postReqest = post("/tools/1/1")
+    MockHttpServletRequestBuilder postReqest = post("/tools/1/1/1")
             .contentType(MediaType.APPLICATION_JSON);
 
     // then
@@ -87,20 +79,44 @@ public class ToolControllerTest {
         doThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Tool not found!"))
                 .when(toolService).useTool(Mockito.anyLong(), Mockito.anyLong(), Mockito.anyLong());
 
-        MockHttpServletRequestBuilder postReqest = post("/tools/1/1")
+        MockHttpServletRequestBuilder postReqest = post("/tools/1/1/1")
                 .contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(postReqest).andExpect(status().isNotFound());
     }
 
-    /**
-   * Helper Method to convert userPostDTO into a JSON string such that the input
-   * can be processed
-   * Input will look like this: {"name": "Test User", "username": "testUsername"}
-   *
-   * @param object
-   * @return string
-   */
+    @Test
+    public void getToolByUserId_validInput() throws Exception {
+        Tool tool = new Tool();
+        tool.setType(ToolType.HINT);
+        tool.setPrice(30L);
+
+        List<String> toolList = Collections.singletonList(tool.getType().name());
+
+        given(toolService.getUserTools(Mockito.anyLong())).willReturn(toolList);
+
+        // when
+        MockHttpServletRequestBuilder getRequest = get("/tools/1").contentType(MediaType.APPLICATION_JSON);
+
+        // then
+        mockMvc.perform(getRequest).andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
+    public void getToolByUserId_invalidInputs() throws Exception {
+        given(toolService.getUserTools(Mockito.anyLong())).willThrow(
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found!"));
+
+
+        MockHttpServletRequestBuilder postReqest = get("/tools/1")
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(postReqest).andExpect(status().isNotFound());
+    }
+
+
+
   private String asJsonString(final Object object) {
     try {
       return new ObjectMapper().writeValueAsString(object);

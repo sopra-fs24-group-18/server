@@ -42,7 +42,7 @@ public class UserService {
   public User createUser(User newUser) {
     newUser.setToken(UUID.randomUUID().toString());
     newUser.setStatus(UserStatus.ONLINE);
-    newUser.setScore(0L);
+    newUser.setScore(100L);
     LocalDate date = LocalDate.now();
     newUser.setCreationDate(date);
     checkIfUserExists(newUser);
@@ -161,6 +161,9 @@ public class UserService {
 
     public void logout(User userInput){
         User user = userRepository.findByToken(userInput.getToken());
+        if(user == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User is not found!");
+        }
         user.setStatus(UserStatus.OFFLINE);
     }
 
