@@ -52,7 +52,7 @@ public class QuestionService {
     }
 
     private List<Item> getAllItems() {
-        return itemRepository.findAll(); // Assuming itemRepository exists
+        return itemRepository.findItemWithImage(); // need item with image only
     }
 
 

@@ -82,8 +82,8 @@ public class EbayAPIService {
                     item.setImageURL("default"); // Set default image URL
                 }
                 else {
-                    // Set imageURL to itemImage2 if itemImage1 is null, otherwise set it to itemImage1
-                    item.setImageURL(itemImage1 != null ? itemImage1 : itemImage2);
+                    // Set imageURL to itemImage2 if itemImage1 is null or is empty string, otherwise set it to itemImage1
+                    item.setImageURL(itemImage1 != null && !itemImage1.isBlank() ? itemImage1 : itemImage2);
                 }
 
                 items.add(item);
