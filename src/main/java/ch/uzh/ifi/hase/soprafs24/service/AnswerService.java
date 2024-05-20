@@ -211,7 +211,7 @@ public class AnswerService {
             }
             if (user.getToolStatus().contains(ToolType.GAMBLE.name())) {
                 if (points.equals(100L)) {
-                    bonus = 2 * oldScore;
+                    bonus = oldScore;
                     newScore += bonus;
                 }
                 else {
@@ -252,6 +252,6 @@ public class AnswerService {
       Float sumPrice = items.stream()
               .map(Item::getPrice)
               .reduce(0F, Float::sum);
-      return sumPrice;
+      return Float.valueOf(String.format("%.1f", sumPrice));
     }
 }
