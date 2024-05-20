@@ -556,6 +556,7 @@ Improing the ui design of front-end.
 
 ### Yanyang Gong
 **Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/137
 *   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/149
 *   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/150
 
