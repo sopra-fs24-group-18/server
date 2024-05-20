@@ -106,6 +106,8 @@ public class RoomService {
         }
         User user = optionalUser.get();
         user.setScore(100L);
+        user.setToolStatus(null);
+        user.setToolList(null);
         userRepository.save(user);
         answerRepository.deleteByUserId(userId);
 

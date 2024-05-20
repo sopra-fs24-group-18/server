@@ -211,7 +211,7 @@ public class AnswerService {
             }
             if (user.getToolStatus().contains(ToolType.GAMBLE.name())) {
                 if (points.equals(100L)) {
-                    bonus = 3 * oldScore;
+                    bonus = 2 * oldScore;
                     newScore += bonus;
                 }
                 else {
