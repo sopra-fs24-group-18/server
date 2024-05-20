@@ -92,7 +92,8 @@ public class RoomService {
     }
 
     public void exitRoom(Long roomId, Long userId) {
-        Optional<User> optionalUser = userService.getUserById(userId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         Room room = findById(roomId);
 
         String playerIds = room.getPlayerIds();
@@ -104,7 +105,6 @@ public class RoomService {
             }
             newPlayerList.add(id);
         }
-        User user = optionalUser.get();
         user.setScore(100L);
         user.setToolStatus(null);
         user.setToolList(null);

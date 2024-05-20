@@ -159,7 +159,7 @@ public class RoomServiceTest {
         user.setPassword("123");
         user.setUsername("u1");
 
-        Mockito.when(userService.getUserById(Mockito.anyLong())).thenReturn(Optional.ofNullable(user));
+        Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(user));
         Mockito.when(roomRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(room));
         roomService.exitRoom(room.getId(), user.getId());
 
@@ -169,6 +169,12 @@ public class RoomServiceTest {
 
     @Test
     public void exitRoom_invalidInputs_throwsException() {
+        User user = new User();
+        user.setId(8L);
+        user.setPassword("123");
+        user.setUsername("u1");
+
+        Mockito.when(userRepository.findById(Mockito.anyLong())).thenReturn(Optional.ofNullable(user));
         Mockito.when(roomRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
 
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> roomService.exitRoom(3L, 1L));
