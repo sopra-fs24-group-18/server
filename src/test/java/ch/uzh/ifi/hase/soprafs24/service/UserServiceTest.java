@@ -13,9 +13,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -118,10 +120,24 @@ public class UserServiceTest {
 
         Mockito.when(userRepository.findByUsername(Mockito.any())).thenReturn(null);
 
-        assertThrows(ResponseStatusException.class, () -> userService.login(user));
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.login(user));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
     }
 
-  @Test
+    @Test
+    public void login_incorrectPassword_throwsException() {
+        User loginUser = new User();
+        loginUser.setUsername("testUsername");
+        loginUser.setPassword("333");
+
+        Mockito.when(userRepository.findByUsername(Mockito.any())).thenReturn(testUser);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.login(loginUser));
+        assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatus());
+    }
+
+
+    @Test
   public void getUsers_validInputs_success() {
         // given
       List<User> userList = Arrays.asList(testUser, new User(), new User());
@@ -233,5 +249,83 @@ public class UserServiceTest {
         // then
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.updateUser(1L, updatedUser));
         assertEquals("The password cannot be empty", exception.getReason());
+    }
+
+    @Test
+    public void logout_success(){
+      User user = new User();
+      user.setUsername("u1");
+      user.setPassword("123");
+      user.setToken("tokenForU1");
+      user.setStatus(UserStatus.ONLINE);
+      Mockito.when(userRepository.findByToken("tokenForU1")).thenReturn(user);
+
+      userService.logout(user);
+      assertEquals(UserStatus.OFFLINE, user.getStatus());
+    }
+
+    @Test
+    public void logout_invalidToken(){
+        User user = new User();
+        user.setUsername("u1");
+        user.setPassword("123");
+        user.setToken("invalidToken");
+        user.setStatus(UserStatus.ONLINE);
+        Mockito.when(userRepository.findByToken("tokenForU1")).thenReturn(null);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.logout(user));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+    }
+
+    @Test
+    public void userId2Username(){
+        User user = new User();
+        user.setId(3L);
+        user.setUsername("u3");
+        user.setPassword("123");
+        Mockito.when(userRepository.findById(3L)).thenReturn(Optional.of(user));
+
+        String username = userService.userId2Username(user.getId());
+        assertEquals(user.getUsername(), username);
+    }
+
+    @Test
+    public void userIdList2UsernameList(){
+        User user = new User();
+        user.setId(3L);
+        user.setUsername("u3");
+        user.setPassword("123");
+
+        User user4 = new User();
+        user4.setId(4L);
+        user4.setUsername("u4");
+        user4.setPassword("123");
+
+        Mockito.when(userRepository.findById(3L)).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.findById(4L)).thenReturn(Optional.of(user4));
+
+        String result = userService.userIdList2UsernameList("3,4");
+        assertEquals("u3,u4", result);
+    }
+
+    @Test
+    public void resetScore(){
+        User user = new User();
+        user.setId(3L);
+        user.setUsername("u3");
+        user.setPassword("123");
+        user.setScore(10L);
+
+        User user4 = new User();
+        user4.setId(4L);
+        user4.setUsername("u4");
+        user4.setPassword("123");
+        user4.setScore(500L);
+
+        List<User> users = List.of(user, user4);
+
+        userService.resetScore(users);
+        assertEquals(100L, users.get(0).getScore());
+        assertEquals(100L, users.get(1).getScore());
     }
 }

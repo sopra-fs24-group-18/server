@@ -251,7 +251,6 @@ Try to connect the front and back end, test and fix logic.
 *   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/117
 *   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/62
 *   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/104
-*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/105
 *   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/122
 *   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/21
 
@@ -556,6 +555,7 @@ Improing the ui design of front-end.
 
 ### Yanyang Gong
 **Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/137
 *   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/149
 *   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/150
 
@@ -569,5 +569,23 @@ Modify Liscence and ReadMe.
 
 Debug.  
 Prepare for the presentation & report.
+
+
+### Zien Zeng
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/137
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/149
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/140
+
+**Description**
+
+Write tests. 
+Debug and refine backend code.
+
+**Plan for this week**
+
+Deploy application to Goggle Cloud. 
+Debug.
+Write report.
 
 

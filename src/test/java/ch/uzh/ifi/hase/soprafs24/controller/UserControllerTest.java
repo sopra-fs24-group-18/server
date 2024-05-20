@@ -213,6 +213,19 @@ public class UserControllerTest {
     }
 
     @Test
+    public void getUser_invalidInput2_getUserById() throws Exception {
+        given(userService.getUserById(Mockito.anyLong())).willReturn(Optional.empty());
+
+        MockHttpServletRequestBuilder getRequest = get("/users/100").contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(getRequest)
+                .andExpect(status().isNotFound());
+
+        verify(userService).getUserById(100L);
+
+    }
+
+    @Test
     public void updateUser_validInput() throws Exception {
         // Prepare test data
         UserPutDTO userPutDTO = new UserPutDTO();
