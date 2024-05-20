@@ -168,8 +168,9 @@ public class UserService {
     }
 
     public String userId2Username(Long userId){
-        Optional<User> user = getUserById(userId);
-        return user.get().getUsername();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        return user.getUsername();
     }
 
     public String userIdList2UsernameList(String userIdList) {
