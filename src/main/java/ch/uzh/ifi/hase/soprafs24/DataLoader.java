@@ -42,7 +42,7 @@ public class DataLoader implements ApplicationRunner {
 
         Tool tool5 = new Tool();
         tool5.setType(ToolType.GAMBLE);
-        tool5.setDescription("Using this tool, if you are No.1 in the next round, you can triple your points, otherwise you loss all your points.");
+        tool5.setDescription("Using this tool, if you are No.1 in the next round, you can double your points, otherwise you loss all your points.");
         tool5.setPrice(40L);
         toolRepository.save(tool5);
     }
