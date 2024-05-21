@@ -598,9 +598,9 @@ Write report.
 
 Improve the UI design of gameroom in both modes.
 
-Improve the profile editing mode.
+Modified the profile editing mode.
 
-Improve error message display.
+Modified error message display.
 
 **Plan for this week**
 
