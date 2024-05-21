@@ -588,4 +588,23 @@ Deploy application to Goggle Cloud.
 Debug.
 Write report.
 
+### Lu Li
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/89
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/90
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/91
+
+**Description**
+
+Improve the UI design of gameroom in both modes.
+
+Improve the profile editing mode.
+
+Improve error message display.
+
+**Plan for this week**
+
+Improve the frontend for user-friendly use.
+
+Write report.
 
