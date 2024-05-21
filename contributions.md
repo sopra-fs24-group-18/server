@@ -590,7 +590,7 @@ Write report.
 
 ### Lu Li
 **Issues worked on**
-*    [#88](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/89)
+*    [#92](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/92)
 *    [#89](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/89)
 *    [#90](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/90)
 *    [#91](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/91)
@@ -609,3 +609,18 @@ Improve the frontend for user-friendly use.
 
 Write report.
 
+### Yunfan Zhou
+**Issues worked on**
+*    [#87](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/87)
+*    [#88](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/88)
+
+**Description**
+
+Debug.
+Add hints display for gameroom and shop pages.
+Adjust gameroom background setting.
+
+**Plan for this week**
+
+Debug.
+Adjust the gameroom for single player.
