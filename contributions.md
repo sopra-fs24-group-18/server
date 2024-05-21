@@ -590,9 +590,9 @@ Write report.
 
 ### Lu Li
 **Issues worked on**
-*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/89
-*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/90
-*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/91
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/89
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/90
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/91
 
 **Description**
 
