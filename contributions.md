@@ -507,8 +507,8 @@ Adjusted route in lobby and prepare page for budget mode.
 
 **Plan for this week**
 
-Debug.
 Improving ui for better user experience.
+Add change backgroud function.
 
 ### Lu Li
 **Issues worked on**
@@ -588,6 +588,27 @@ Deploy application to Goggle Cloud.
 Debug.
 Write report.
 
+### Lu Li
+**Issues worked on**
+*    [#92](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/92)
+*    [#89](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/89)
+*    [#90](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/90)
+*    [#91](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/91)
+
+**Description**
+
+Improve the UI design of gameroom in both modes.
+
+Modified the profile editing mode.
+
+Modified error message display.
+
+**Plan for this week**
+
+Improve the frontend for user-friendly use.
+
+Write report.
+
 ### Yunfan Zhou
 **Issues worked on**
 *    [#87](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/87)
@@ -603,5 +624,3 @@ Adjust gameroom background setting.
 
 Debug.
 Adjust the gameroom for single player.
-
-
