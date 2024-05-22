@@ -11,8 +11,9 @@ Welcome to our Price Guessing Game💰, an engaging and interactive experience w
 
 Our game also contains exciting tools designed to enhance the entertainment value and competitiveness. Drawing inspiration from real item images and prices sourced from eBay, our aim is not only to provide entertainment but also to offer players valuable insights into market trends 📈.
 
-Join us in this thrilling adventure where fun meets learning! 🎉
+Join us in this thrilling adventure where fun meets learning! 🎉   
 
+❣️ For the **client-side introduction**, please check the [Client README](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/blob/main/README.md)
 ## Contents 📂
 - [Technologies](#technologies)
 - [High-level Components](#high-levelcomponents)
