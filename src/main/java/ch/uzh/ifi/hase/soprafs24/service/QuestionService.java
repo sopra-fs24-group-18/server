@@ -286,10 +286,10 @@ public class QuestionService {
         // Check if the required amount is already met
         if (actualAmount.equals(requireAmount)) {
             //only execute the following part once for each room
-            if (room.getGameMode() == GameMode.GUESSING && Objects.equals(userId, ownerId)) {
+            if (room.getGameMode() == GameMode.GUESSING && Objects.equals(userId, ownerId) && questionRepository.findAllByRoomIdAndRoundNumber(roomId, 1)==null) {
                 createGuessingQuestions(roomId); //create questions
             }
-           else if (room.getGameMode() == GameMode.BUDGET && Objects.equals(userId, ownerId)) {
+           else if (room.getGameMode() == GameMode.BUDGET && Objects.equals(userId, ownerId) && questionRepository.findAllByRoomIdAndRoundNumber(roomId, 1)==null) {
             createBudgetQuestions(roomId);
         }
         // Return a message indicating that the game is ready
