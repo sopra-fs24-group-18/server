@@ -63,10 +63,7 @@ public class ToolService {
         String toolStatus = user.getToolStatus();
 
         switch (tool.getType()) {
-            case HINT:
-            case DEFENSE:
-            case BONUS:
-            case GAMBLE:
+            case HINT, DEFENSE, BONUS, GAMBLE:
                 toolStatus = toolStatus == null ? tool.getType().name() : user.getToolStatus() + "," + tool.getType();
                 user.setToolStatus(toolStatus);
                 break;

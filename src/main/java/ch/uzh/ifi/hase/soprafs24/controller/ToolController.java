@@ -28,9 +28,8 @@ public class ToolController {
   @PostMapping("/tools/{toolId}/{roomId}/{userId}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   @ResponseBody
-  public ResponseEntity<?> useTool(@PathVariable Long toolId, @PathVariable Long roomId, @PathVariable Long userId){
+  public void useTool(@PathVariable Long toolId, @PathVariable Long roomId, @PathVariable Long userId){
       toolService.useTool(toolId, roomId, userId);
-      return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Buy and use the tool successfully!");
   }
 
     @GetMapping("/tools/{userId}")

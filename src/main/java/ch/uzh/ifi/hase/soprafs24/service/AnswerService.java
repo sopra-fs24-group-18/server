@@ -52,8 +52,8 @@ public class AnswerService {
       Question question = optionalQuestion.get();
 
       String[] playerIds;
-      Long playerAmount = 0L;
-      Long answeredPlayers = 0L;
+      Long playerAmount;
+      Long answeredPlayers;
       do{
           Optional<Room> optionalRoom = roomRepository.findById(question.getRoomId());
           if (!optionalRoom.isPresent()) {
