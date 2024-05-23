@@ -104,7 +104,7 @@ public class UserRepositoryIntegrationTest {
 
         // then
         assertNotNull(found);
-        assertEquals(found.size(), 2);
-        assertEquals(found.get(0).getUsername(), "username2");
+        assertEquals(2, found.size());
+        assertEquals("username2", found.get(0).getUsername());
     }
 }
