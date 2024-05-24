@@ -624,3 +624,15 @@ Adjust gameroom background setting.
 
 Debug.
 Adjust the gameroom for single player.
+
+## Week 4 (5.20-5.24)
+
+### Bingjie Xue
+**Issues worked on**
+*    [#58](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/71)
+*    [#145](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/145)  
+
+**Description**
+
+Improve UI for register page, shop page and profile_edit page.
+Write README for client repo.
