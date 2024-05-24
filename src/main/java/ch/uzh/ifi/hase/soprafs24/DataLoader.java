@@ -25,7 +25,7 @@ public class DataLoader implements ApplicationRunner {
         Tool tool2 = new Tool();
         tool2.setType(ToolType.BLUR);
         tool2.setDescription("Using this tool, you can blur others' images in next round.");
-        tool2.setPrice(60L);
+        tool2.setPrice(50L);
         toolRepository.save(tool2);
 
         Tool tool3 = new Tool();
@@ -42,7 +42,8 @@ public class DataLoader implements ApplicationRunner {
 
         Tool tool5 = new Tool();
         tool5.setType(ToolType.GAMBLE);
-        tool5.setDescription("Using this tool, if you are No.1 in the next round, you can double your points, otherwise you loss all your points.");
+        tool5.setDescription("Using this tool, if you are No.1 in the next round, you can get an extra 150 points, " +
+                "otherwise you will loss 100 points.");
         tool5.setPrice(40L);
         toolRepository.save(tool5);
     }

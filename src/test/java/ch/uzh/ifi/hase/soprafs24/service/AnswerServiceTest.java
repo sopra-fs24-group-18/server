@@ -251,7 +251,7 @@ public class AnswerServiceTest {
 
         Long bonus = answerService.updateUserScore(1L, 100L);
         Mockito.verify(userRepository, times(1)).save(Mockito.any());
-        assertEquals(100L, bonus);
+        assertEquals(150L, bonus);
     }
 
     @Test
