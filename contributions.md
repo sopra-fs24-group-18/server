@@ -656,3 +656,17 @@ Write report.
 Debug and report the issue to the client side.     
 Write tests.   
 Write report and prepare the slides.
+
+### Lu Li
+**Issues worked on**
+*    [#94](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/94)
+*    [#95](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/95)
+*    [#96](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/96)
+
+**Description**
+
+Improve the instruction description and UI to make it more readable.
+
+Add a tooltip on the mainpage for instruction button.
+
+Add few hint on the profile page to make it more user-friendly.
