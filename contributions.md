@@ -646,3 +646,13 @@ Write README for client repo.
 Debug and report the issue to the client side.     
 Fix the bug on the server side that repeatedly creates questions.   
 Write report.
+
+### Zien Zeng
+**Issues worked on**
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/148
+*   https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/149
+
+**Description**    
+Debug and report the issue to the client side.     
+Write tests.   
+Write report and prepare the slides.
