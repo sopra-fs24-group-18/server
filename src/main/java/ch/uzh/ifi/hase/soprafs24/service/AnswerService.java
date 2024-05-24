@@ -211,12 +211,12 @@ public class AnswerService {
             }
             if (user.getToolStatus().contains(ToolType.GAMBLE.name())) {
                 if (points.equals(100L)) {
-                    bonus = oldScore;
+                    bonus = 150L;
                     newScore += bonus;
                 }
                 else {
-                    bonus = -oldScore;
-                    newScore = 0L;
+                    bonus = Math.max(-oldScore, -100);
+                    newScore = oldScore + bonus;
                 }
             }
         }
