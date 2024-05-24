@@ -508,7 +508,6 @@ Adjusted route in lobby and prepare page for budget mode.
 **Plan for this week**
 
 Improving ui for better user experience.
-Add change backgroud function.
 
 ### Lu Li
 **Issues worked on**
@@ -623,7 +622,8 @@ Adjust gameroom background setting.
 **Plan for this week**
 
 Debug.
-Adjust the gameroom for single player.
+Improve ui.
+write report.
 
 ## Week 4 (5.20-5.24)
 
@@ -670,3 +670,16 @@ Improve the instruction description and UI to make it more readable.
 Add a tooltip on the mainpage for instruction button.
 
 Add few hint on the profile page to make it more user-friendly.
+
+### Yunfan Zhou
+**Issues worked on**
+*    [#92](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/92)
+*    [#97](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/97)
+*    [#93](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/93)
+
+**Description**
+Fixed bugs on waiting page, and prepare page.
+Improved ui for waiting page.
+Improved username fonts using in gameroom, rigester, rank ,login, profile pages.
+Updated README and Licence for client repo.
+
