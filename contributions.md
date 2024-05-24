@@ -678,6 +678,7 @@ Add few hint on the profile page to make it more user-friendly.
 *    [#93](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/93)
 
 **Description**
+
 Fixed bugs on waiting page, and prepare page.
 Improved ui for waiting page.
 Improved username fonts using in gameroom, rigester, rank ,login, profile pages.
