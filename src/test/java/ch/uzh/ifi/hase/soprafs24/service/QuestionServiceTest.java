@@ -254,7 +254,7 @@ public class QuestionServiceTest {
         // Assert
         assertNotNull(result);
         assertEquals(60,result.getLeftRange() ); //no hint tool, range shouldn't change
-        assertEquals(140,result.getRightRange() );
+        assertEquals(140,result.getRightRange() );//no hint tool, range shouldn't change
         assertTrue(result.getBlur());//another player owns Blur
         assertNotEquals(1,result.getSelectedItemNum()); //without hint tool, this term should not be returned
     }
