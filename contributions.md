@@ -631,7 +631,6 @@ Adjust the gameroom for single player.
 **Issues worked on**
 *    [#92](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/92)
 *    [#97](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-client/issues/97)
-*    [#145](https://github.com/sopra-fs24-group-18/sopra-fs24-group-18-server/issues/145)  
 
 **Description**
 
